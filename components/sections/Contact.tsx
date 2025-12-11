@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
+import type { Inserts } from '@/lib/types/uslab';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -20,12 +21,14 @@ export default function Contact() {
     setSubmitStatus('idle');
 
     try {
-      const { error } = await supabase.from('uslab_inquiries').insert({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        status: 'pending',
-      });
+      const { error } = await (supabase
+        .from('uslab_inquiries' as any)
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          status: 'pending',
+        } as any));
 
       if (error) throw error;
 

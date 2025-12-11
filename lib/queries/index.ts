@@ -36,10 +36,8 @@ export function getTableName(tableName: string): string {
  * const { data } = await from('projects').select('*');
  * ```
  */
-export function from<T extends string>(
-  tableName: T
-): ReturnType<typeof supabase.from<T>> {
-  return supabase.from(getTableName(tableName) as T);
+export function from<T extends string>(tableName: T) {
+  return supabase.from(getTableName(tableName) as any);
 }
 
 /**
