@@ -20,8 +20,7 @@ export default function Hero() {
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-tight text-white">
           AI 대전환(AX),<br />
-          이제 <span className="text-gradient">모두를 위한 기술</span>이
-          됩니다.
+          <span className="text-gradient">모두의 기술</span>이 됩니다.
         </h1>
 
         <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-400 font-light leading-relaxed">
