@@ -17,3 +17,40 @@
   - `supabase/migrations/`: 마이그레이션 디렉토리 생성
   - `README.md`: 프로젝트 개요 및 스키마 분리 전략 문서화
 
+## [2024-12-20] Next.js 14 웹사이트 구축 완료
+- **HTML을 Next.js로 변환**: 제공된 HTML을 Next.js 14 App Router 구조로 완전 변환
+- **프로젝트 설정 완료**:
+  - `package.json`: Next.js 14, TypeScript, Tailwind CSS 등 의존성 설정
+  - `tsconfig.json`: TypeScript 설정
+  - `tailwind.config.ts`: 커스텀 색상 및 폰트 설정
+  - `next.config.mjs`: Next.js 설정
+- **컴포넌트 구조 생성**:
+  - `components/Navbar.tsx`: 반응형 네비게이션 (모바일 메뉴 포함)
+  - `components/Footer.tsx`: 푸터 컴포넌트
+  - `components/SmoothScroll.tsx`: 스무스 스크롤 처리
+  - `components/sections/Hero.tsx`: Hero 섹션
+  - `components/sections/Philosophy.tsx`: Philosophy 섹션 (4가지 전략)
+  - `components/sections/Services.tsx`: Services 섹션 (3가지 솔루션)
+  - `components/sections/Portfolio.tsx`: Portfolio 섹션 (성공 사례)
+  - `components/sections/Contact.tsx`: Contact 섹션 (Supabase 연동)
+- **전역 스타일 및 레이아웃**:
+  - `app/globals.css`: 커스텀 스크롤바, 그리드 패턴, 텍스트 그라디언트 등
+  - `app/layout.tsx`: Google Fonts 최적화 (Noto Sans KR, JetBrains Mono)
+  - `app/page.tsx`: 모든 섹션 통합
+- **Supabase 연동**:
+  - `lib/types/uslab.ts`: `uslab_inquiries` 테이블 타입 정의 추가
+  - `components/sections/Contact.tsx`: 문의 폼 Supabase 연동 구현
+  - `supabase/migrations/20241220_create_uslab_inquiries.sql`: 문의 테이블 마이그레이션 파일 생성
+- **타입 오류 수정**:
+  - Contact 컴포넌트의 Supabase insert 타입 오류 해결
+  - queries/index.ts의 타입 오류 해결
+- **GitHub 리포지토리 생성 및 배포**:
+  - GitHub 리포지토리 생성: https://github.com/ustudiopd/uslab-web
+  - 초기 커밋 및 푸시 완료
+  - Vercel 자동 배포 설정 완료
+- **빌드 테스트 성공**:
+  - 로컬 빌드 테스트 통과
+  - 타입 체크 통과
+  - 정적 페이지 생성 완료 (4/4)
+  - 빌드 최적화 완료
+
