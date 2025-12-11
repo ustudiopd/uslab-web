@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menuToggle": "Toggle menu"
+  },
+  "hero": {
+    "badge": "AI TRANSFORMATION PARTNER",
+    "title": "AI Transformation (AX),",
+    "titleHighlight": "Technology for Everyone",
+    "titleEnd": " becomes reality.",
+    "subtitle": "Now that AI has made the cost of 'creation' zero, business success depends on the judgment to decide what, why, and how.",
+    "ctaPrimary": "Get Started",
+    "ctaSecondary": "View Portfolio"
+  },
+  "philosophy": {
+    "badge": "USLAB.AI PHILOSOPHY",
+    "title": "What Makes USlab.ai Special?",
+    "description": "We provide four clear strategies to help our clients maximize the 'judgment' needed in the AI era and build unwavering competitiveness.",
+    "strategies": {
+      "value": {
+        "title": "Value Discovery",
+        "description": "We discover 'value' in all data. We analyze and refine dormant data, transforming it into assets that AI can immediately utilize, and uncover new opportunities."
+      },
+      "control": {
+        "title": "Control the Game",
+        "description": "We help you 'control the game' of work. Rather than simple automation, we redesign the entire workflow to provide an insurmountable competitive advantage."
+      },
+      "speed": {
+        "title": "Overwhelming Speed",
+        "description": "We dominate the market with 'speed' rather than 'perfection'. Through the 'Vibe Coding' philosophy, we execute and improve quickly, making speed itself a competitive advantage."
+      },
+      "trust": {
+        "title": "Trust and Responsibility",
+        "description": "We stamp 'trust' on your capabilities. We verify and guarantee AI results with expert judgment, delivering reliable outcomes."
+      }
+    }
+  },
+  "services": {
+    "badge": "OUR SERVICES",
+    "title": "Three Solutions for Your Success",
+    "description": "USlab.ai provides one-stop solutions for every stage of your AI Transformation (AX) journey.",
+    "items": {
+      "consulting": {
+        "title": "AI Consulting",
+        "description": "We clearly present what, why, and how based on field experience. We accurately read the changes in generative AI and design the fastest path to success.",
+        "tags": ["AX Strategy", "Biz Model"]
+      },
+      "development": {
+        "title": "AI Development",
+        "description": "We implement strategies into actionable AI solutions. We quickly reflect field requirements and provide results-driven development that delivers immediate impact.",
+        "tags": ["RAG Chatbot", "Automation"]
+      },
+      "education": {
+        "title": "AI Application Workshops",
+        "description": "We help organizations build their own capabilities to utilize AI. Through hands-on workshops, all members learn the possibilities and judgment of AI.",
+        "tags": ["Hackathon", "Workshops"]
+      }
+    }
+  },
+  "portfolio": {
+    "badge": "SUCCESS STORIES",
+    "title": "USlab.ai's Expertise Proven by Results",
+    "viewDetails": "View Details",
+    "cases": {
+      "lgcns": {
+        "client": "LG CNS",
+        "category": "Architecture",
+        "title": "AX Platform Architecture Visualization",
+        "description": "To easily communicate complex AX platform concepts to clients, we created 12,000 images using Google Imagen4 API."
+      },
+      "microsoft": {
+        "client": "Microsoft",
+        "category": "Marketing",
+        "title": "AI Copilot Awareness Campaign",
+        "description": "In collaboration with Microsoft, we planned and produced Copilot videos by YouTuber Mimiminu (2M views) and content for the Ministry of Personnel Innovation's talent development platform."
+      },
+      "mss": {
+        "client": "Ministry of the Interior and Safety",
+        "category": "Hackathon",
+        "title": "Public Innovation Hackathon 'Hack for Public'",
+        "description": "Together with the Ministry of the Interior and Safety, KDI School of Public Policy and Management, and Microsoft, we planned and operated a public innovation hackathon to strengthen the foundation for policy innovation."
+      }
+    }
+  },
+  "contact": {
+    "title": "Start Your AI Transformation",
+    "titleHighlight": "with USlab.ai Today",
+    "description": "AI tools are now a constant given to everyone.",
+    "descriptionHighlight": "The real competition will be won by those who build their 'own system' by incorporating their unique work methods using this tool.",
+    "form": {
+      "nameLabel": "Name / Organization",
+      "namePlaceholder": "John Doe / Company Inc.",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "email@company.com",
+      "messageLabel": "Inquiry",
+      "messagePlaceholder": "Project requests, AI consulting inquiries, etc.",
+      "submit": "Send Inquiry",
+      "submitting": "Sending...",
+      "success": "Your inquiry has been sent successfully.",
+      "error": "An error occurred while sending. Please try again.",
+      "privacy": "Data is securely processed through Supabase."
+    }
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© 2025 USlab.ai. All rights reserved."
+  },
+  "meta": {
+    "title": "USlab.ai | AI Capability Enhancement",
+    "description": "AI Transformation (AX), now technology for everyone."
+  }
+}
+

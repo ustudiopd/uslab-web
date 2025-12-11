@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslation } from '@/lib/i18n/hooks';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-slate-950 border-t border-slate-900 py-12 text-sm text-slate-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -13,10 +18,10 @@ export default function Footer() {
 
         <div className="flex gap-6">
           <Link href="#" className="hover:text-cyan-400 transition-colors">
-            개인정보처리방침
+            {t('footer.privacy')}
           </Link>
           <Link href="#" className="hover:text-cyan-400 transition-colors">
-            이용약관
+            {t('footer.terms')}
           </Link>
         </div>
 
@@ -45,9 +50,10 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-center mt-8 text-xs font-mono text-slate-700">
-        © 2025 USlab.ai. All rights reserved.
+        {t('footer.copyright')}
       </div>
     </footer>
   );
 }
+
 

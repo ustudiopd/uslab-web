@@ -54,3 +54,82 @@
   - 정적 페이지 생성 완료 (4/4)
   - 빌드 최적화 완료
 
+## [2024-12-20] 다국어 지원 (KOR/ENG) 구현 완료
+- **i18n 인프라 구축**:
+  - `lib/i18n/config.ts`: 언어 설정 및 타입 정의 (ko, en)
+  - `lib/i18n/context.tsx`: LanguageContext 및 Provider 구현
+    - React Context API 기반 상태 관리
+    - localStorage를 통한 언어 선택 저장
+    - 브라우저 언어 자동 감지
+    - `useMemo`, `useCallback`을 활용한 성능 최적화
+  - `lib/i18n/hooks.ts`: 편의용 훅 export
+  - `lib/i18n/translations/ko.json`: 한국어 번역 파일
+  - `lib/i18n/translations/en.json`: 영어 번역 파일
+- **번역 파일 구조**:
+  - 모든 UI 텍스트를 구조화된 JSON 형식으로 관리
+  - 섹션별로 그룹화 (nav, hero, philosophy, services, portfolio, contact, footer, meta)
+  - 배열 데이터 지원 (`getArray` 함수)
+- **컴포넌트 리팩토링**:
+  - `app/layout.tsx`: LanguageProvider 추가
+  - `components/Navbar.tsx`: 언어 전환 버튼 추가 (데스크톱/모바일)
+  - `components/sections/Hero.tsx`: 모든 텍스트 번역 적용
+  - `components/sections/Philosophy.tsx`: 전략 섹션 번역 적용
+  - `components/sections/Services.tsx`: 서비스 항목 및 태그 번역 적용
+  - `components/sections/Portfolio.tsx`: 포트폴리오 케이스 번역 적용
+  - `components/sections/Contact.tsx`: 폼 레이블 및 메시지 번역 적용
+  - `components/Footer.tsx`: 푸터 텍스트 번역 적용
+- **에러 처리**:
+  - `app/error.tsx`: 에러 경계 컴포넌트 생성
+  - `app/not-found.tsx`: 404 페이지 컴포넌트 생성
+- **주요 기능**:
+  - 언어 전환: Navbar에서 KOR/ENG 토글 버튼
+  - 언어 저장: localStorage에 선택 언어 저장 (새로고침 후에도 유지)
+  - 브라우저 언어 감지: 초기 로드 시 자동 감지
+  - HTML lang 속성: 언어 변경 시 동적 업데이트
+  - SSR 호환: 서버 사이드 렌더링 지원
+- **테스트 및 검증**:
+  - 빌드 테스트 통과
+  - 언어 전환 기능 정상 작동 확인
+  - 모든 컴포넌트 번역 적용 확인
+
+## [2025-01-01] 블로그 에디터 시스템 구현 (Phase 1-2 완료)
+- **블로그 인프라 구축**:
+  - `supabase/migrations/20250101_create_uslab_blog_tables.sql`: 블로그 테이블 마이그레이션 생성
+    - `uslab_posts`: 포스트 테이블 (slug, title, content, locale, seo_*, is_published 등)
+    - `uslab_post_versions`: 버전 관리 테이블
+    - RLS 정책 설정 (공개 읽기, 인증된 사용자만 작성/수정/삭제)
+    - 인덱스 및 트리거 설정
+  - `lib/types/blog.ts`: 블로그 관련 TypeScript 타입 정의
+  - `lib/queries/posts.ts`: Supabase 쿼리 함수 (CRUD, 페이지네이션, 다국어 지원)
+- **에디터 통합 (Phase 1)**:
+  - Novel.sh 에디터 통합 (`novel` 패키지 설치)
+  - `app/admin/posts/write/page.tsx`: 포스트 작성 페이지
+    - Novel.sh EditorRoot, EditorContent 사용
+    - 제목, slug, 언어 선택 UI
+    - 초안 저장 및 발행 기능
+  - `app/admin/posts/page.tsx`: 포스트 관리 페이지 (목록, 수정, 삭제)
+  - `app/admin/posts/[id]/page.tsx`: 포스트 수정 페이지
+- **API 라우트**:
+  - `app/api/posts/route.ts`: 포스트 목록 조회 (GET), 생성 (POST)
+  - `app/api/posts/[id]/route.ts`: 포스트 조회/수정/삭제
+- **인증 시스템**:
+  - `lib/hooks/useAuth.ts`: Supabase 인증 훅 (useAuth)
+  - `app/admin/login/page.tsx`: 관리자 로그인 페이지
+- **블로그 컴포넌트**:
+  - `components/blog/PostViewer.tsx`: 포스트 뷰어 (Tiptap JSON → HTML 변환)
+  - `components/blog/PostCard.tsx`: 포스트 카드 컴포넌트
+  - `components/blog/PostList.tsx`: 포스트 목록 컴포넌트
+- **완료된 기능**:
+  - ✅ Novel.sh 에디터 기본 통합
+  - ✅ 포스트 CRUD 기능 (생성, 조회, 수정, 삭제)
+  - ✅ 다국어 지원 (ko/en)
+  - ✅ 초안/발행 상태 관리
+  - ✅ 인증 기반 관리자 페이지
+  - ✅ SEO 필드 구조 (seo_title, seo_description, seo_keywords)
+- **미완료 기능 (Phase 3 - AI 기능)**:
+  - ❌ AI 이어쓰기 (`/api/ai/generate`)
+  - ❌ AI 교정 (`/api/ai/refine`)
+  - ❌ SEO 자동 생성 (`/api/ai/seo`)
+  - ❌ AI Copilot UI 컴포넌트
+  - ❌ AI 관련 패키지 설치 (`ai`, `@ai-sdk/google`)
+

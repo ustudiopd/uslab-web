@@ -20,6 +20,12 @@
 - **Repository Pattern**: Supabase 클라이언트를 통한 데이터 접근 추상화
 - **Schema Separation Pattern**: Prefix 기반 다중 프로젝트 스키마 분리
 - **Observer Pattern**: 실시간 데이터 업데이트 (Supabase Realtime, 필요시)
+- **Internationalization (i18n) Pattern**: 
+  - React Context API 기반 언어 상태 관리
+  - JSON 기반 번역 파일 구조
+  - 클라이언트 사이드 언어 전환 (SSR 호환)
+  - localStorage를 통한 언어 선택 영구 저장
+  - 브라우저 언어 자동 감지
 
 ## 3. 코딩 컨벤션  
 - **TypeScript**: 
@@ -40,6 +46,11 @@
   - 유틸리티: `lib/utils.ts`
   - Supabase: `lib/supabase/`
   - 쿼리: `lib/queries/`
+  - i18n: `lib/i18n/`
+    - `config.ts`: 언어 설정 및 타입
+    - `context.tsx`: LanguageContext 및 Provider
+    - `hooks.ts`: 편의용 훅
+    - `translations/`: 번역 파일 (ko.json, en.json)
 - **네이밍 규칙**:
   - Boolean 변수: `is`, `has`, `should` 접두사 사용
   - 이벤트 핸들러: `handle` 접두사 사용 (예: `handleSubmit`)

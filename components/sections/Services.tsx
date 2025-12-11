@@ -1,29 +1,32 @@
+'use client';
+
+import { useTranslation } from '@/lib/i18n/hooks';
+
 export default function Services() {
+  const { t, getArray } = useTranslation();
+
   const services = [
     {
       icon: 'fas fa-lightbulb',
-      title: 'AI 컨설팅 (Consulting)',
-      description:
-        '현장 경험으로 무엇을, 왜, 어떻게 할지 명확히 제시합니다. 생성형 AI의 변화를 정확히 읽고, 가장 빠른 성공 로드맵을 설계합니다.',
-      tags: ['AX Strategy', 'Biz Model'],
+      titleKey: 'services.items.consulting.title',
+      descriptionKey: 'services.items.consulting.description',
+      tagsKey: 'services.items.consulting.tags',
       gradient: 'from-cyan-500/10',
       hoverColor: 'cyan',
     },
     {
       icon: 'fas fa-code',
-      title: 'AI 개발 (Development)',
-      description:
-        '전략을 실행 가능한 AI 솔루션으로 구현합니다. 현장의 요구를 빠르게 반영해 즉시 효과를 내는 성과 중심 개발을 제공합니다.',
-      tags: ['RAG Chatbot', 'Automation'],
+      titleKey: 'services.items.development.title',
+      descriptionKey: 'services.items.development.description',
+      tagsKey: 'services.items.development.tags',
       gradient: 'from-indigo-500/10',
       hoverColor: 'indigo',
     },
     {
       icon: 'fas fa-graduation-cap',
-      title: 'AI 적용 워크숍 (Education)',
-      description:
-        '조직이 스스로 AI를 활용하는 역량을 키우도록 돕습니다. 실전 워크숍을 통해 모든 구성원이 AI의 가능성과 판단력을 체득합니다.',
-      tags: ['Hackathon', 'Workshops'],
+      titleKey: 'services.items.education.title',
+      descriptionKey: 'services.items.education.description',
+      tagsKey: 'services.items.education.tags',
       gradient: 'from-emerald-500/10',
       hoverColor: 'emerald',
     },
@@ -38,15 +41,14 @@ export default function Services() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <h2 className="text-xs font-mono text-cyan-500 mb-2">
-              OUR SERVICES
+              {t('services.badge')}
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold text-white">
-              당신의 성공을 위한 3가지 솔루션
+              {t('services.title')}
             </h3>
           </div>
           <p className="text-slate-400 max-w-md text-sm md:text-right">
-            USlab.ai는 AI 대전환(AX) 여정의 모든 단계에서<br />
-            필요한 솔루션을 원스톱으로 제공합니다.
+            {t('services.description')}
           </p>
         </div>
 
@@ -67,11 +69,11 @@ export default function Services() {
                 </div>
                 <div className="flex-grow">
                   <h4 className="text-2xl font-bold text-white mb-2">
-                    {service.title}
+                    {t(service.titleKey)}
                   </h4>
-                  <p className="text-slate-400 mb-4">{service.description}</p>
+                  <p className="text-slate-400 mb-4">{t(service.descriptionKey)}</p>
                   <div className="flex flex-wrap gap-2">
-                    {service.tags.map((tag, tagIndex) => (
+                    {getArray(service.tagsKey).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
                         className="px-2 py-1 text-xs font-mono text-slate-300 bg-slate-800 rounded"
@@ -94,4 +96,5 @@ export default function Services() {
     </section>
   );
 }
+
 

@@ -1,0 +1,37 @@
+import type { Metadata } from 'next';
+import { LanguageProvider } from '@/lib/i18n/context';
+import { getDictionary } from '@/lib/i18n/server';
+import type { Locale } from '@/lib/i18n/config';
+
+interface LangLayoutProps {
+  children: React.ReactNode;
+  params: { lang: Locale };
+}
+
+export async function generateMetadata({ params }: LangLayoutProps): Promise<Metadata> {
+  const { lang } = params;
+  const dict = await getDictionary(lang);
+
+  return {
+    title: dict.meta?.title || 'USlab.ai | AI 역량 강화',
+    description: dict.meta?.description || 'AI 대전환(AX), 이제 모두를 위한 기술이 됩니다.',
+    alternates: {
+      languages: {
+        ko: '/ko',
+        en: '/en',
+      },
+    },
+  };
+}
+
+export default async function LangLayout({ children, params }: LangLayoutProps) {
+  const { lang } = params;
+  const dict = await getDictionary(lang);
+
+  return (
+    <LanguageProvider initialLang={lang} dict={dict}>
+      {children}
+    </LanguageProvider>
+  );
+}
+

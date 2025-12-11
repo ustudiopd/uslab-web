@@ -1,12 +1,13 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: USLab.ai 웹사이트 배포 및 운영 준비
-- **목표**: Vercel 배포 완료 및 Supabase 마이그레이션 적용
+- **작업명**: 블로그 에디터 시스템 구현 (Phase 1-2 완료, Phase 3 진행 중)
+- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합 준비
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ 기본 구축 완료, 배포 대기 중
+- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ⏳ Phase 3 대기 (AI 기능)
 
-## 2. 최근 완료된 작업 (2024-12-20)
+## 2. 최근 완료된 작업
+### [2024-12-20]
 - ✅ Plan/Act 워크플로우 초기화
 - ✅ 메모리 뱅크 문서 업데이트 (projectbrief, techContext, systemPatterns)
 - ✅ 스키마 분리 전략 수립 (`uslab_` prefix 기반)
@@ -18,19 +19,46 @@
 - ✅ 타입 오류 수정 및 빌드 테스트 성공
 - ✅ GitHub 리포지토리 생성 및 초기 푸시 완료
 - ✅ Vercel 자동 배포 설정 완료
+- ✅ **다국어 지원 (KOR/ENG) 구현 완료**
+  - i18n 인프라 구축 (Context API 기반)
+  - 모든 컴포넌트 번역 적용
+  - 언어 전환 기능 구현
+  - localStorage 기반 언어 선택 저장
+  - 에러 경계 컴포넌트 추가
+
+### [2025-01-01]
+- ✅ **블로그 에디터 시스템 Phase 1-2 완료**
+  - Supabase 마이그레이션 파일 생성 (`uslab_posts`, `uslab_post_versions`)
+  - Novel.sh 에디터 통합 (기본 버전)
+  - 포스트 CRUD 기능 구현 (생성, 조회, 수정, 삭제)
+  - 관리자 페이지 구현 (목록, 작성, 수정)
+  - 인증 시스템 통합 (useAuth 훅)
+  - 다국어 지원 (ko/en)
+  - SEO 필드 구조 준비 (seo_title, seo_description, seo_keywords)
 
 ## 3. 다음 예정 작업  
-- **Supabase 마이그레이션 적용** (우선순위 높음)
-  - `uslab_inquiries` 테이블 생성 (Supabase MCP 사용)
+### Phase 3: AI 기능 통합 (블로그에디터.md 참고)
+- **AI 패키지 설치** (우선순위 높음)
+  - `ai` 패키지 (Vercel AI SDK)
+  - `@ai-sdk/google` 패키지 (Gemini 통합)
+- **AI API 엔드포인트 구현**
+  - `/api/ai/generate`: AI 이어쓰기 (Streaming)
+  - `/api/ai/refine`: 문단별 AI 교정
+  - `/api/ai/seo`: SEO 메타데이터 자동 생성
+- **AI Copilot UI 구현**
+  - 문단 선택 시 AI 수정 버튼
+  - DiffView 컴포넌트 (원본/제안 비교)
+- **발행 프로세스 개선**
+  - 발행 시 SEO 자동 생성 통합
+  - 비동기 SEO 생성 (선택적)
+
+### 기타 작업
+- **Supabase 마이그레이션 적용**
+  - `uslab_blog_tables` 마이그레이션 적용 확인
   - RLS 정책 검증
-- **배포 후 검증** (다음 단계)
+- **배포 후 검증**
   - Vercel 배포 확인
-  - 문의 폼 동작 테스트
-  - 반응형 디자인 검증
-- **추가 기능 개발** (향후)
-  - 포트폴리오 데이터 Supabase 연동
-  - 프로젝트/포스트 테이블 생성
-  - 관리자 대시보드 (선택적)
+  - 블로그 기능 동작 테스트
 
 ## 4. 주요 이슈 및 블로커  
 - 현재 블로커 없음

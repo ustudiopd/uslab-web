@@ -46,29 +46,82 @@ export type Database = {
           updated_at?: string;
         };
       };
-      // 예시: 추가 테이블 생성 후 업데이트 필요
-      // uslab_projects: {
-      //   Row: {
-      //     id: string;
-      //     title: string;
-      //     description: string | null;
-      //     created_at: string;
-      //     updated_at: string;
-      //   };
-      //   Insert: {
-      //     id?: string;
-      //     title: string;
-      //     description?: string | null;
-      //     created_at?: string;
-      //     updated_at?: string;
-      //   };
-      //   Update: {
-      //     id?: string;
-      //     title?: string;
-      //     description?: string | null;
-      //     updated_at?: string;
-      //   };
-      // };
+      uslab_posts: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          content: any; // jsonb
+          thumbnail_url: string | null;
+          locale: 'ko' | 'en';
+          canonical_id: string | null;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_keywords: string[] | null;
+          is_published: boolean;
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+          author_id: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          title: string;
+          content: any; // jsonb
+          thumbnail_url?: string | null;
+          locale?: 'ko' | 'en';
+          canonical_id?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_keywords?: string[] | null;
+          is_published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          author_id: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          title?: string;
+          content?: any; // jsonb
+          thumbnail_url?: string | null;
+          locale?: 'ko' | 'en';
+          canonical_id?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_keywords?: string[] | null;
+          is_published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          author_id?: string;
+        };
+      };
+      uslab_post_versions: {
+        Row: {
+          id: string;
+          post_id: string;
+          content: any; // jsonb
+          change_log: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          content: any; // jsonb
+          change_log?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          content?: any; // jsonb
+          change_log?: string | null;
+          created_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

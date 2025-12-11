@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import type { Inserts } from '@/lib/types/uslab';
+import { useTranslation } from '@/lib/i18n/hooks';
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -62,13 +64,14 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-            지금 바로 USlab.ai와 함께<br />
-            AI 대전환을 시작하십시오.
+            {t('contact.title')}
+            <br />
+            {t('contact.titleHighlight')}
           </h2>
           <p className="text-slate-400 text-lg">
-            AI라는 도구는 이제 모두에게 주어진 상수입니다.<br />
-            진짜 승부는 이 도구를 활용해 자신만의 업무 방식을 녹여낸
-            &apos;나만의 시스템&apos;을 구축하는 사람에게서 갈릴 것입니다.
+            {t('contact.description')}
+            <br />
+            {t('contact.descriptionHighlight')}
           </p>
         </div>
 
@@ -77,7 +80,7 @@ export default function Contact() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  이름 / 소속
+                  {t('contact.form.nameLabel')}
                 </label>
                 <input
                   type="text"
@@ -86,12 +89,12 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   className="w-full bg-slate-950 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder-slate-600"
-                  placeholder="홍길동 / OO기업"
+                  placeholder={t('contact.form.namePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  이메일 주소
+                  {t('contact.form.emailLabel')}
                 </label>
                 <input
                   type="email"
@@ -100,13 +103,13 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   className="w-full bg-slate-950 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder-slate-600"
-                  placeholder="email@company.com"
+                  placeholder={t('contact.form.emailPlaceholder')}
                 />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                문의 내용
+                {t('contact.form.messageLabel')}
               </label>
               <textarea
                 name="message"
@@ -115,7 +118,7 @@ export default function Contact() {
                 required
                 rows={4}
                 className="w-full bg-slate-950 border border-slate-700 rounded p-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder-slate-600"
-                placeholder="프로젝트 의뢰 및 AI 컨설팅 문의 등"
+                placeholder={t('contact.form.messagePlaceholder')}
               />
             </div>
             <button
@@ -123,22 +126,21 @@ export default function Contact() {
               disabled={isSubmitting}
               className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-4 rounded transition-all shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? '전송 중...' : '문의 보내기'}
+              {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
             </button>
             {submitStatus === 'success' && (
               <div className="text-center text-green-400 text-sm">
-                문의가 성공적으로 전송되었습니다.
+                {t('contact.form.success')}
               </div>
             )}
             {submitStatus === 'error' && (
               <div className="text-center text-red-400 text-sm">
-                전송 중 오류가 발생했습니다. 다시 시도해주세요.
+                {t('contact.form.error')}
               </div>
             )}
             <div className="text-center">
               <p className="text-xs text-slate-500 mt-4 font-mono">
-                <i className="fas fa-lock mr-1" /> 데이터는 Supabase를 통해
-                안전하게 처리됩니다.
+                <i className="fas fa-lock mr-1" /> {t('contact.form.privacy')}
               </p>
             </div>
           </form>

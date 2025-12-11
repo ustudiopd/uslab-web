@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "about": "소개",
+    "services": "서비스",
+    "portfolio": "포트폴리오",
+    "blog": "블로그",
+    "contact": "문의하기",
+    "menuToggle": "메뉴 토글"
+  },
+  "hero": {
+    "badge": "AI TRANSFORMATION PARTNER",
+    "title": "AI 대전환(AX),",
+    "titleHighlight": "모두의 기술",
+    "titleEnd": "이 됩니다.",
+    "subtitle": "AI가 '만드는 능력'의 비용을 0으로 만든 지금, 비즈니스의 성패는 무엇을, 왜, 어떻게 할 것인가를 결정하는 판단력에 달려 있습니다.",
+    "ctaPrimary": "지금 시작하기",
+    "ctaSecondary": "포트폴리오 보기"
+  },
+  "philosophy": {
+    "badge": "USLAB.AI PHILOSOPHY",
+    "title": "무엇이 USlab.ai를 특별하게 만드는가?",
+    "description": "우리는 고객이 AI 시대에 필요한 '판단력'을 극대화하고 흔들리지 않는 경쟁력을 갖출 수 있도록, 명확한 4가지 전략을 제공합니다.",
+    "strategies": {
+      "value": {
+        "title": "가치 발견",
+        "description": "모든 데이터에서 '가치'를 발견합니다. 잠들어 있던 데이터를 분석·정제해 AI가 즉시 활용할 자산으로 바꾸고, 새로운 기회를 발굴합니다."
+      },
+      "control": {
+        "title": "판의 장악",
+        "description": "'일의 판'을 장악하도록 돕습니다. 단순한 자동화가 아닌, 일의 흐름 전체를 재설계하여 따라올 수 없는 경쟁 우위를 제공합니다."
+      },
+      "speed": {
+        "title": "압도적 속도",
+        "description": "'완벽'이 아닌 '속도'로 시장을 선점합니다. '바이브코딩' 철학으로 빠르게 실행하고 개선하며, 속도 자체를 경쟁력으로 만듭니다."
+      },
+      "trust": {
+        "title": "신뢰와 책임",
+        "description": "당신의 실력에 '신뢰'라는 도장을 찍습니다. 전문가의 판단으로 AI 결과를 검증하고 보증하며, 신뢰할 수 있는 결과를 완성합니다."
+      }
+    }
+  },
+  "services": {
+    "badge": "OUR SERVICES",
+    "title": "당신의 성공을 위한 3가지 솔루션",
+    "description": "USlab.ai는 AI 대전환(AX) 여정의 모든 단계에서 필요한 솔루션을 원스톱으로 제공합니다.",
+    "items": {
+      "consulting": {
+        "title": "AI 컨설팅 (Consulting)",
+        "description": "현장 경험으로 무엇을, 왜, 어떻게 할지 명확히 제시합니다. 생성형 AI의 변화를 정확히 읽고, 가장 빠른 성공 로드맵을 설계합니다.",
+        "tags": ["AX Strategy", "Biz Model"]
+      },
+      "development": {
+        "title": "AI 개발 (Development)",
+        "description": "전략을 실행 가능한 AI 솔루션으로 구현합니다. 현장의 요구를 빠르게 반영해 즉시 효과를 내는 성과 중심 개발을 제공합니다.",
+        "tags": ["RAG Chatbot", "Automation"]
+      },
+      "education": {
+        "title": "AI 적용 워크숍 (Education)",
+        "description": "조직이 스스로 AI를 활용하는 역량을 키우도록 돕습니다. 실전 워크숍을 통해 모든 구성원이 AI의 가능성과 판단력을 체득합니다.",
+        "tags": ["Hackathon", "Workshops"]
+      }
+    }
+  },
+  "portfolio": {
+    "badge": "SUCCESS STORIES",
+    "title": "결과로 증명하는 USlab.ai의 전문성",
+    "viewDetails": "자세히 보기",
+    "cases": {
+      "lgcns": {
+        "client": "LG CNS",
+        "category": "Architecture",
+        "title": "AX 플랫폼 아키텍처 시각화",
+        "description": "복잡한 AX 플랫폼 개념을 고객들에게 쉽게 전달하기 위해, Google Imagen4 API로 12,000장의 이미지를 제작했습니다."
+      },
+      "microsoft": {
+        "client": "Microsoft",
+        "category": "Marketing",
+        "title": "AI Copilot 인지도 확산",
+        "description": "Microsoft와 협력해 유튜버 미미미누의 Copilot 영상(200만 뷰)과 인사혁신처 인재개발 플랫폼 콘텐츠를 기획·제작했습니다."
+      },
+      "mss": {
+        "client": "행정안전부",
+        "category": "Hackathon",
+        "title": "공공혁신 해커톤 'Hack for Public'",
+        "description": "행정안전부, KDI국제정책대학원, Microsoft와 함께 공공 혁신 해커톤을 기획·운영하여 정책 혁신 기반을 강화했습니다."
+      }
+    }
+  },
+  "contact": {
+    "title": "지금 바로 USlab.ai와 함께",
+    "titleHighlight": "AI 대전환을 시작하십시오.",
+    "description": "AI라는 도구는 이제 모두에게 주어진 상수입니다.",
+    "descriptionHighlight": "진짜 승부는 이 도구를 활용해 자신만의 업무 방식을 녹여낸 '나만의 시스템'을 구축하는 사람에게서 갈릴 것입니다.",
+    "form": {
+      "nameLabel": "이름 / 소속",
+      "namePlaceholder": "홍길동 / OO기업",
+      "emailLabel": "이메일 주소",
+      "emailPlaceholder": "email@company.com",
+      "messageLabel": "문의 내용",
+      "messagePlaceholder": "프로젝트 의뢰 및 AI 컨설팅 문의 등",
+      "submit": "문의 보내기",
+      "submitting": "전송 중...",
+      "success": "문의가 성공적으로 전송되었습니다.",
+      "error": "전송 중 오류가 발생했습니다. 다시 시도해주세요.",
+      "privacy": "데이터는 Supabase를 통해 안전하게 처리됩니다."
+    }
+  },
+  "footer": {
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관",
+    "copyright": "© 2025 USlab.ai. All rights reserved."
+  },
+  "meta": {
+    "title": "USlab.ai | AI 역량 강화",
+    "description": "AI 대전환(AX), 이제 모두를 위한 기술이 됩니다."
+  }
+}
+

@@ -2,10 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/hooks';
 
 export default function Navbar() {
+  const { t, locale } = useTranslation();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // 현재 경로에서 언어 제거한 경로 생성
+  const getPathWithoutLang = () => {
+    const segments = pathname.split('/').filter(Boolean);
+    if (segments[0] === 'ko' || segments[0] === 'en') {
+      const pathWithoutLang = '/' + segments.slice(1).join('/');
+      // 루트 경로인 경우 빈 문자열 반환
+      return pathWithoutLang === '/' ? '' : pathWithoutLang;
+    }
+    return pathname === '/' ? '' : pathname;
+  };
+
+  const basePath = getPathWithoutLang();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +47,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link
-            href="/"
+            href={`/${locale}`}
             className="flex-shrink-0 flex items-center cursor-pointer group"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
@@ -48,26 +65,40 @@ export default function Navbar() {
               href="#about"
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
             >
-              소개
+              {t('nav.about')}
             </a>
             <a
               href="#services"
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
             >
-              서비스
+              {t('nav.services')}
             </a>
             <a
               href="#portfolio"
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
             >
-              포트폴리오
+              {t('nav.portfolio')}
             </a>
+            <Link
+              href={`/${locale}/blog`}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
+            >
+              {t('nav.blog')}
+            </Link>
             <a
               href="#contact"
               className="bg-white/5 border border-slate-700 text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 hover:text-white transition-all duration-300 text-sm"
             >
-              문의하기
+              {t('nav.contact')}
             </a>
+            {/* Language Toggle */}
+            <Link
+              href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
+              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider px-3 py-1 rounded border border-slate-700 hover:border-cyan-500"
+              aria-label="Toggle language"
+            >
+              {locale === 'ko' ? 'ENG' : 'KOR'}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -75,7 +106,7 @@ export default function Navbar() {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-slate-300 hover:text-white focus:outline-none"
-              aria-label="메뉴 토글"
+              aria-label={t('nav.menuToggle')}
             >
               <i
                 className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}
@@ -97,32 +128,48 @@ export default function Navbar() {
             onClick={handleLinkClick}
             className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
           >
-            소개
+            {t('nav.about')}
           </a>
           <a
             href="#services"
             onClick={handleLinkClick}
             className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
           >
-            서비스
+            {t('nav.services')}
           </a>
           <a
             href="#portfolio"
             onClick={handleLinkClick}
             className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
           >
-            포트폴리오
+            {t('nav.portfolio')}
           </a>
+          <Link
+            href={`/${locale}/blog`}
+            onClick={handleLinkClick}
+            className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+          >
+            {t('nav.blog')}
+          </Link>
           <a
             href="#contact"
             onClick={handleLinkClick}
             className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 rounded"
           >
-            문의하기
+            {t('nav.contact')}
           </a>
+          {/* Mobile Language Toggle */}
+          <Link
+            href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
+            onClick={handleLinkClick}
+            className="block w-full text-left px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded border-t border-slate-800 mt-2"
+          >
+            {locale === 'ko' ? 'English' : '한국어'}
+          </Link>
         </div>
       </div>
     </nav>
   );
 }
+
 
