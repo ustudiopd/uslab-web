@@ -1,0 +1,10 @@
+# 마이그레이션 파일 디렉토리
+# 
+# 마이그레이션 파일 네이밍 규칙:
+# YYYYMMDD_create_uslab_[table_name].sql
+# 
+# 예시:
+# - 20241220_create_uslab_projects.sql
+# - 20241220_create_uslab_posts.sql
+# - 20241220_create_uslab_inquiries.sql
+
