@@ -17,7 +17,36 @@
 export type Database = {
   public: {
     Tables: {
-      // 예시: 실제 테이블 생성 후 업데이트 필요
+      uslab_inquiries: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          message: string;
+          status: 'pending' | 'contacted' | 'completed';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          email: string;
+          message: string;
+          status?: 'pending' | 'contacted' | 'completed';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          email?: string;
+          message?: string;
+          status?: 'pending' | 'contacted' | 'completed';
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      // 예시: 추가 테이블 생성 후 업데이트 필요
       // uslab_projects: {
       //   Row: {
       //     id: string;
