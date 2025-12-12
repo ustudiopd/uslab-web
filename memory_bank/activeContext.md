@@ -2,9 +2,9 @@
 
 ## 1. 현재 집중하고 있는 작업  
 - **작업명**: 블로그 에디터 시스템 구현 (Phase 1-2 완료, Phase 3 진행 중)
-- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합 준비
+- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ⏳ Phase 3 대기 (AI 기능)
+- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ✅ Phase 3 일부 완료 (AI Slug 생성), ⏳ Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
 
 ## 2. 최근 완료된 작업
 ### [2024-12-20]
@@ -35,13 +35,26 @@
   - 인증 시스템 통합 (useAuth 훅)
   - 다국어 지원 (ko/en)
   - SEO 필드 구조 준비 (seo_title, seo_description, seo_keywords)
+- ✅ **블로그 에디터 시스템 Phase 3 일부 완료**
+  - AI 패키지 설치 (`ai`, `@ai-sdk/google`)
+  - AI Slug 생성 API 구현 (`/api/ai/slug`)
+    - Gemini 2.0 Flash 모델 사용
+    - 의미 기반 영문 slug 자동 생성 (SEO 최적화)
+    - 제목 입력 시 자동 생성 또는 수동 생성 버튼
+  - 환경 변수 매핑: `GOOGLE_API_KEY` → `GOOGLE_GENERATIVE_AI_API_KEY` 자동 변환
+- ✅ **UI/UX 개선**
+  - 편집 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
+  - 작성 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
+  - 취소 버튼: 변경사항을 원본 데이터로 되돌리기 기능
 
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)
-- **AI 패키지 설치** (우선순위 높음)
+- ✅ **AI 패키지 설치** (완료)
   - `ai` 패키지 (Vercel AI SDK)
   - `@ai-sdk/google` 패키지 (Gemini 통합)
-- **AI API 엔드포인트 구현**
+- ✅ **AI Slug 생성** (완료)
+  - `/api/ai/slug`: 의미 기반 영문 slug 자동 생성
+- **AI API 엔드포인트 구현** (진행 중)
   - `/api/ai/generate`: AI 이어쓰기 (Streaming)
   - `/api/ai/refine`: 문단별 AI 교정
   - `/api/ai/seo`: SEO 메타데이터 자동 생성

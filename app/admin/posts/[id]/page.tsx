@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { supabase } from '@/lib/supabase/client';
 import { EditorRoot, EditorContent, StarterKit } from 'novel';
 import type { UslabPost } from '@/lib/types/blog';
 import type { JSONContent } from 'novel';
@@ -34,7 +35,20 @@ export default function EditPostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`/api/posts/${postId}`);
+      // 인증 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`/api/posts/${postId}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+      });
+
       if (response.ok) {
         const { post: postData } = await response.json();
         setPost(postData);
@@ -43,7 +57,8 @@ export default function EditPostPage() {
         setLocale(postData.locale);
         setContent(postData.content);
       } else {
-        alert('포스트를 불러올 수 없습니다.');
+        const error = await response.json();
+        alert(`포스트를 불러올 수 없습니다: ${error.error || '알 수 없는 오류'}`);
         router.push('/admin/posts');
       }
     } catch (error) {
@@ -67,9 +82,20 @@ export default function EditPostPage() {
     }
 
     try {
+      // 인증 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
       const response = await fetch(`/api/posts/${postId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           title,
           slug,
@@ -102,8 +128,19 @@ export default function EditPostPage() {
     }
 
     try {
+      // 인증 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
       const response = await fetch(`/api/posts/${postId}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+        },
       });
 
       if (response.ok) {
@@ -116,6 +153,16 @@ export default function EditPostPage() {
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('삭제 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleCancel = () => {
+    if (post) {
+      // 원본 데이터로 되돌리기
+      setTitle(post.title);
+      setSlug(post.slug);
+      setLocale(post.locale);
+      setContent(post.content);
     }
   };
 
@@ -144,12 +191,20 @@ export default function EditPostPage() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-white">포스트 편집</h1>
-            <button
-              onClick={handleDelete}
-              className="px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-sm"
-            >
-              삭제
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => router.push('/admin/posts')}
+                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-sm"
+              >
+                목록으로 돌아가기
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-sm"
+              >
+                삭제
+              </button>
+            </div>
           </div>
 
           {/* 상태 표시 */}
@@ -243,21 +298,30 @@ export default function EditPostPage() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-between items-center gap-4">
           <button
-            onClick={() => handleUpdate(false)}
+            onClick={handleCancel}
             disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
           >
-            {isSaving ? '저장 중...' : '저장'}
+            취소
           </button>
-          <button
-            onClick={() => handleUpdate(true)}
-            disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
-          >
-            {isPublishing ? '발행 중...' : post.is_published ? '업데이트 발행' : '발행하기'}
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => handleUpdate(false)}
+              disabled={isSaving || isPublishing}
+              className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            >
+              {isSaving ? '저장 중...' : '저장'}
+            </button>
+            <button
+              onClick={() => handleUpdate(true)}
+              disabled={isSaving || isPublishing}
+              className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
+            >
+              {isPublishing ? '발행 중...' : post.is_published ? '업데이트 발행' : '발행하기'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

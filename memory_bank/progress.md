@@ -126,10 +126,18 @@
   - ✅ 초안/발행 상태 관리
   - ✅ 인증 기반 관리자 페이지
   - ✅ SEO 필드 구조 (seo_title, seo_description, seo_keywords)
-- **미완료 기능 (Phase 3 - AI 기능)**:
+- **Phase 3: AI 기능 (일부 완료)**:
+  - ✅ AI 관련 패키지 설치 (`ai`, `@ai-sdk/google`)
+  - ✅ AI Slug 생성 API (`/api/ai/slug`) 구현
+    - Gemini 2.0 Flash 모델 사용
+    - 의미 기반 영문 slug 자동 생성 (SEO 최적화)
+    - 제목 입력 시 자동 생성 또는 수동 생성 버튼
   - ❌ AI 이어쓰기 (`/api/ai/generate`)
   - ❌ AI 교정 (`/api/ai/refine`)
   - ❌ SEO 자동 생성 (`/api/ai/seo`)
   - ❌ AI Copilot UI 컴포넌트
-  - ❌ AI 관련 패키지 설치 (`ai`, `@ai-sdk/google`)
+- **UI/UX 개선**:
+  - ✅ 편집 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
+  - ✅ 작성 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
+  - ✅ 취소 버튼: 변경사항을 원본 데이터로 되돌리기
 

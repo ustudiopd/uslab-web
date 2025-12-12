@@ -23,6 +23,8 @@
   - `novel` (블로그 에디터 - Novel.sh)
   - `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/core`, `@tiptap/html` (에디터 코어)
   - `@tailwindcss/typography` (블로그 본문 스타일링)
+  - `ai` (Vercel AI SDK)
+  - `@ai-sdk/google` (Google Gemini 통합)
 - **다국어 지원 (i18n)**:
   - 커스텀 i18n 솔루션 (React Context API 기반)
   - 지원 언어: 한국어 (ko), 영어 (en)
@@ -64,5 +66,9 @@
 - **인증**: Supabase Auth (관리자 전용)
 - **다국어 지원**: ko/en (locale 필드)
 - **SEO**: seo_title, seo_description, seo_keywords 필드
-- **상태**: Phase 1-2 완료 (에디터 통합, CRUD), Phase 3 대기 (AI 기능)
+- **AI 기능**: 
+  - Gemini 2.0 Flash 모델 사용
+  - AI Slug 생성 (`/api/ai/slug`) - 의미 기반 영문 slug 자동 생성
+  - 환경 변수: `GOOGLE_API_KEY` (자동으로 `GOOGLE_GENERATIVE_AI_API_KEY`로 매핑)
+- **상태**: Phase 1-2 완료 (에디터 통합, CRUD), Phase 3 일부 완료 (AI Slug 생성), Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
 

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { supabase } from '@/lib/supabase/client';
 import { EditorRoot, EditorContent, StarterKit } from 'novel';
 import type { JSONContent } from 'novel';
 
@@ -15,30 +16,60 @@ export default function WritePostPage() {
       router.push('/admin/login');
     }
   }, [user, authLoading, router]);
+
+  const [postId, setPostId] = useState<string | null>(null);
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [locale, setLocale] = useState<'ko' | 'en'>('ko');
   const [content, setContent] = useState<JSONContent | null>(null);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
 
-  // slug 자동 생성 (제목 기반)
-  const generateSlug = (text: string) => {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
+  // AI Slug 생성 함수
+  const generateAiSlug = async (currentTitle: string) => {
+    if (!currentTitle || !currentTitle.trim()) {
+      return;
+    }
+
+    setIsGeneratingSlug(true);
+    try {
+      const res = await fetch('/api/ai/slug', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: currentTitle }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Slug 생성 실패');
+      }
+
+      const data = await res.json();
+      setSlug(data.slug);
+    } catch (error) {
+      console.error('Error generating slug:', error);
+      alert('Slug 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsGeneratingSlug(false);
+    }
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    // slug가 비어있으면 자동 생성
-    if (!slug) {
-      setSlug(generateSlug(newTitle));
-    }
+  };
+
+  const handleCancel = () => {
+    // 모든 입력 필드 초기화
+    setTitle('');
+    setSlug('');
+    setLocale('ko');
+    setContent(null);
+    setPostId(null);
   };
 
   // 초안 저장
@@ -49,10 +80,26 @@ export default function WritePostPage() {
     }
 
     setIsSaving(true);
+    setSaveMessage(null);
     try {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      // Supabase 세션 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
+      // 이미 저장된 포스트가 있으면 업데이트, 없으면 생성
+      const url = postId ? `/api/posts/${postId}` : '/api/posts';
+      const method = postId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           title,
           slug,
@@ -64,11 +111,16 @@ export default function WritePostPage() {
 
       if (response.ok) {
         const { post } = await response.json();
-        alert('초안이 저장되었습니다.');
-        router.push(`/admin/posts/${post.id}`);
+        setPostId(post.id);
+        setSaveMessage('초안이 저장되었습니다.');
+        setTimeout(() => setSaveMessage(null), 3000);
       } else {
         const error = await response.json();
-        alert(`저장 실패: ${error.error}`);
+        const errorMessage = error.details 
+          ? `${error.error}: ${error.details}` 
+          : error.error || '알 수 없는 오류가 발생했습니다.';
+        alert(`저장 실패: ${errorMessage}`);
+        console.error('Error details:', error);
       }
     } catch (error) {
       console.error('Error saving draft:', error);
@@ -87,9 +139,20 @@ export default function WritePostPage() {
 
     setIsPublishing(true);
     try {
+      // Supabase 세션 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
       const response = await fetch('/api/posts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           title,
           slug,
@@ -102,11 +165,16 @@ export default function WritePostPage() {
 
       if (response.ok) {
         const { post } = await response.json();
+        setPostId(post.id);
         alert('포스트가 발행되었습니다.');
         router.push(`/admin/posts/${post.id}`);
       } else {
         const error = await response.json();
-        alert(`발행 실패: ${error.error}`);
+        const errorMessage = error.details 
+          ? `${error.error}: ${error.details}` 
+          : error.error || '알 수 없는 오류가 발생했습니다.';
+        alert(`발행 실패: ${errorMessage}`);
+        console.error('Error details:', error);
       }
     } catch (error) {
       console.error('Error publishing post:', error);
@@ -121,7 +189,24 @@ export default function WritePostPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-6">새 포스트 작성</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-white">
+              {postId ? '포스트 편집' : '새 포스트 작성'}
+            </h1>
+            <div className="flex items-center gap-2">
+              {saveMessage && (
+                <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 text-green-400 rounded text-sm">
+                  {saveMessage}
+                </div>
+              )}
+              <button
+                onClick={() => router.push('/admin/posts')}
+                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-sm"
+              >
+                목록으로 돌아가기
+              </button>
+            </div>
+          </div>
 
           {/* 제목 입력 */}
           <div className="mb-4">
@@ -132,6 +217,11 @@ export default function WritePostPage() {
               type="text"
               value={title}
               onChange={handleTitleChange}
+              onBlur={() => {
+                if (!slug && title.trim()) {
+                  generateAiSlug(title);
+                }
+              }}
               placeholder="포스트 제목을 입력하세요"
               className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
             />
@@ -142,13 +232,26 @@ export default function WritePostPage() {
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Slug (URL 경로)
             </label>
-            <input
-              type="text"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              placeholder="ai-trend-2025"
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                placeholder="future-of-ai"
+                className="flex-1 px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => generateAiSlug(title)}
+                disabled={isGeneratingSlug || !title.trim()}
+                className="px-4 py-3 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 rounded font-medium hover:bg-cyan-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {isGeneratingSlug ? '생성 중...' : 'AI URL 생성'}
+              </button>
+            </div>
+            <p className="mt-1 text-xs text-slate-500">
+              제목을 입력하고 포커스를 벗어나면 자동으로 생성됩니다. 또는 버튼을 눌러 수동 생성할 수 있습니다.
+            </p>
           </div>
 
           {/* 언어 선택 */}
@@ -201,24 +304,32 @@ export default function WritePostPage() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-between items-center gap-4">
           <button
-            onClick={handleSaveDraft}
+            onClick={handleCancel}
             disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
           >
-            {isSaving ? '저장 중...' : '초안 저장'}
+            취소
           </button>
-          <button
-            onClick={handlePublish}
-            disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
-          >
-            {isPublishing ? '발행 중...' : '발행하기'}
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleSaveDraft}
+              disabled={isSaving || isPublishing}
+              className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            >
+              {isSaving ? '저장 중...' : '초안 저장'}
+            </button>
+            <button
+              onClick={handlePublish}
+              disabled={isSaving || isPublishing}
+              className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
+            >
+              {isPublishing ? '발행 중...' : '발행하기'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
