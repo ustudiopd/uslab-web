@@ -93,7 +93,8 @@
     "title": "지금 바로 USlab.ai와 함께",
     "titleHighlight": "AI 대전환을 시작하십시오.",
     "description": "AI라는 도구는 이제 모두에게 주어진 상수입니다.",
-    "descriptionHighlight": "진짜 승부는 이 도구를 활용해 자신만의 업무 방식을 녹여낸 '나만의 시스템'을 구축하는 사람에게서 갈릴 것입니다.",
+    "descriptionHighlight": "진짜 승부는 이 도구를 활용해 자신만의 업무 방식을 녹여낸",
+    "descriptionHighlightEnd": "'나만의 시스템'을 구축하는 사람에게서 갈릴 것입니다.",
     "form": {
       "nameLabel": "이름 / 소속",
       "namePlaceholder": "홍길동 / OO기업",

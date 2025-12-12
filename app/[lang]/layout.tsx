@@ -8,9 +8,9 @@ interface LangLayoutProps {
   params: Promise<{ lang: Locale }>;
 }
 
-export async function generateMetadata({ params }: LangLayoutProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
 
   return {
     title: dict.meta?.title || 'USlab.ai | AI 역량 강화',
@@ -24,12 +24,12 @@ export async function generateMetadata({ params }: LangLayoutProps): Promise<Met
   };
 }
 
-export default async function LangLayout({ children, params }: LangLayoutProps) {
+export default async function LangLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
 
   return (
-    <LanguageProvider initialLang={lang} dict={dict}>
+    <LanguageProvider initialLang={lang as Locale} dict={dict}>
       {children}
     </LanguageProvider>
   );

@@ -17,7 +17,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-mono mb-6 sm:mb-8">
           <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
           {t('hero.badge')}

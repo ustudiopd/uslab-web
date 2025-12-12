@@ -8,12 +8,14 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // GET: 포스트 상세 조회 (초안 포함)
 export async function GET(request: Request, { params }: RouteParams) {
   try {
+    const { id } = await params;
+    
     // 서비스 롤 키가 있으면 사용 (RLS 우회하여 초안도 조회 가능)
     const supabase = supabaseServiceRoleKey
       ? createClient(supabaseUrl, supabaseServiceRoleKey, {
@@ -28,7 +30,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     const { data: post, error } = await supabase
       .from('uslab_posts')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) {
@@ -52,6 +54,8 @@ export async function GET(request: Request, { params }: RouteParams) {
 // PUT: 포스트 수정
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
+    const { id } = await params;
+    
     // 인증 토큰 가져오기
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
@@ -96,7 +100,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
     const { data: post, error: updateError } = await supabase
       .from('uslab_posts')
       .update(body)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
 
@@ -121,6 +125,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
 // DELETE: 포스트 삭제
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
+    const { id } = await params;
+    
     // 인증 토큰 가져오기
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
@@ -163,7 +169,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     const { error: deleteError } = await supabase
       .from('uslab_posts')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (deleteError) {
       console.error('Error deleting post:', deleteError);

@@ -93,7 +93,8 @@
     "title": "Start Your AI Transformation",
     "titleHighlight": "with USlab.ai Today",
     "description": "AI tools are now a constant given to everyone.",
-    "descriptionHighlight": "The real competition will be won by those who build their 'own system' by incorporating their unique work methods using this tool.",
+    "descriptionHighlight": "The real competition will be won by those who build their",
+    "descriptionHighlightEnd": "'own system' by incorporating their unique work methods using this tool.",
     "form": {
       "nameLabel": "Name / Organization",
       "namePlaceholder": "John Doe / Company Inc.",

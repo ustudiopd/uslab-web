@@ -43,8 +43,8 @@ export default function Navbar() {
         isScrolled ? 'border-slate-800 bg-slate-950/90' : 'border-slate-800'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center h-20">
           {/* Logo */}
           <Link
             href={`/${locale}`}
@@ -59,8 +59,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-10">
+          {/* Desktop Menu - 오른쪽 정렬 */}
+          <div className="hidden md:flex items-center space-x-10 ml-auto">
             <a
               href="#about"
               className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"

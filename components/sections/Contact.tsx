@@ -61,17 +61,19 @@ export default function Contact() {
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-cyan-900/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-tight px-2">
             {t('contact.title')}
             <br />
             {t('contact.titleHighlight')}
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-slate-400 leading-relaxed px-2 korean-text">
+          <p className="text-sm sm:text-base md:text-lg text-slate-400 leading-relaxed px-2 korean-text max-w-2xl mx-auto">
             {t('contact.description')}
             <br />
             {t('contact.descriptionHighlight')}
+            <br />
+            {t('contact.descriptionHighlightEnd')}
           </p>
         </div>
 

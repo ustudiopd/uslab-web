@@ -28,21 +28,21 @@ export default function Portfolio() {
       id="portfolio"
       className="py-12 sm:py-16 lg:py-24 bg-slate-950 border-t border-slate-900"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
           <h2 className="text-xs font-mono text-cyan-500 mb-2">
             {t('portfolio.badge')}
           </h2>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
             {t('portfolio.title')}
-            <br />
-            <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+            <br className="md:hidden" />
+            <span className="md:ml-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
               {t('portfolio.titleHighlight')}
             </span>
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {cases.map((caseItem, index) => (
             <div
               key={index}
