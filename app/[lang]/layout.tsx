@@ -5,11 +5,11 @@ import type { Locale } from '@/lib/i18n/config';
 
 interface LangLayoutProps {
   children: React.ReactNode;
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }
 
 export async function generateMetadata({ params }: LangLayoutProps): Promise<Metadata> {
-  const { lang } = params;
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return {
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: LangLayoutProps): Promise<Met
 }
 
 export default async function LangLayout({ children, params }: LangLayoutProps) {
-  const { lang } = params;
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return (

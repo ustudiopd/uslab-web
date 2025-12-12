@@ -62,9 +62,9 @@ export default function AdminPostsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-slate-400">로딩 중...</p>
+      <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+          <p className="text-slate-400 text-sm sm:text-base">로딩 중...</p>
         </div>
       </div>
     );
@@ -75,27 +75,27 @@ export default function AdminPostsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">포스트 관리</h1>
-            <p className="text-slate-400">블로그 포스트를 작성하고 관리하세요.</p>
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight sm:leading-normal">포스트 관리</h1>
+            <p className="text-xs sm:text-sm text-slate-400">블로그 포스트를 작성하고 관리하세요.</p>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-400">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+            <span className="text-xs sm:text-sm text-slate-400 hidden sm:inline">
               {user.email}
             </span>
             <button
               onClick={signOut}
-              className="px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded text-sm hover:border-slate-600 transition-colors"
+              className="px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded text-xs sm:text-sm hover:border-slate-600 transition-colors"
             >
               로그아웃
             </button>
             <Link
               href="/admin/posts/write"
-              className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors text-xs sm:text-sm text-center"
             >
               새 포스트 작성
             </Link>
@@ -114,18 +114,18 @@ export default function AdminPostsPage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {posts.map((post) => (
               <div
                 key={post.id}
-                className="bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-slate-700 transition-colors"
+                className="bg-slate-900 border border-slate-800 rounded-lg p-4 sm:p-6 hover:border-slate-700 transition-colors"
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold text-white">{post.title}</h3>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white break-words">{post.title}</h3>
                       <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
+                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
                           post.is_published
                             ? 'bg-green-500/20 text-green-400'
                             : 'bg-yellow-500/20 text-yellow-400'
@@ -133,30 +133,30 @@ export default function AdminPostsPage() {
                       >
                         {post.is_published ? '발행됨' : '초안'}
                       </span>
-                      <span className="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">
+                      <span className="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400 whitespace-nowrap">
                         {post.locale === 'ko' ? '한국어' : 'English'}
                       </span>
                     </div>
-                    <p className="text-slate-400 text-sm mb-2">
+                    <p className="text-slate-400 text-xs sm:text-sm mb-2 break-all">
                       Slug: <code className="text-cyan-500">{post.slug}</code>
                     </p>
-                    <div className="flex items-center gap-4 text-sm text-slate-500">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-500">
                       <span>생성: {formatDate(post.created_at)}</span>
                       {post.published_at && (
                         <span>발행: {formatDate(post.published_at)}</span>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 ml-4">
+                  <div className="flex items-center gap-2 sm:ml-4 flex-shrink-0">
                     <Link
                       href={`/admin/posts/${post.id}`}
-                      className="px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded hover:border-cyan-500 transition-colors text-sm"
+                      className="px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded hover:border-cyan-500 transition-colors text-xs sm:text-sm whitespace-nowrap"
                     >
                       수정
                     </Link>
                     <button
                       onClick={() => handleDelete(post.id)}
-                      className="px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-sm"
+                      className="px-3 sm:px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
                     >
                       삭제
                     </button>

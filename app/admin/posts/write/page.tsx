@@ -185,25 +185,25 @@ export default function WritePostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-white">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-tight sm:leading-normal">
               {postId ? '포스트 편집' : '새 포스트 작성'}
             </h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap self-start sm:self-center">
               {saveMessage && (
-                <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 text-green-400 rounded text-sm">
+                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500/20 border border-green-500/50 text-green-400 rounded text-xs sm:text-sm whitespace-nowrap">
                   {saveMessage}
                 </div>
               )}
               <button
                 onClick={() => router.push('/admin/posts')}
-                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-sm"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
               >
-                목록으로 돌아가기
+                목록
               </button>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function WritePostPage() {
                 }
               }}
               placeholder="포스트 제목을 입력하세요"
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -232,25 +232,25 @@ export default function WritePostPage() {
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Slug (URL 경로)
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="future-of-ai"
-                className="flex-1 px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono text-sm"
+                className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
               />
               <button
                 type="button"
                 onClick={() => generateAiSlug(title)}
                 disabled={isGeneratingSlug || !title.trim()}
-                className="px-4 py-3 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 rounded font-medium hover:bg-cyan-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                className="px-3 sm:px-4 py-2.5 sm:py-3 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 rounded font-medium hover:bg-cyan-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-xs sm:text-sm"
               >
-                {isGeneratingSlug ? '생성 중...' : 'AI URL 생성'}
+                {isGeneratingSlug ? '생성 중...' : 'AI 생성'}
               </button>
             </div>
             <p className="mt-1 text-xs text-slate-500">
-              제목을 입력하고 포커스를 벗어나면 자동으로 생성됩니다. 또는 버튼을 눌러 수동 생성할 수 있습니다.
+              제목 입력 후 포커스를 벗어나면 자동 생성됩니다.
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export default function WritePostPage() {
         </div>
 
         {/* 에디터 */}
-        <div className="mb-8 bg-slate-900 border border-slate-800 rounded-lg p-6 min-h-[600px]">
+        <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
           <EditorRoot>
             <EditorContent
               initialContent={content || undefined}
@@ -296,7 +296,7 @@ export default function WritePostPage() {
               }}
               editorProps={{
                 attributes: {
-                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[500px]',
+                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base',
                 },
               }}
             />
@@ -304,26 +304,26 @@ export default function WritePostPage() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
           <button
             onClick={handleCancel}
             disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
           >
             취소
           </button>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <button
               onClick={handleSaveDraft}
               disabled={isSaving || isPublishing}
-              className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {isSaving ? '저장 중...' : '초안 저장'}
             </button>
             <button
               onClick={handlePublish}
               disabled={isSaving || isPublishing}
-              className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {isPublishing ? '발행 중...' : '발행하기'}
             </button>

@@ -5,11 +5,11 @@ import type { Locale } from '@/lib/i18n/config';
 import type { Metadata } from 'next';
 
 interface BlogPostPageProps {
-  params: { lang: Locale; slug: string };
+  params: Promise<{ lang: Locale; slug: string }>;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { lang, slug } = params;
+  const { lang, slug } = await params;
   const post = await getPostBySlug(lang, slug);
 
   if (!post) {
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { lang, slug } = params;
+  const { lang, slug } = await params;
   const post = await getPostBySlug(lang, slug);
 
   if (!post) {

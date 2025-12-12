@@ -46,6 +46,19 @@
   - 편집 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
   - 작성 페이지에 "취소" 및 "목록으로 돌아가기" 버튼 추가
   - 취소 버튼: 변경사항을 원본 데이터로 되돌리기 기능
+  - 모바일 버전 최적화 (관리자 페이지)
+
+### [2025-01-12]
+- ✅ **메인페이지 레이아웃 최적화**
+  - 제목 두 줄 분리 (모바일 최적화)
+    - Portfolio: "결과로 증명하는" / "USlab.ai의 전문성"
+    - Services: "당신의 성공을 위한" / "3가지 솔루션"
+    - Philosophy: "무엇이 USlab.ai를" / "특별하게 만드는가?"
+  - 그라디언트 효과 적용 (Tailwind `bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent`)
+  - 한글 텍스트 줄바꿈 개선
+    - `korean-text` CSS 클래스 추가 (`app/globals.css`)
+    - Contact 섹션 설명 텍스트에 적용
+    - `word-break: keep-all`로 단어 중간에 잘리지 않도록 개선
 
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)

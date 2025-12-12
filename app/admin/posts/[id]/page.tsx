@@ -185,22 +185,22 @@ export default function EditPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-white">포스트 편집</h1>
-            <div className="flex gap-2">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-tight sm:leading-normal">포스트 편집</h1>
+            <div className="flex gap-2 flex-wrap self-start sm:self-center">
               <button
                 onClick={() => router.push('/admin/posts')}
-                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-sm"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
               >
-                목록으로 돌아가기
+                목록
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-sm"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
               >
                 삭제
               </button>
@@ -230,7 +230,7 @@ export default function EditPostPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="포스트 제목을 입력하세요"
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -244,7 +244,7 @@ export default function EditPostPage() {
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="ai-trend-2025"
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
             />
           </div>
 
@@ -279,7 +279,7 @@ export default function EditPostPage() {
         </div>
 
         {/* 에디터 */}
-        <div className="mb-8 bg-slate-900 border border-slate-800 rounded-lg p-6 min-h-[600px]">
+        <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
           <EditorRoot>
             <EditorContent
               initialContent={content || undefined}
@@ -290,7 +290,7 @@ export default function EditPostPage() {
               }}
               editorProps={{
                 attributes: {
-                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[500px]',
+                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base',
                 },
               }}
             />
@@ -298,26 +298,26 @@ export default function EditPostPage() {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
           <button
             onClick={handleCancel}
             disabled={isSaving || isPublishing}
-            className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
           >
             취소
           </button>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <button
               onClick={() => handleUpdate(false)}
               disabled={isSaving || isPublishing}
-              className="px-6 py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {isSaving ? '저장 중...' : '저장'}
             </button>
             <button
               onClick={() => handleUpdate(true)}
               disabled={isSaving || isPublishing}
-              className="px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {isPublishing ? '발행 중...' : post.is_published ? '업데이트 발행' : '발행하기'}
             </button>

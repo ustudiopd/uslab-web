@@ -18,7 +18,8 @@
   },
   "philosophy": {
     "badge": "USLAB.AI PHILOSOPHY",
-    "title": "What Makes USlab.ai Special?",
+    "title": "What Makes",
+    "titleHighlight": "USlab.ai Special?",
     "description": "We provide four clear strategies to help our clients maximize the 'judgment' needed in the AI era and build unwavering competitiveness.",
     "strategies": {
       "value": {
@@ -41,7 +42,8 @@
   },
   "services": {
     "badge": "OUR SERVICES",
-    "title": "Three Solutions for Your Success",
+    "title": "Three Solutions",
+    "titleHighlight": "for Your Success",
     "description": "USlab.ai provides one-stop solutions for every stage of your AI Transformation (AX) journey.",
     "items": {
       "consulting": {
@@ -63,7 +65,8 @@
   },
   "portfolio": {
     "badge": "SUCCESS STORIES",
-    "title": "USlab.ai's Expertise Proven by Results",
+    "title": "USlab.ai's Expertise",
+    "titleHighlight": "Proven by Results",
     "viewDetails": "View Details",
     "cases": {
       "lgcns": {

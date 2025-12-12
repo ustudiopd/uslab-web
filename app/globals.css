@@ -49,4 +49,11 @@ body {
   color: rgb(165, 243, 252);
 }
 
+/* Korean text word break - prevents mid-word breaks */
+.korean-text {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
 

@@ -5,12 +5,12 @@ import { getDictionary } from '@/lib/i18n/server';
 import type { Metadata } from 'next';
 
 interface BlogPageProps {
-  params: { lang: Locale };
-  searchParams: { page?: string };
+  params: Promise<{ lang: Locale }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  const { lang } = params;
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return {
@@ -22,8 +22,9 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 }
 
 export default async function BlogPage({ params, searchParams }: BlogPageProps) {
-  const { lang } = params;
-  const page = parseInt(searchParams.page || '1', 10);
+  const { lang } = await params;
+  const { page: pageParam } = await searchParams;
+  const page = parseInt(pageParam || '1', 10);
   const limit = 12;
 
   const { posts, total, totalPages } = await getPublishedPosts(lang, { page, limit });
