@@ -1,10 +1,10 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: 블로그 에디터 시스템 구현 (Phase 1-2 완료, Phase 3 진행 중)
-- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합
+- **작업명**: 블로그 시스템 완성 (Phase 1-2 완료, Phase 3 진행 중, 댓글 시스템 완료)
+- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합, 댓글 시스템 운영
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ✅ Phase 3 일부 완료 (AI Slug 생성), ⏳ Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
+- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ✅ Phase 3 일부 완료 (AI Slug 생성), ✅ 댓글 시스템 완료, ⏳ Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
 
 ## 2. 최근 완료된 작업
 ### [2024-12-20]
@@ -60,6 +60,16 @@
     - Contact 섹션 설명 텍스트에 적용
     - `word-break: keep-all`로 단어 중간에 잘리지 않도록 개선
 
+### [2025-01-02]
+- ✅ **블로그 댓글 시스템 구현 완료**
+  - `uslab_comments` 테이블 마이그레이션 적용 (ustudio 프로젝트에 생성)
+  - 댓글 API 라우트 구현 (GET, POST, PATCH, DELETE)
+  - 댓글 UI 컴포넌트 통합
+  - 비밀번호 기반 댓글 수정/삭제 기능
+- ✅ **프로젝트 구조 명확화**
+  - ⚠️ 중요: uslab.ai는 ustudio 프로젝트(`gzguucdzsrfypbkqlyku`) 내에서 prefix로 구분되는 하나의 웹사이트입니다.
+  - ustudio 프로젝트에 3개 웹사이트가 함께 사용됨 (ustudio, modoolucture, uslab)
+
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)
 - ✅ **AI 패키지 설치** (완료)
@@ -89,5 +99,11 @@
 ## 4. 주요 이슈 및 블로커  
 - 현재 블로커 없음
 - 스키마 분리 전략 확정: `uslab_` prefix 사용 (ustudio의 `ustudio_` 패턴과 동일)
-- Supabase 프로젝트 공유 확인: gzguucdzsrfypbkqlyku
+- ⚠️ **중요: Supabase 프로젝트 구조**
+  - Supabase 프로젝트 ID: `gzguucdzsrfypbkqlyku` (프로젝트 이름: **ustudio**)
+  - 하나의 Supabase 프로젝트에 3개 웹사이트가 함께 사용됨:
+    - `ustudio.co.kr` → `ustudio_` prefix
+    - `modoolucture` → `modu_` prefix
+    - `uslab.ai` → `uslab_` prefix
+  - **⚠️ 주의**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트 내에서 prefix로 구분되는 하나의 웹사이트입니다.
 

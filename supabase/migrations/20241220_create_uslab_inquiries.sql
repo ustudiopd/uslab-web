@@ -55,3 +55,5 @@ COMMENT ON TABLE public.uslab_inquiries IS 'USLab.ai 문의 폼 데이터 저장
 COMMENT ON COLUMN public.uslab_inquiries.status IS '문의 상태: pending(대기), contacted(연락완료), completed(처리완료)';
 
 
+
+

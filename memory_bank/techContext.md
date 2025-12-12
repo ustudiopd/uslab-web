@@ -33,10 +33,16 @@
   - SSR 호환: 서버 사이드 렌더링 지원
 
 ## 1-1. Supabase 프로젝트 정보
-- **프로젝트 이름**: ustudio (ustudio와 uslab 공유)
-- **프로젝트 ID**: gzguucdzsrfypbkqlyku
+- **⚠️ 중요: 프로젝트 구조**
+  - **Supabase 프로젝트 이름**: **ustudio**
+  - **프로젝트 ID**: `gzguucdzsrfypbkqlyku`
+  - **프로젝트 공유 구조**: 하나의 Supabase 프로젝트(`ustudio`)에 **3개 웹사이트가 함께 사용됨**
+    - `ustudio.co.kr` → `ustudio_` prefix 사용
+    - `modoolucture` → `modu_` prefix 사용  
+    - `uslab.ai` → `uslab_` prefix 사용
+  - **⚠️ 주의**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트 내에서 prefix로 구분되는 하나의 웹사이트입니다.
 - **스키마 분리 전략**: 
-  - **테이블**: `uslab_` prefix 사용 (예: `uslab_projects`, `uslab_posts`)
+  - **테이블**: `uslab_` prefix 사용 (예: `uslab_projects`, `uslab_posts`, `uslab_comments`)
   - **함수**: `uslab_` prefix 사용 (예: `uslab_update_updated_at`)
   - **트리거**: `uslab_` prefix 사용
   - **RLS 정책**: `uslab_` prefix 사용

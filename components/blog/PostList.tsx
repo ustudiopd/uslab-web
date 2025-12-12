@@ -29,3 +29,5 @@ export default function PostList({ posts, lang }: PostListProps) {
   );
 }
 
+
+

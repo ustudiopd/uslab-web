@@ -19,3 +19,5 @@ export async function getDictionary(locale: Locale = defaultLocale): Promise<Tra
   return translations[locale] || translations[defaultLocale];
 }
 
+
+

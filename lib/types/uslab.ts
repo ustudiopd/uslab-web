@@ -122,6 +122,38 @@ export type Database = {
           created_at?: string;
         };
       };
+      uslab_comments: {
+        Row: {
+          id: string;
+          post_id: string;
+          author_name: string;
+          password_hash: string;
+          content: string;
+          is_approved: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          author_name: string;
+          password_hash: string;
+          content: string;
+          is_approved?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          author_name?: string;
+          password_hash?: string;
+          content?: string;
+          is_approved?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

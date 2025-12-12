@@ -3,7 +3,13 @@
 ## 0. 프로젝트 기본 정보
 - **프로젝트 이름**: uslab.ai
 - **도메인**: uslab.ai
-- **Supabase 프로젝트 ID**: gzguucdzsrfypbkqlyku (ustudio와 공유)
+- **⚠️ 중요: Supabase 프로젝트 구조**
+  - **Supabase 프로젝트 ID**: `gzguucdzsrfypbkqlyku` (프로젝트 이름: **ustudio**)
+  - **프로젝트 공유 구조**: 하나의 Supabase 프로젝트(`ustudio`)에 **3개 웹사이트가 함께 사용됨**
+    - `ustudio.co.kr` (ustudio 웹사이트) - `ustudio_` prefix 사용
+    - `modoolucture` (modoolucture 웹사이트) - `modu_` prefix 사용
+    - `uslab.ai` (uslab 웹사이트) - `uslab_` prefix 사용
+  - **⚠️ 주의**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트 내에서 prefix로 구분되는 하나의 웹사이트입니다.
 - **스키마 전략**: `uslab_` prefix 사용 (테이블, 함수, 트리거, RLS 정책)
 
 ## 1. 프로젝트 목표  

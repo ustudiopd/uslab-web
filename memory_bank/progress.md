@@ -157,3 +157,29 @@
     - `overflow-wrap: break-word` - 긴 단어 자연스러운 줄바꿈
     - Contact 섹션 설명 텍스트에 적용
 
+## [2025-01-02] 블로그 댓글 시스템 구현 완료
+- **댓글 테이블 마이그레이션**:
+  - `supabase/migrations/20250102_create_uslab_comments.sql`: 댓글 테이블 마이그레이션 생성
+  - `uslab_comments` 테이블 생성 (id, post_id, author_name, password_hash, content, is_approved, created_at, updated_at)
+  - Foreign key 제약조건 설정 (`uslab_posts` 참조)
+  - 인덱스 생성 (post_id, is_approved)
+  - RLS 정책 설정 (공개 읽기/쓰기, 수정/삭제는 API 레벨에서 비밀번호 확인)
+  - GRANT 권한 부여 (anon, authenticated, service_role)
+  - ⚠️ **중요**: 마이그레이션은 **ustudio 프로젝트**(`gzguucdzsrfypbkqlyku`)에 적용됨
+- **댓글 API 라우트**:
+  - `app/api/comments/route.ts`: 댓글 목록 조회 (GET), 댓글 작성 (POST)
+  - `app/api/comments/[id]/route.ts`: 댓글 수정 (PATCH), 댓글 삭제 (DELETE)
+  - 비밀번호 해시 처리 (SHA-256)
+  - 비밀번호 확인 후 수정/삭제 가능
+- **댓글 UI 컴포넌트**:
+  - 블로그 포스트 페이지에 댓글 섹션 통합
+  - 댓글 작성 폼 (이름, 비밀번호, 댓글 내용)
+  - 댓글 목록 표시 (승인된 댓글만)
+  - 댓글 수정/삭제 기능
+- **프로젝트 구조 명확화**:
+  - ⚠️ **중요**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트(`gzguucdzsrfypbkqlyku`) 내에서 prefix로 구분되는 하나의 웹사이트입니다.
+  - ustudio 프로젝트에 3개 웹사이트가 함께 사용됨:
+    - `ustudio.co.kr` (ustudio_ prefix)
+    - `modoolucture` (modu_ prefix)
+    - `uslab.ai` (uslab_ prefix)
+

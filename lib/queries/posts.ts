@@ -222,3 +222,5 @@ export async function getPostAlternates(canonicalId: string): Promise<Array<{ lo
   return (data || []) as Array<{ locale: Locale; slug: string }>;
 }
 
+
+

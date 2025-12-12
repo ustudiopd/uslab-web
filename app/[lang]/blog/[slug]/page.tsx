@@ -1,5 +1,6 @@
 import { getPostBySlug, getPostAlternates } from '@/lib/queries/posts';
 import PostViewer from '@/components/blog/PostViewer';
+import CommentSection from '@/components/blog/CommentSection';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 import type { Metadata } from 'next';
@@ -57,7 +58,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="min-h-screen bg-slate-950 pt-20">
       <PostViewer post={post} />
+      <CommentSection postId={post.id} />
     </div>
   );
 }
+
+
 

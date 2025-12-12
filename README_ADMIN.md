@@ -57,3 +57,5 @@ node -r ts-node/register scripts/create-admin-user.ts
 1. RLS 정책이 올바르게 설정되었는지 확인
 2. 사용자가 `authenticated` 역할을 가지고 있는지 확인
 
+
+

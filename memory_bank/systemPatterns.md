@@ -7,9 +7,12 @@
   2. **Application Layer**: 비즈니스 로직 (Next.js API Routes)
   3. **Data Layer**: 데이터 저장소 (Supabase PostgreSQL)
 - **다중 프로젝트 스키마 분리**:
-  - **ustudio**: `ustudio_` prefix 사용 (ustudio.co.kr)
-  - **uslab**: `uslab_` prefix 사용 (uslab.ai)
+  - **⚠️ 중요**: 하나의 Supabase 프로젝트(`ustudio`, ID: `gzguucdzsrfypbkqlyku`)에 **3개 웹사이트가 함께 사용됨**
+    - **ustudio**: `ustudio_` prefix 사용 (ustudio.co.kr)
+    - **modoolucture**: `modu_` prefix 사용 (modoolucture 웹사이트)
+    - **uslab**: `uslab_` prefix 사용 (uslab.ai)
   - 같은 Supabase 프로젝트 내에서 prefix로 완전 분리
+  - **⚠️ 주의**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트 내에서 prefix로 구분되는 하나의 웹사이트입니다.
 - **배포 환경**: 
   - Frontend: Vercel (별도 배포)
   - Backend: Supabase (공유)

@@ -69,3 +69,31 @@ export interface PostListResponse {
   totalPages: number;
 }
 
+export interface UslabComment {
+  id: string;
+  post_id: string;
+  author_name: string;
+  password_hash: string;
+  content: string;
+  is_approved: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateCommentData {
+  post_id: string;
+  author_name: string;
+  password: string;
+  content: string;
+}
+
+export interface UpdateCommentData {
+  content: string;
+}
+
+export interface DeleteCommentData {
+  password: string;
+}
+
+
+
