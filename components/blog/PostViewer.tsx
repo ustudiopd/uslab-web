@@ -55,6 +55,23 @@ export default function PostViewer({ post }: PostViewerProps) {
     }
   }, [post.content]);
 
+  // 링크를 새창으로 열리도록 설정
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const links = contentRef.current.querySelectorAll('a[href]');
+    
+    links.forEach((link) => {
+      const anchor = link as HTMLAnchorElement;
+      // 이미 설정되어 있으면 스킵
+      if (anchor.target === '_blank') return;
+      
+      // 새창으로 열리도록 설정
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+    });
+  }, [htmlContent]);
+
   // 코드 블록에 복사 버튼 추가
   useEffect(() => {
     if (!contentRef.current) return;
