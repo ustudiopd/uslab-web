@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="ko" className="dark scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"
@@ -37,12 +37,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                const theme = localStorage.getItem('theme') || 'dark';
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
+                // 다크 테마만 강제 적용
+                document.documentElement.classList.add('dark');
+                // localStorage의 테마 설정 무시
+                localStorage.setItem('theme', 'dark');
               })();
             `,
           }}
