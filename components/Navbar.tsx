@@ -39,8 +39,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full z-50 bg-slate-950/80 backdrop-blur-md border-b transition-all duration-300 ${
-        isScrolled ? 'border-slate-800 bg-slate-950/90' : 'border-slate-800'
+      className={`fixed w-full z-50 dark:bg-slate-950/80 bg-white/80 backdrop-blur-md border-b transition-all duration-300 ${
+        isScrolled 
+          ? 'dark:border-slate-800 border-slate-200 dark:bg-slate-950/90 bg-white/90' 
+          : 'dark:border-slate-800 border-slate-200'
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,8 +56,8 @@ export default function Navbar() {
             <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded mr-3 flex items-center justify-center text-white font-mono font-bold text-sm">
               US
             </div>
-            <span className="text-xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
-              USlab<span className="text-cyan-500">.ai</span>
+            <span className="text-xl font-bold tracking-tight dark:text-white dark:group-hover:text-cyan-400 text-slate-900 group-hover:text-cyan-600 transition-colors">
+              USlab<span className="text-cyan-500 dark:text-cyan-500">.ai</span>
             </span>
           </Link>
 
@@ -63,38 +65,38 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-10 ml-auto">
             <a
               href="#about"
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
             >
               {t('nav.about')}
             </a>
             <a
               href="#services"
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
             >
               {t('nav.services')}
             </a>
             <a
               href="#portfolio"
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
             >
               {t('nav.portfolio')}
             </a>
             <Link
               href={`/${locale}/blog`}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
             >
               {t('nav.blog')}
             </Link>
             <a
               href="#contact"
-              className="bg-white/5 border border-slate-700 text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 hover:text-white transition-all duration-300 text-sm"
+              className="bg-white/5 dark:bg-white/5 bg-slate-100 border border-slate-700 dark:border-slate-700 border-slate-300 text-white dark:text-white dark:hover:text-white text-slate-900 hover:text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 text-sm"
             >
               {t('nav.contact')}
             </a>
             {/* Language Toggle */}
             <Link
               href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
-              className="text-sm font-medium text-slate-400 hover:text-white transition-colors uppercase tracking-wider px-3 py-1 rounded border border-slate-700 hover:border-cyan-500"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider px-3 py-1 rounded dark:border-slate-700 border-slate-300 hover:border-cyan-500"
               aria-label="Toggle language"
             >
               {locale === 'ko' ? 'ENG' : 'KOR'}
@@ -102,10 +104,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center ml-auto">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-slate-300 hover:text-white focus:outline-none"
+              className="dark:text-slate-300 text-slate-700 dark:hover:text-white hover:text-slate-900 focus:outline-none"
               aria-label={t('nav.menuToggle')}
             >
               <i
@@ -118,7 +120,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Panel */}
       <div
-        className={`md:hidden bg-slate-900 border-b border-slate-800 absolute w-full transition-all ${
+        className={`md:hidden dark:bg-slate-900 bg-white dark:border-slate-800 border-slate-200 absolute w-full transition-all ${
           isMobileMenuOpen ? 'block' : 'hidden'
         }`}
       >
@@ -126,35 +128,35 @@ export default function Navbar() {
           <a
             href="#about"
             onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.about')}
           </a>
           <a
             href="#services"
             onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.services')}
           </a>
           <a
             href="#portfolio"
             onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.portfolio')}
           </a>
           <Link
             href={`/${locale}/blog`}
             onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.blog')}
           </Link>
           <a
             href="#contact"
             onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 rounded"
+            className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.contact')}
           </a>
@@ -162,7 +164,7 @@ export default function Navbar() {
           <Link
             href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
             onClick={handleLinkClick}
-            className="block w-full text-left px-3 py-2 text-base font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded border-t border-slate-800 mt-2"
+            className="block w-full text-left px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded dark:border-slate-800 border-slate-200 mt-2"
           >
             {locale === 'ko' ? 'English' : '한국어'}
           </Link>
@@ -171,6 +173,7 @@ export default function Navbar() {
     </nav>
   );
 }
+
 
 
 

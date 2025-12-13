@@ -63,6 +63,7 @@ export type Database = {
           created_at: string;
           updated_at: string;
           author_id: string;
+          view_count: number;
         };
         Insert: {
           id?: string;
@@ -80,6 +81,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
           author_id: string;
+          view_count?: number;
         };
         Update: {
           id?: string;
@@ -97,6 +99,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
           author_id?: string;
+          view_count?: number;
         };
       };
       uslab_post_versions: {
@@ -159,7 +162,12 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      uslab_increment_view_count: {
+        Args: {
+          post_id: string;
+        };
+        Returns: number;
+      };
     };
     Enums: {
       [_ in never]: never;

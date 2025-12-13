@@ -48,6 +48,26 @@
   - **RLS 정책**: `uslab_` prefix 사용
   - **인덱스**: `uslab_` prefix 사용
 - **설정 방법**: MCP (Model Context Protocol)를 통한 설정
+- **MCP 서버 설정** (Cursor 설정 파일: `C:\Users\Ustudio001\.cursor\mcp.json`):
+  ```json
+  {
+    "mcpServers": {
+      "supabase": {
+        "type": "http",
+        "url": "https://mcp.supabase.com/mcp?project_ref=gzguucdzsrfypbkqlyku&read_only=true"
+      }
+    }
+  }
+  ```
+  - **연결 방식**: Supabase 공식 원격 MCP 서버 사용 (HTTP 방식)
+  - **프로젝트 스코핑**: `project_ref=gzguucdzsrfypbkqlyku`로 특정 프로젝트만 접근
+  - **읽기 전용 모드**: `read_only=true`로 쓰기 작업 방지 (보안 강화)
+  - **인증**: Cursor가 자동으로 브라우저를 열어 Supabase 로그인 및 조직 접근 권한 승인 요청
+  - **참고**: 환경 변수는 `.env.local` 파일에서 가져옴
+  - **필수 환경 변수** (애플리케이션용):
+    - `NEXT_PUBLIC_SUPABASE_URL`: Supabase 프로젝트 URL
+    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase Anon Key (클라이언트용)
+    - `SUPABASE_SERVICE_ROLE_KEY`: Supabase Service Role Key (서버용, RLS 우회)
 
 ## 2. 개발 환경  
 - **패키지 매니저**: npm (또는 yarn)
@@ -72,6 +92,12 @@
 - **인증**: Supabase Auth (관리자 전용)
 - **다국어 지원**: ko/en (locale 필드)
 - **SEO**: seo_title, seo_description, seo_keywords 필드
+- **조회수 추적**: 
+  - `view_count` 컬럼 (INTEGER, 기본값 0)
+  - `uslab_increment_view_count(UUID)` 함수 (원자적 증가, SECURITY DEFINER)
+  - 발행된 포스트만 조회수 증가
+  - API 엔드포인트: `/api/posts/[id]/view` (POST)
+  - 프론트엔드 자동 증가 (PostViewer 컴포넌트)
 - **AI 기능**: 
   - Gemini 2.0 Flash 모델 사용
   - AI Slug 생성 (`/api/ai/slug`) - 의미 기반 영문 slug 자동 생성

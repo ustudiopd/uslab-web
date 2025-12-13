@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { supabase } from '@/lib/supabase/client';
-import { EditorRoot, EditorContent, StarterKit } from 'novel';
 import type { UslabPost } from '@/lib/types/blog';
 import type { JSONContent } from 'novel';
+import BlogEditor from '@/components/editor/BlogEditor';
+import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
 
 export default function EditPostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -28,6 +29,9 @@ export default function EditPostPage() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [editorKey, setEditorKey] = useState(0); // 에디터 재생성을 위한 key
 
   useEffect(() => {
     fetchPost();
@@ -56,6 +60,7 @@ export default function EditPostPage() {
         setSlug(postData.slug);
         setLocale(postData.locale);
         setContent(postData.content);
+        setThumbnailUrl(postData.thumbnail_url || '');
       } else {
         const error = await response.json();
         alert(`포스트를 불러올 수 없습니다: ${error.error || '알 수 없는 오류'}`);
@@ -122,6 +127,52 @@ export default function EditPostPage() {
     }
   };
 
+  const handleUnpublish = async () => {
+    if (!confirm('발행을 취소하시겠습니까? 포스트가 초안 상태로 변경됩니다.')) {
+      return;
+    }
+
+    setIsPublishing(true);
+    try {
+      // 인증 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          title,
+          slug,
+          content,
+          locale,
+          is_published: false,
+          published_at: null,
+        }),
+      });
+
+      if (response.ok) {
+        alert('발행이 취소되었습니다. 포스트가 초안 상태로 변경되었습니다.');
+        fetchPost(); // 최신 데이터 다시 로드
+      } else {
+        const error = await response.json();
+        alert(`발행 취소 실패: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Error unpublishing post:', error);
+      alert('발행 취소 중 오류가 발생했습니다.');
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
       return;
@@ -157,12 +208,66 @@ export default function EditPostPage() {
   };
 
   const handleCancel = () => {
-    if (post) {
-      // 원본 데이터로 되돌리기
-      setTitle(post.title);
-      setSlug(post.slug);
-      setLocale(post.locale);
-      setContent(post.content);
+    // 목록으로 돌아가기
+    router.push('/admin/posts');
+  };
+
+  // Markdown Import
+  const handleImportMarkdown = async () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const json = await readMarkdownFile(file);
+      setContent(json);
+      // 에디터를 재생성하여 새 내용을 반영
+      setEditorKey(prev => prev + 1);
+      alert('마크다운 파일을 가져왔습니다.');
+    } catch (error: any) {
+      console.error('Markdown import error:', error);
+      alert(error.message || '마크다운 파일 가져오기에 실패했습니다.');
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  // Markdown Export (복사)
+  const handleCopyMarkdown = async () => {
+    if (!content) {
+      alert('내용이 없습니다.');
+      return;
+    }
+
+    try {
+      const markdown = jsonToMarkdown(content);
+      await copyMarkdownToClipboard(markdown);
+      alert('마크다운이 클립보드에 복사되었습니다.');
+    } catch (error: any) {
+      console.error('Markdown export error:', error);
+      alert(error.message || '마크다운 복사에 실패했습니다.');
+    }
+  };
+
+  // Markdown Export (다운로드)
+  const handleDownloadMarkdown = () => {
+    if (!content) {
+      alert('내용이 없습니다.');
+      return;
+    }
+
+    try {
+      const markdown = jsonToMarkdown(content);
+      const filename = slug || title || 'post';
+      downloadMarkdownFile(markdown, `${filename}.md`);
+    } catch (error: any) {
+      console.error('Markdown export error:', error);
+      alert(error.message || '마크다운 다운로드에 실패했습니다.');
     }
   };
 
@@ -192,6 +297,32 @@ export default function EditPostPage() {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-tight sm:leading-normal">포스트 편집</h1>
             <div className="flex gap-2 flex-wrap self-start sm:self-center">
+              {/* Markdown Import/Export 버튼 */}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleImportMarkdown}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운 파일 가져오기"
+                >
+                  Import .md
+                </button>
+                <button
+                  onClick={handleCopyMarkdown}
+                  disabled={!content}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운으로 복사"
+                >
+                  Copy MD
+                </button>
+                <button
+                  onClick={handleDownloadMarkdown}
+                  disabled={!content}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운 다운로드"
+                >
+                  Download .md
+                </button>
+              </div>
               <button
                 onClick={() => router.push('/admin/posts')}
                 className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
@@ -280,22 +411,23 @@ export default function EditPostPage() {
 
         {/* 에디터 */}
         <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
-          <EditorRoot>
-            <EditorContent
-              initialContent={content || undefined}
-              extensions={[StarterKit]}
-              onUpdate={({ editor }) => {
-                const json = editor.getJSON();
-                setContent(json);
-              }}
-              editorProps={{
-                attributes: {
-                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base',
-                },
-              }}
-            />
-          </EditorRoot>
+          <BlogEditor
+            key={editorKey}
+            editorKey={editorKey}
+            initialContent={content}
+            onChange={setContent}
+            onSetThumbnail={setThumbnailUrl}
+          />
         </div>
+
+        {/* 숨겨진 파일 입력 */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".md,text/markdown"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         {/* 액션 버튼 */}
         <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
@@ -307,26 +439,55 @@ export default function EditPostPage() {
             취소
           </button>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-            <button
-              onClick={() => handleUpdate(false)}
-              disabled={isSaving || isPublishing}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
-            >
-              {isSaving ? '저장 중...' : '저장'}
-            </button>
-            <button
-              onClick={() => handleUpdate(true)}
-              disabled={isSaving || isPublishing}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
-            >
-              {isPublishing ? '발행 중...' : post.is_published ? '업데이트 발행' : '발행하기'}
-            </button>
+            {post.is_published ? (
+              <>
+                <button
+                  onClick={handleUnpublish}
+                  disabled={isSaving || isPublishing}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 rounded font-medium hover:bg-yellow-500/30 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                >
+                  {isPublishing ? '처리 중...' : '발행 취소'}
+                </button>
+                <button
+                  onClick={() => handleUpdate(false)}
+                  disabled={isSaving || isPublishing}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                >
+                  {isSaving ? '저장 중...' : '초안 저장'}
+                </button>
+                <button
+                  onClick={() => handleUpdate(true)}
+                  disabled={isSaving || isPublishing}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                >
+                  {isPublishing ? '발행 중...' : '업데이트 발행'}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleUpdate(false)}
+                  disabled={isSaving || isPublishing}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                >
+                  {isSaving ? '저장 중...' : '초안 저장'}
+                </button>
+                <button
+                  onClick={() => handleUpdate(true)}
+                  disabled={isSaving || isPublishing}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                >
+                  {isPublishing ? '발행 중...' : '발행하기'}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 

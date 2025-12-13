@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { supabase } from '@/lib/supabase/client';
-import { EditorRoot, EditorContent, StarterKit } from 'novel';
 import type { JSONContent } from 'novel';
+import BlogEditor from '@/components/editor/BlogEditor';
+import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
 
 export default function WritePostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -26,6 +27,10 @@ export default function WritePostPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const editorRef = useRef<{ getEditor: () => any } | null>(null);
+  const [editorKey, setEditorKey] = useState(0); // 에디터 재생성을 위한 key
 
   // AI Slug 생성 함수
   const generateAiSlug = async (currentTitle: string) => {
@@ -35,10 +40,19 @@ export default function WritePostPage() {
 
     setIsGeneratingSlug(true);
     try {
+      // Supabase 세션 토큰 가져오기
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('로그인이 필요합니다.');
+        router.push('/admin/login');
+        return;
+      }
+
       const res = await fetch('/api/ai/slug', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ title: currentTitle }),
       });
@@ -50,9 +64,9 @@ export default function WritePostPage() {
 
       const data = await res.json();
       setSlug(data.slug);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating slug:', error);
-      alert('Slug 생성 중 오류가 발생했습니다.');
+      alert(error.message || 'Slug 생성 중 오류가 발생했습니다.');
     } finally {
       setIsGeneratingSlug(false);
     }
@@ -64,12 +78,68 @@ export default function WritePostPage() {
   };
 
   const handleCancel = () => {
-    // 모든 입력 필드 초기화
-    setTitle('');
-    setSlug('');
-    setLocale('ko');
-    setContent(null);
-    setPostId(null);
+    // 목록으로 돌아가기
+    router.push('/admin/posts');
+  };
+
+  // Markdown Import
+  const handleImportMarkdown = async () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const json = await readMarkdownFile(file);
+      setContent(json);
+      // 에디터를 재생성하여 새 내용을 반영
+      setEditorKey(prev => prev + 1);
+      alert('마크다운 파일을 가져왔습니다.');
+    } catch (error: any) {
+      console.error('Markdown import error:', error);
+      alert(error.message || '마크다운 파일 가져오기에 실패했습니다.');
+    } finally {
+      // 파일 입력 초기화
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  // Markdown Export (복사)
+  const handleCopyMarkdown = async () => {
+    if (!content) {
+      alert('내용이 없습니다.');
+      return;
+    }
+
+    try {
+      const markdown = jsonToMarkdown(content);
+      await copyMarkdownToClipboard(markdown);
+      alert('마크다운이 클립보드에 복사되었습니다.');
+    } catch (error: any) {
+      console.error('Markdown export error:', error);
+      alert(error.message || '마크다운 복사에 실패했습니다.');
+    }
+  };
+
+  // Markdown Export (다운로드)
+  const handleDownloadMarkdown = () => {
+    if (!content) {
+      alert('내용이 없습니다.');
+      return;
+    }
+
+    try {
+      const markdown = jsonToMarkdown(content);
+      const filename = slug || title || 'post';
+      downloadMarkdownFile(markdown, `${filename}.md`);
+    } catch (error: any) {
+      console.error('Markdown export error:', error);
+      alert(error.message || '마크다운 다운로드에 실패했습니다.');
+    }
   };
 
   // 초안 저장
@@ -112,8 +182,8 @@ export default function WritePostPage() {
       if (response.ok) {
         const { post } = await response.json();
         setPostId(post.id);
-        setSaveMessage('초안이 저장되었습니다.');
-        setTimeout(() => setSaveMessage(null), 3000);
+        setSaveMessage('초안이 저장되었습니다. 포스트 관리에서 확인할 수 있습니다.');
+        setTimeout(() => setSaveMessage(null), 5000);
       } else {
         const error = await response.json();
         const errorMessage = error.details 
@@ -147,8 +217,12 @@ export default function WritePostPage() {
         return;
       }
 
-      const response = await fetch('/api/posts', {
-        method: 'POST',
+      // 이미 저장된 포스트가 있으면 업데이트, 없으면 생성
+      const url = postId ? `/api/posts/${postId}` : '/api/posts';
+      const method = postId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
@@ -170,9 +244,15 @@ export default function WritePostPage() {
         router.push(`/admin/posts/${post.id}`);
       } else {
         const error = await response.json();
-        const errorMessage = error.details 
-          ? `${error.error}: ${error.details}` 
-          : error.error || '알 수 없는 오류가 발생했습니다.';
+        let errorMessage = error.error || '알 수 없는 오류가 발생했습니다.';
+        
+        // slug 중복 오류인 경우 더 명확한 메시지
+        if (error.code === 'DUPLICATE_SLUG' || error.code === '23505' || error.error === 'Slug already exists') {
+          errorMessage = `Slug 중복: ${error.details || error.hint || '같은 slug가 이미 사용 중입니다.'}\n\n기존 포스트: ${error.existingPost?.title || '알 수 없음'}\n다른 slug를 사용하거나 기존 포스트를 수정해주세요.`;
+        } else if (error.details) {
+          errorMessage = `${error.error}: ${error.details}`;
+        }
+        
         alert(`발행 실패: ${errorMessage}`);
         console.error('Error details:', error);
       }
@@ -199,6 +279,32 @@ export default function WritePostPage() {
                   {saveMessage}
                 </div>
               )}
+              {/* Markdown Import/Export 버튼 */}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleImportMarkdown}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운 파일 가져오기"
+                >
+                  Import .md
+                </button>
+                <button
+                  onClick={handleCopyMarkdown}
+                  disabled={!content}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운으로 복사"
+                >
+                  Copy MD
+                </button>
+                <button
+                  onClick={handleDownloadMarkdown}
+                  disabled={!content}
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  title="마크다운 다운로드"
+                >
+                  Download .md
+                </button>
+              </div>
               <button
                 onClick={() => router.push('/admin/posts')}
                 className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
@@ -286,22 +392,23 @@ export default function WritePostPage() {
 
         {/* 에디터 */}
         <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
-          <EditorRoot>
-            <EditorContent
-              initialContent={content || undefined}
-              extensions={[StarterKit]}
-              onUpdate={({ editor }) => {
-                const json = editor.getJSON();
-                setContent(json);
-              }}
-              editorProps={{
-                attributes: {
-                  class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base',
-                },
-              }}
-            />
-          </EditorRoot>
+          <BlogEditor
+            key={editorKey}
+            editorKey={editorKey}
+            initialContent={content}
+            onChange={setContent}
+            onSetThumbnail={setThumbnailUrl}
+          />
         </div>
+
+        {/* 숨겨진 파일 입력 */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".md,text/markdown"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         {/* 액션 버튼 */}
         <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
@@ -333,5 +440,6 @@ export default function WritePostPage() {
     </div>
   );
 }
+
 
 

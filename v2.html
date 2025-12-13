@@ -1,0 +1,1394 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>USlab.ai — AI 대전환(AX), ‘돌아가는’ 시스템으로</title>
+    <meta
+      name="description"
+      content="AI는 도구가 아니라 조직의 운영체제입니다. USlab.ai는 전략-개발-내재화를 한 번에 연결해, 말이 아니라 '운영되는' 결과를 만듭니다."
+    />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Open Graph (초안) -->
+    <meta property="og:title" content="USlab.ai — AI 대전환(AX), ‘돌아가는’ 시스템으로" />
+    <meta
+      property="og:description"
+      content="우리는 PoC를 ‘끝’으로 두지 않습니다. 현업이 쓰는 시스템으로 끝냅니다."
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Fonts (초안) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: dark;
+
+        --bg: #020617; /* slate-950 */
+        --panel: rgba(15, 23, 42, 0.64); /* slate-900 w/ alpha */
+        --panel2: rgba(2, 6, 23, 0.45);
+        --border: rgba(148, 163, 184, 0.18); /* slate-400 w/ alpha */
+        --text: #e2e8f0; /* slate-200 */
+        --muted: rgba(226, 232, 240, 0.72);
+        --muted2: rgba(226, 232, 240, 0.54);
+
+        --cyan: #22d3ee; /* cyan-400 */
+        --indigo: #818cf8; /* indigo-400 */
+        --blue: #60a5fa;
+
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.52);
+        --radius: 18px;
+        --radius-sm: 14px;
+
+        --container: 1120px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        background: radial-gradient(1200px 600px at 12% 10%, rgba(34, 211, 238, 0.12), transparent 55%),
+          radial-gradient(900px 500px at 85% 18%, rgba(129, 140, 248, 0.12), transparent 55%),
+          radial-gradient(900px 900px at 50% 110%, rgba(96, 165, 250, 0.08), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* Subtle grid */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(800px 520px at 50% 18%, black 20%, transparent 70%);
+        opacity: 0.7;
+      }
+
+      /* Skip link */
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(2, 6, 23, 0.9);
+        color: var(--text);
+        z-index: 9999;
+      }
+      .skip:focus {
+        left: 12px;
+      }
+
+      .container {
+        max-width: var(--container);
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+
+      .korean-text {
+        word-break: keep-all;
+        overflow-wrap: break-word;
+      }
+
+      /* Header */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        backdrop-filter: blur(14px);
+        background: rgba(2, 6, 23, 0.55);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        gap: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(34, 211, 238, 1), rgba(129, 140, 248, 1));
+        box-shadow: 0 10px 28px rgba(34, 211, 238, 0.15);
+      }
+
+      .brand strong {
+        letter-spacing: -0.02em;
+      }
+
+      .navlinks {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .navlinks a {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 14px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        transition: 160ms ease;
+      }
+
+      .navlinks a:hover {
+        color: var(--text);
+        border-color: rgba(148, 163, 184, 0.16);
+        background: rgba(15, 23, 42, 0.35);
+      }
+
+      .nav-cta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        text-decoration: none;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(15, 23, 42, 0.35);
+        color: var(--text);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: -0.01em;
+        transition: 160ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(148, 163, 184, 0.28);
+        background: rgba(15, 23, 42, 0.5);
+      }
+
+      .btn.primary {
+        border-color: rgba(34, 211, 238, 0.35);
+        background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(129, 140, 248, 0.12));
+        box-shadow: 0 20px 70px rgba(34, 211, 238, 0.12);
+      }
+
+      .btn.primary:hover {
+        border-color: rgba(34, 211, 238, 0.6);
+      }
+
+      .btn.ghost {
+        background: transparent;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 999px;
+        padding: 8px 12px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(15, 23, 42, 0.35);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: rgba(34, 211, 238, 0.9);
+        box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.12);
+      }
+
+      .gradient {
+        background: linear-gradient(90deg, var(--cyan), var(--indigo));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 56px 0 24px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 22px;
+        align-items: start;
+        margin-top: 22px;
+      }
+
+      .hero h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(34px, 4vw, 54px);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p.lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.75;
+      }
+
+      .hero-cta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .hero-note {
+        margin-top: 14px;
+        color: var(--muted2);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(2, 6, 23, 0.35));
+        box-shadow: var(--shadow);
+      }
+
+      .panel.pad {
+        padding: 18px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .metric {
+        padding: 14px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(2, 6, 23, 0.25);
+      }
+
+      .metric .k {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .metric .k strong {
+        font-size: 14px;
+        letter-spacing: -0.02em;
+      }
+
+      .metric .k span {
+        font-size: 12px;
+        color: var(--muted2);
+      }
+
+      .metric p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .tagrow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .tag {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(15, 23, 42, 0.25);
+        color: var(--muted);
+      }
+
+      /* Marquee */
+      .marquee {
+        margin-top: 22px;
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        overflow: hidden;
+        background: rgba(2, 6, 23, 0.35);
+      }
+      .marquee-track {
+        display: flex;
+        gap: 36px;
+        padding: 12px 0;
+        white-space: nowrap;
+        will-change: transform;
+        animation: marquee 26s linear infinite;
+      }
+      .marquee span {
+        color: rgba(226, 232, 240, 0.6);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .marquee span b {
+        color: rgba(226, 232, 240, 0.86);
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Sections */
+      section {
+        padding: 60px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.03em;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        max-width: 560px;
+        line-height: 1.7;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .card {
+        border-radius: var(--radius);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(15, 23, 42, 0.35);
+        padding: 18px;
+        transition: 170ms ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(148, 163, 184, 0.28);
+        background: rgba(15, 23, 42, 0.5);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(500px 220px at 20% 0%, rgba(34, 211, 238, 0.14), transparent 45%),
+          radial-gradient(500px 220px at 80% 0%, rgba(129, 140, 248, 0.14), transparent 45%);
+        opacity: 0;
+        transition: 170ms ease;
+        pointer-events: none;
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .badge-mini {
+        font-size: 11px;
+        padding: 6px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        color: rgba(226, 232, 240, 0.75);
+        background: rgba(2, 6, 23, 0.35);
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+
+      .card p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.75;
+        position: relative;
+      }
+
+      .list {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 8px;
+      }
+
+      .list li {
+        color: rgba(226, 232, 240, 0.72);
+        font-size: 13px;
+        line-height: 1.6;
+        display: flex;
+        gap: 10px;
+      }
+
+      .check {
+        width: 18px;
+        height: 18px;
+        border-radius: 7px;
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        background: rgba(34, 211, 238, 0.12);
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        margin-top: 1px;
+      }
+      .check svg {
+        width: 12px;
+        height: 12px;
+        opacity: 0.9;
+      }
+
+      /* Process */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .step {
+        border-radius: var(--radius);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(2, 6, 23, 0.24);
+        padding: 16px;
+      }
+
+      .step .n {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.6);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .step strong {
+        display: block;
+        margin-top: 10px;
+        letter-spacing: -0.02em;
+      }
+
+      .step p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      /* Portfolio */
+      .work {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .work .card {
+        padding: 18px;
+      }
+
+      .work .meta {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .work a.more {
+        color: rgba(34, 211, 238, 0.9);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .work a.more:hover {
+        text-decoration: underline;
+      }
+
+      /* FAQ */
+      .faq {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      details {
+        border-radius: var(--radius);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(15, 23, 42, 0.35);
+        padding: 14px 16px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        list-style: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      /* Contact */
+      .contact-wrap {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: rgba(226, 232, 240, 0.86);
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(2, 6, 23, 0.3);
+        color: var(--text);
+        padding: 12px 12px;
+        font-size: 14px;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: rgba(34, 211, 238, 0.55);
+        box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.1);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .privacy {
+        color: rgba(226, 232, 240, 0.55);
+        font-size: 12px;
+        line-height: 1.6;
+        margin-top: 8px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 24px 0 36px;
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        color: rgba(226, 232, 240, 0.6);
+        font-size: 13px;
+      }
+
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: rgba(226, 232, 240, 0.6);
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+      }
+
+      .footer-links a:hover {
+        border-color: rgba(148, 163, 184, 0.18);
+        background: rgba(15, 23, 42, 0.35);
+        color: rgba(226, 232, 240, 0.86);
+      }
+
+      /* Responsive */
+      @media (max-width: 980px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .work {
+          grid-template-columns: 1fr;
+        }
+        .faq {
+          grid-template-columns: 1fr;
+        }
+        .contact-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn:hover,
+        .card:hover {
+          transform: none;
+        }
+        .marquee-track {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">본문으로 바로가기</a>
+
+    <header>
+      <div class="container">
+        <div class="nav">
+          <a class="brand" href="#intro" aria-label="USlab.ai 홈">
+            <span class="logo" aria-hidden="true"></span>
+            <strong class="mono">USlab.ai</strong>
+          </a>
+
+          <nav class="navlinks" aria-label="주요 메뉴">
+            <a href="#philosophy">소개</a>
+            <a href="#services">서비스</a>
+            <a href="#process">프로세스</a>
+            <a href="#work">포트폴리오</a>
+            <a href="/ko/blog">블로그</a>
+            <a href="#contact">문의</a>
+          </nav>
+
+          <div class="nav-cta">
+            <a class="btn ghost" href="/en" aria-label="English">ENG</a>
+            <a class="btn primary" href="#contact">지금 시작하기</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" id="intro">
+        <div class="container">
+          <span class="pill mono"><span class="dot" aria-hidden="true"></span> AI TRANSFORMATION PARTNER</span>
+
+          <div class="hero-grid">
+            <div>
+              <h1 class="korean-text">
+                AI는 이제 모두의 기술.<br />
+                <span class="gradient" id="rotateWord">차이는 판단력</span> 입니다.
+              </h1>
+
+              <p class="lead korean-text">
+                AI가 <b>‘만드는 능력’</b>의 비용을 0에 가깝게 만든 지금, 승부는 “뭘 만들지”가 아니라
+                <b>“무엇을, 왜, 어떻게 결정할지”</b>에서 갈립니다.<br />
+                <br />
+                USlab.ai는 보고서로 끝나는 컨설팅이 아니라,
+                <b>현업이 실제로 쓰는 시스템</b>을 설계·개발·내재화합니다.
+                (그리고… 결과에 책임집니다.)
+              </p>
+
+              <div class="hero-cta">
+                <a class="btn primary" href="#contact">30분 무료 진단</a>
+                <a class="btn ghost" href="#work">성공 사례 보기</a>
+                <a class="btn ghost" href="#services">서비스 살펴보기</a>
+              </div>
+
+              <p class="hero-note korean-text">
+                * “도발적이지만 과하지 않게”를 지키기 위한 원칙: 과장 대신 <b>측정 가능한 변화</b>,
+                데모 대신 <b>배포</b>, ‘가능성’ 대신 <b>운영</b>.
+              </p>
+            </div>
+
+            <aside class="panel pad" aria-label="핵심 약속">
+              <div class="metrics">
+                <div class="metric">
+                  <div class="k">
+                    <strong>2주 — 실사용 프로토타입</strong>
+                    <span class="mono">Fast</span>
+                  </div>
+                  <p>“보여주기용”이 아니라, 팀이 당장 써볼 수 있는 최소 시스템부터 만듭니다.</p>
+                </div>
+
+                <div class="metric">
+                  <div class="k">
+                    <strong>6주 — 운영 배포</strong>
+                    <span class="mono">Ship</span>
+                  </div>
+                  <p>연동/권한/로그/가드레일까지 포함해 “돌아가게” 배포합니다.</p>
+                </div>
+
+                <div class="metric">
+                  <div class="k">
+                    <strong>지표 — 성과로 검증</strong>
+                    <span class="mono">Measure</span>
+                  </div>
+                  <p>시간 절감, 리드타임, 정확도, 비용 등 “의사결정 지표”로 효과를 확인합니다.</p>
+                </div>
+              </div>
+
+              <div class="tagrow" aria-label="키워드">
+                <span class="tag mono">AX Strategy</span>
+                <span class="tag mono">RAG / Agent</span>
+                <span class="tag mono">Automation</span>
+                <span class="tag mono">Governance</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track mono">
+            <span><b>NO SLIDEWARE</b> · SHIP SYSTEMS · MEASURE IMPACT ·</span>
+            <span><b>NO SLIDEWARE</b> · SHIP SYSTEMS · MEASURE IMPACT ·</span>
+            <span><b>NO SLIDEWARE</b> · SHIP SYSTEMS · MEASURE IMPACT ·</span>
+            <span><b>NO SLIDEWARE</b> · SHIP SYSTEMS · MEASURE IMPACT ·</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHILOSOPHY / MANIFESTO -->
+      <section id="philosophy">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">USlab.ai의 방식은 조금 <span class="gradient">불편할 수</span> 있습니다</h2>
+              <p class="korean-text">
+                AI 컨설팅이 “가능성”만 말할 때, 우리는 “작동”을 묻습니다. 도발적이되 부담스럽지 않게 —
+                그래서 약속도 딱 4개만 합니다.
+              </p>
+            </div>
+            <span class="pill mono">PHILOSOPHY</span>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <div class="title">
+                <h3>가치 발견</h3>
+                <span class="badge-mini mono">Value</span>
+              </div>
+              <p class="korean-text">
+                데이터에서 “멋있는 AI”가 아니라, <b>돈/시간/리스크를 바꾸는 가치</b>를 찾습니다.
+                잠들어 있던 데이터를 깨워, AI가 바로 쓰는 자산으로 바꿉니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>Use-case 우선순위(ROI/리스크/난이도) 설계</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>데이터 준비도/접근권한/품질 진단</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="title">
+                <h3>판의 장악</h3>
+                <span class="badge-mini mono">System</span>
+              </div>
+              <p class="korean-text">
+                자동화 “한 조각”이 아니라, 업무 흐름 전체를 재설계합니다.
+                AI는 기능이 아니라 <b>업무 운영체제</b>가 되어야 합니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>Agent / RAG를 “업무 프로세스”에 고정</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>권한/승인/감사로그까지 포함한 설계</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="title">
+                <h3>압도적 속도</h3>
+                <span class="badge-mini mono">Speed</span>
+              </div>
+              <p class="korean-text">
+                완벽보다 <b>속도+피드백</b>으로 시장을 선점합니다.
+                ‘바이브코딩’의 핵심은 대충이 아니라, <b>빠른 검증 루프</b>입니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>2주 단위 실험 / 6주 단위 배포</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>현업 피드백을 “요구사항”으로 번역</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px" class="panel pad">
+            <div class="section-head" style="margin-bottom: 10px">
+              <h2 class="korean-text" style="font-size: 18px; margin: 0">
+                우리가 가장 자주 하는 말 (부담스럽지 않은 선에서)
+              </h2>
+              <span class="pill mono">NO-FLuff</span>
+            </div>
+            <p class="korean-text" style="margin: 0; color: rgba(226, 232, 240, 0.72); line-height: 1.8">
+              “PoC는 필요합니다. 하지만 PoC로 끝내지는 않습니다.”<br />
+              “데모는 누구나 합니다. 운영은 아무나 못합니다.”<br />
+              “AI는 마법이 아니라 시스템입니다. 시스템은 측정됩니다.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">당신의 성공을 위한 <span class="gradient">3가지 솔루션</span></h2>
+              <p class="korean-text">
+                “컨설팅만”, “개발만”, “교육만”으로는 AX가 완성되지 않습니다.
+                전략→구축→내재화를 하나의 흐름으로 붙입니다.
+              </p>
+            </div>
+            <span class="pill mono">SERVICES</span>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <div class="title">
+                <h3>AI 컨설팅</h3>
+                <span class="badge-mini mono">Consulting</span>
+              </div>
+              <p class="korean-text">
+                “무엇을, 왜, 어떻게”를 <b>결정 가능한 형태</b>로 정리합니다.
+                AI 도입이 아니라 <b>의사결정 구조</b>부터 바꿉니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>AX 로드맵 / KPI / 우선순위</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>데이터/보안/거버넌스 가드레일</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>업무 흐름 재설계 (현업 기준)</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="title">
+                <h3>AI 개발</h3>
+                <span class="badge-mini mono">Development</span>
+              </div>
+              <p class="korean-text">
+                전략을 “말”이 아니라 <b>작동하는 제품</b>으로 구현합니다.
+                빠르게 만들고, 더 빠르게 현업에 꽂습니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>RAG / Agent / Copilot 워크플로우</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>업무 시스템 연동 (권한/로그/승인)</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>성능/비용 최적화 + 운영 가이드</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="title">
+                <h3>AI 적용 워크숍</h3>
+                <span class="badge-mini mono">Education</span>
+              </div>
+              <p class="korean-text">
+                “AI가 대단하다”가 아니라, <b>우리 조직이 실제로 쓰는 방법</b>을 만듭니다.
+                교육이 끝나면, 결과물이 남게 합니다.
+              </p>
+              <ul class="list">
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>현업용 프롬프트/에이전트 플레이북</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>해커톤/실습형 워크숍 (문제 정의→구현)</span>
+                </li>
+                <li>
+                  <span class="check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </span>
+                  <span>사내 전파/정착을 위한 운영 템플릿</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
+      <section id="process">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">우리는 “AI 도입”이 아니라 <span class="gradient">업무의 판</span>을 바꿉니다</h2>
+              <p class="korean-text">
+                컨설팅은 1회성 이벤트가 아니라, 실행/검증/정착의 루프입니다.
+                아래 4단계로 “부담 없게, 하지만 확실하게” 가져갑니다.
+              </p>
+            </div>
+            <span class="pill mono">PROCESS</span>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <span class="n mono">STEP 01</span>
+              <strong>결정 3개를 고릅니다</strong>
+              <p class="korean-text">전사 혁신부터 시작하지 않습니다. “지금 당장 바꿀 결정”부터 고릅니다.</p>
+            </div>
+            <div class="step">
+              <span class="n mono">STEP 02</span>
+              <strong>작은 시스템으로 증명합니다</strong>
+              <p class="korean-text">작게 만들고 빨리 써봅니다. 성과가 보이면 그때 확장합니다.</p>
+            </div>
+            <div class="step">
+              <span class="n mono">STEP 03</span>
+              <strong>연동·권한·로그를 붙입니다</strong>
+              <p class="korean-text">“돌아가는 것”은 기능이 아니라 운영입니다. 가드레일을 함께 설계합니다.</p>
+            </div>
+            <div class="step">
+              <span class="n mono">STEP 04</span>
+              <strong>팀이 스스로 굴리게 합니다</strong>
+              <p class="korean-text">교육은 옵션이 아닙니다. 내부에서 유지·개선 가능한 형태로 넘깁니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO -->
+      <section id="work">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">결과로 증명하는 <span class="gradient">USlab.ai의 전문성</span></h2>
+              <p class="korean-text">* 아래는 초안 예시 카드입니다. 실제 상세 페이지로 연결하면 더 강해집니다.</p>
+            </div>
+            <span class="pill mono">WORK</span>
+          </div>
+
+          <div class="work">
+            <article class="card">
+              <div class="title">
+                <h3>LG CNS · AX 플랫폼 아키텍처 시각화</h3>
+                <span class="badge-mini mono">Architecture</span>
+              </div>
+              <p class="korean-text">
+                복잡한 AX 플랫폼 개념을 “한 번에 이해”시키기 위해, 이미지 생성 기반 시각 자료를 대량 제작·구성했습니다.
+              </p>
+              <div class="tagrow">
+                <span class="tag mono">Explainability</span>
+                <span class="tag mono">Visualization</span>
+                <span class="tag mono">Content Ops</span>
+              </div>
+              <div class="meta">
+                <span class="mono" style="font-size: 12px; color: rgba(226, 232, 240, 0.55)">Case Study</span>
+                <a class="more" href="#contact">자세히 보기 →</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="title">
+                <h3>Microsoft · AI Copilot 인지도 확산</h3>
+                <span class="badge-mini mono">Marketing</span>
+              </div>
+              <p class="korean-text">
+                협력 파트너와 함께, 제품의 “기능”이 아니라 “쓸 이유”를 설계해 대중 커뮤니케이션으로 연결했습니다.
+              </p>
+              <div class="tagrow">
+                <span class="tag mono">GTM</span>
+                <span class="tag mono">Content Strategy</span>
+                <span class="tag mono">Partnership</span>
+              </div>
+              <div class="meta">
+                <span class="mono" style="font-size: 12px; color: rgba(226, 232, 240, 0.55)">Case Study</span>
+                <a class="more" href="#contact">자세히 보기 →</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="title">
+                <h3>행정안전부 · 공공혁신 해커톤 운영</h3>
+                <span class="badge-mini mono">Hackathon</span>
+              </div>
+              <p class="korean-text">
+                “행사”가 아니라 “정책 혁신의 실행 프레임”으로 해커톤을 설계·운영해, 실제 결과물을 남겼습니다.
+              </p>
+              <div class="tagrow">
+                <span class="tag mono">Public Sector</span>
+                <span class="tag mono">Enablement</span>
+                <span class="tag mono">Execution</span>
+              </div>
+              <div class="meta">
+                <span class="mono" style="font-size: 12px; color: rgba(226, 232, 240, 0.55)">Case Study</span>
+                <a class="more" href="#contact">자세히 보기 →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">자주 묻는 질문</h2>
+              <p class="korean-text">
+                부담스럽지 않게, 하지만 솔직하게 답합니다. (그리고 ‘가능합니다’만 말하지 않습니다.)
+              </p>
+            </div>
+            <span class="pill mono">FAQ</span>
+          </div>
+
+          <div class="faq">
+            <details>
+              <summary class="korean-text">AI 도입이 처음인데, 뭐부터 해야 하나요?</summary>
+              <p class="korean-text">
+                “모델 선택”부터 시작하지 않습니다. <b>바꿀 의사결정(업무) 3개</b>를 정하고,
+                데이터·권한·리스크를 함께 점검합니다. 작은 프로토타입으로 먼저 증명합니다.
+              </p>
+            </details>
+
+            <details>
+              <summary class="korean-text">PoC만 해도 되나요?</summary>
+              <p class="korean-text">
+                됩니다. 다만 PoC의 목표는 “AI가 된다”가 아니라 <b>업무가 바뀐다</b>여야 합니다.
+                그래서 USlab.ai는 PoC를 <b>운영 배포의 첫 단계</b>로 설계합니다.
+              </p>
+            </details>
+
+            <details>
+              <summary class="korean-text">보안/컴플라이언스가 걱정됩니다</summary>
+              <p class="korean-text">
+                정상적인 걱정입니다. 권한·로그·가드레일·데이터 접근 정책을
+                “나중”이 아니라 <b>처음 설계에 포함</b>합니다.
+              </p>
+            </details>
+
+            <details>
+              <summary class="korean-text">교육(워크숍)은 어떤 형태가 효과적이죠?</summary>
+              <p class="korean-text">
+                강의형보다 <b>실습형</b>이 훨씬 효과적입니다. 현업의 실제 문서/데이터/업무 흐름을 기반으로
+                “바로 쓰는 결과물”을 만들고, 사내 확산을 위한 템플릿까지 제공합니다.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="korean-text">지금 바로 USlab.ai와 함께 <span class="gradient">AI 대전환</span>을 시작하세요</h2>
+              <p class="korean-text">
+                AI는 이제 상수입니다. 진짜 승부는 “우리 조직의 업무 방식”으로 녹여내는 데서 갈립니다.<br />
+                아래 폼은 초안이므로, 실제 서비스에서는 API(Supabase 등)로 연결하세요.
+              </p>
+            </div>
+            <span class="pill mono">CONTACT</span>
+          </div>
+
+          <div class="contact-wrap">
+            <div class="panel pad">
+              <form action="#" method="post" onsubmit="return false;">
+                <div class="form-row">
+                  <label>
+                    이름 / 소속
+                    <input type="text" name="name" placeholder="홍길동 / USlab" autocomplete="name" />
+                  </label>
+                  <label>
+                    이메일
+                    <input type="email" name="email" placeholder="you@company.com" autocomplete="email" />
+                  </label>
+                </div>
+
+                <label>
+                  문의 내용
+                  <textarea name="message" placeholder="어떤 문제를, 언제까지, 어떤 수준으로 해결하고 싶으신가요?"></textarea>
+                </label>
+
+                <div style="display: flex; gap: 12px; flex-wrap: wrap">
+                  <button class="btn primary" type="submit" onclick="toast('초안 폼입니다. 실제로는 API에 연결하세요!')">
+                    문의 보내기
+                  </button>
+                  <a class="btn ghost" href="#intro">상단으로</a>
+                </div>
+
+                <p class="privacy korean-text">
+                  * 개인정보는 상담 목적 외에는 사용하지 않습니다. (초안 문구)
+                </p>
+              </form>
+            </div>
+
+            <aside class="panel pad">
+              <h3 style="margin: 0 0 10px; letter-spacing: -0.02em">빠른 시작을 위한 질문 3개</h3>
+              <p class="korean-text" style="margin: 0; color: rgba(226, 232, 240, 0.72); line-height: 1.8">
+                1) 지금 가장 비싼 의사결정은 무엇인가요?<br />
+                2) 그 결정을 더 빠르게/정확하게 만들 수 있는 데이터는 어디 있나요?<br />
+                3) 이 변화가 “성과”로 보이려면 어떤 지표가 바뀌어야 하나요?
+              </p>
+
+              <div style="margin-top: 14px" class="tagrow">
+                <span class="tag mono">Decision-first</span>
+                <span class="tag mono">Ship fast</span>
+                <span class="tag mono">Trust & Governance</span>
+              </div>
+
+              <div style="margin-top: 16px">
+                <a class="btn ghost" href="/ko/blog">블로그에서 인사이트 보기</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-row">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span class="logo" aria-hidden="true" style="width: 28px; height: 28px; border-radius: 10px"></span>
+            <div>
+              <div class="mono" style="color: rgba(226, 232, 240, 0.8); font-weight: 700">USlab.ai</div>
+              <div style="font-size: 12px; color: rgba(226, 232, 240, 0.55)">© 2025 USlab.ai. All rights reserved.</div>
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="#contact">문의하기</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Smooth anchor scroll (가벼운 UX)
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href");
+          if (!id || id === "#") return;
+          const el = document.querySelector(id);
+          if (!el) return;
+          e.preventDefault();
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      // Hero rotating keyword (너무 부담스럽지 않게)
+      const words = ["차이는 판단력", "승부는 운영", "해답은 시스템", "핵심은 속도"];
+      const el = document.getElementById("rotateWord");
+      let idx = 0;
+
+      setInterval(() => {
+        if (!el) return;
+        idx = (idx + 1) % words.length;
+        el.textContent = words[idx];
+      }, 2400);
+
+      // Tiny toast
+      function toast(msg) {
+        const t = document.createElement("div");
+        t.textContent = msg;
+        t.style.position = "fixed";
+        t.style.left = "50%";
+        t.style.bottom = "24px";
+        t.style.transform = "translateX(-50%)";
+        t.style.padding = "10px 12px";
+        t.style.borderRadius = "14px";
+        t.style.border = "1px solid rgba(148,163,184,.18)";
+        t.style.background = "rgba(2,6,23,.85)";
+        t.style.backdropFilter = "blur(12px)";
+        t.style.color = "rgba(226,232,240,.92)";
+        t.style.fontSize = "13px";
+        t.style.zIndex = "9999";
+        t.style.boxShadow = "0 20px 60px rgba(0,0,0,.45)";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1700);
+      }
+      window.toast = toast;
+    </script>
+  </body>
+</html>

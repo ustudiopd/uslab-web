@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>USlab.ai — Slideware 말고, Shipware</title>
+    <meta
+      name="description"
+      content="AI는 모두의 기술. 차이는 운영입니다. USlab.ai는 PoC가 아니라 현업이 쓰는 시스템을 배포합니다."
+    />
+    <meta name="theme-color" content="#020617" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #020617;
+        --panel: rgba(15, 23, 42, 0.55);
+        --border: rgba(148, 163, 184, 0.18);
+        --text: rgba(226, 232, 240, 0.92);
+        --muted: rgba(226, 232, 240, 0.66);
+        --muted2: rgba(226, 232, 240, 0.52);
+        --cyan: #22d3ee;
+        --indigo: #818cf8;
+
+        --radius: 18px;
+        --container: 1120px;
+        --shadow: 0 18px 70px rgba(0, 0, 0, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background:
+          radial-gradient(1200px 700px at 15% 10%, rgba(34,211,238,.11), transparent 55%),
+          radial-gradient(900px 600px at 90% 20%, rgba(129,140,248,.11), transparent 55%),
+          var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: var(--container);
+        margin: 0 auto;
+        padding: 0 22px;
+      }
+
+      .mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .korean { word-break: keep-all; overflow-wrap: break-word; }
+
+      .gradient {
+        background: linear-gradient(90deg, var(--cyan), var(--indigo));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Header */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        backdrop-filter: blur(14px);
+        background: rgba(2, 6, 23, 0.55);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 16px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        box-shadow: 0 18px 50px rgba(34,211,238,.14);
+      }
+      nav a {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 14px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        transition: 160ms ease;
+      }
+      nav a:hover {
+        color: var(--text);
+        border-color: rgba(148,163,184,.18);
+        background: rgba(15,23,42,.28);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        text-decoration: none;
+        border: 1px solid rgba(148,163,184,.16);
+        background: rgba(15,23,42,.35);
+        color: var(--text);
+        font-weight: 700;
+        font-size: 14px;
+        transition: 160ms ease;
+      }
+      .btn:hover { transform: translateY(-1px); background: rgba(15,23,42,.5); border-color: rgba(148,163,184,.28); }
+      .btn.primary {
+        border-color: rgba(34,211,238,.35);
+        background: linear-gradient(135deg, rgba(34,211,238,.14), rgba(129,140,248,.12));
+        box-shadow: 0 18px 60px rgba(34,211,238,.12);
+      }
+      .btn.primary:hover { border-color: rgba(34,211,238,.6); }
+
+      /* Layout */
+      section { padding: clamp(72px, 9vw, 120px) 0; }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 22px;
+        align-items: start;
+      }
+      @media (max-width: 980px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(148,163,184,.16);
+        background: rgba(15,23,42,.26);
+        color: rgba(226,232,240,.70);
+        font-size: 12px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .dot {
+        width: 7px; height: 7px; border-radius: 999px;
+        background: rgba(34,211,238,.92);
+        box-shadow: 0 0 0 6px rgba(34,211,238,.12);
+      }
+
+      h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(36px, 4.6vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+      }
+      .lead {
+        margin: 0;
+        max-width: 42ch;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+      .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: rgba(15, 23, 42, 0.38);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .pad { padding: 20px; }
+
+      /* Creative toggle module */
+      .togglebar {
+        display: flex;
+        gap: 10px;
+        padding: 12px;
+        border-bottom: 1px solid rgba(148,163,184,.14);
+        background: rgba(2, 6, 23, 0.25);
+      }
+      .chip {
+        flex: 1;
+        border-radius: 999px;
+        border: 1px solid rgba(148,163,184,.16);
+        background: rgba(15,23,42,.22);
+        color: rgba(226,232,240,.72);
+        padding: 10px 12px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 160ms ease;
+      }
+      .chip.active {
+        border-color: rgba(34,211,238,.55);
+        background: linear-gradient(135deg, rgba(34,211,238,.14), rgba(129,140,248,.12));
+        color: rgba(226,232,240,.95);
+      }
+
+      .module h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+      .module p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+        font-size: 14px;
+      }
+      .bullets {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+      .bullets li {
+        display: flex;
+        gap: 10px;
+        color: rgba(226,232,240,.78);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .tick {
+        width: 18px; height: 18px;
+        border-radius: 7px;
+        border: 1px solid rgba(34,211,238,.30);
+        background: rgba(34,211,238,.10);
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        margin-top: 1px;
+      }
+      .tick svg { width: 12px; height: 12px; opacity: .9; }
+
+      /* Services */
+      .sectionhead {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .sectionhead h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.03em;
+      }
+      .sectionhead p {
+        margin: 0;
+        max-width: 60ch;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      @media (max-width: 980px) {
+        .cards { grid-template-columns: 1fr; }
+      }
+      .card {
+        border-radius: var(--radius);
+        border: 1px solid rgba(148,163,184,.14);
+        background: rgba(15,23,42,.30);
+        padding: 22px;
+      }
+      .card h3 { margin: 0; font-size: 16px; letter-spacing: -0.02em; }
+      .card p { margin: 10px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+      .mini {
+        margin-top: 14px;
+        color: rgba(226,232,240,.74);
+        font-size: 13px;
+        display: grid;
+        gap: 8px;
+      }
+      .mini span { color: rgba(226,232,240,.72); }
+
+      /* Proof */
+      .proof {
+        display: grid;
+        gap: 10px;
+      }
+      .proof .row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(148,163,184,.14);
+        background: rgba(2,6,23,.20);
+      }
+      .proof .row strong { letter-spacing: -0.02em; }
+      .proof .row small { color: var(--muted2); }
+
+      /* Contact */
+      form { display: grid; gap: 12px; }
+      label { display: grid; gap: 8px; font-weight: 700; font-size: 13px; color: rgba(226,232,240,.86); }
+      input, textarea {
+        border-radius: 14px;
+        border: 1px solid rgba(148,163,184,.16);
+        background: rgba(2,6,23,.28);
+        color: var(--text);
+        padding: 12px 12px;
+        font-size: 14px;
+        outline: none;
+      }
+      textarea { min-height: 120px; resize: vertical; }
+      input:focus, textarea:focus { border-color: rgba(34,211,238,.55); box-shadow: 0 0 0 6px rgba(34,211,238,.10); }
+      .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      @media (max-width: 980px) { .row2 { grid-template-columns: 1fr; } }
+
+      footer {
+        padding: 28px 0 40px;
+        border-top: 1px solid rgba(148,163,184,.12);
+        color: rgba(226,232,240,.60);
+        font-size: 13px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn:hover { transform: none; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <div class="nav">
+          <a class="brand" href="#top" aria-label="USlab.ai">
+            <span class="logo" aria-hidden="true"></span>
+            <strong class="mono">USlab.ai</strong>
+          </a>
+
+          <nav aria-label="메뉴">
+            <a href="#services">서비스</a>
+            <a href="#proof">케이스</a>
+            <a href="#contact">문의</a>
+          </nav>
+
+          <a class="btn primary" href="#contact">30분 진단</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="top">
+      <div class="container">
+        <span class="badge mono"><span class="dot" aria-hidden="true"></span> AI TRANSFORMATION PARTNER</span>
+
+        <div class="grid" style="margin-top: 18px">
+          <div>
+            <h1 class="korean">
+              AI는 <span class="gradient">모두의 기술</span>.<br />
+              이제 차이는 <span class="gradient">운영</span>입니다.
+            </h1>
+
+            <p class="lead korean">
+              USlab.ai는 “가능성”을 설명하지 않습니다.<br />
+              <b>현업이 매일 쓰는 AI 시스템</b>을 설계·구축·정착합니다.
+            </p>
+
+            <div class="cta">
+              <a class="btn primary" href="#contact">지금 시작하기</a>
+              <a class="btn" href="#proof">케이스 보기</a>
+            </div>
+
+            <p class="korean" style="margin: 14px 0 0; color: rgba(226,232,240,.55); line-height: 1.7; font-size: 13px">
+              * 도발은 “세게 말하기”가 아니라, <b>핵심을 숨기지 않는 것</b>이라고 믿습니다.
+            </p>
+          </div>
+
+          <!-- Creative module -->
+          <aside class="panel module" aria-label="Slideware vs Shipware">
+            <div class="togglebar">
+              <button class="chip mono active" data-mode="slide" type="button">SLIDEWARE</button>
+              <button class="chip mono" data-mode="ship" type="button">SHIPWARE</button>
+            </div>
+
+            <div class="pad">
+              <h3 class="korean" id="modeTitle">슬라이드는 늘어나는데, 업무는 그대로인가요?</h3>
+              <p class="korean" id="modeDesc">
+                데모가 아니라 “사용률”이 이기는 쪽입니다. 우리는 운영 가능한 조건부터 붙입니다.
+              </p>
+
+              <ul class="bullets" id="modeBullets">
+                <li>
+                  <span class="tick" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>
+                  </span>
+                  <span class="korean">그럴듯한 PoC는 쉽습니다. “매일 쓰는” 건 다릅니다.</span>
+                </li>
+                <li>
+                  <span class="tick" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>
+                  </span>
+                  <span class="korean">권한·로그·연동·지표가 빠지면, 결국 멈춥니다.</span>
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="container">
+        <div class="sectionhead">
+          <div>
+            <h2 class="korean">서비스는 3개면 충분합니다</h2>
+            <p class="korean">
+              전략·개발·정착을 따로 떼지 않습니다. “돌아가게” 만드는 데 필요한 최소 세트만 제공합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3 class="korean">AI 컨설팅</h3>
+            <p class="korean">무엇을 할지보다, <b>무엇을 먼저 결정할지</b>를 정합니다.</p>
+            <div class="mini korean">
+              <span>• AX 로드맵 / KPI</span>
+              <span>• 데이터·보안·거버넌스</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="korean">AI 개발</h3>
+            <p class="korean">전략을 코드로 바꿉니다. <b>현업 시스템에 꽂아</b> 돌아가게 합니다.</p>
+            <div class="mini korean">
+              <span>• RAG / Agent 워크플로우</span>
+              <span>• 연동 / 권한 / 감사로그</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="korean">AI 적용 워크숍</h3>
+            <p class="korean">교육만 하고 끝내지 않습니다. <b>팀이 굴릴 수 있게</b> 남깁니다.</p>
+            <div class="mini korean">
+              <span>• 실습형 워크숍 / 해커톤</span>
+              <span>• 사내 플레이북 / 운영 템플릿</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section id="proof">
+      <div class="container">
+        <div class="sectionhead">
+          <div>
+            <h2 class="korean">증거는 길게 쓰지 않습니다</h2>
+            <p class="korean">세 줄이면 충분하니까요. (상세 페이지는 연결만 하면 됩니다.)</p>
+          </div>
+        </div>
+
+        <div class="proof">
+          <div class="row">
+            <strong class="korean">LG CNS · AX 플랫폼 아키텍처 시각화</strong>
+            <small class="mono">Architecture</small>
+          </div>
+          <div class="row">
+            <strong class="korean">Microsoft · AI Copilot 인지도 확산</strong>
+            <small class="mono">Marketing</small>
+          </div>
+          <div class="row">
+            <strong class="korean">행정안전부 · 공공혁신 해커톤 운영</strong>
+            <small class="mono">Hackathon</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="sectionhead">
+          <div>
+            <h2 class="korean">필요한 건 “AI 도입”이 아니라, <span class="gradient">업무의 새 습관</span>입니다</h2>
+            <p class="korean">부담 없이 30분만 이야기해요. 문제를 “결정 가능한 형태”로 바꿔드릴게요.</p>
+          </div>
+        </div>
+
+        <div class="panel pad">
+          <form onsubmit="return false;">
+            <div class="row2">
+              <label>이름 / 소속
+                <input type="text" placeholder="홍길동 / Company" />
+              </label>
+              <label>이메일
+                <input type="email" placeholder="you@company.com" />
+              </label>
+            </div>
+            <label>문의 내용
+              <textarea placeholder="가장 비싼 의사결정(업무)은 무엇인가요?"></textarea>
+            </label>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 6px;">
+              <button class="btn primary" type="submit" onclick="toast('초안 폼입니다. 실제로는 API로 연결하세요.')">문의 보내기</button>
+              <a class="btn" href="#top">위로</a>
+            </div>
+
+            <p class="korean" style="margin: 10px 0 0; color: rgba(226,232,240,.55); font-size: 12px; line-height: 1.7;">
+              * 초안 문구: 개인정보는 상담 목적 외 사용하지 않습니다.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="logo" aria-hidden="true" style="width:28px;height:28px;border-radius:10px;"></span>
+          <div>
+            <div class="mono" style="color: rgba(226,232,240,.82); font-weight: 800;">USlab.ai</div>
+            <div style="font-size:12px; color: rgba(226,232,240,.55);">© 2025 USlab.ai. All rights reserved.</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="#" style="color: rgba(226,232,240,.60); text-decoration:none;">개인정보처리방침</a>
+          <a href="#" style="color: rgba(226,232,240,.60); text-decoration:none;">이용약관</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Slideware ↔ Shipware toggle (창의 요소: "한 번에 이해되는 장치" 하나만)
+      const data = {
+        slide: {
+          title: "슬라이드는 늘어나는데, 업무는 그대로인가요?",
+          desc: "데모가 아니라 “사용률”이 이기는 쪽입니다. 우리는 운영 가능한 조건부터 붙입니다.",
+          bullets: [
+            "그럴듯한 PoC는 쉽습니다. “매일 쓰는” 건 다릅니다.",
+            "권한·로그·연동·지표가 빠지면, 결국 멈춥니다."
+          ],
+        },
+        ship: {
+          title: "우리는 ‘조용히’ 돌아가는 걸 만듭니다.",
+          desc: "눈에 띄는 기능보다, 실제로 돈/시간/리스크를 줄이는 흐름을 만듭니다.",
+          bullets: [
+            "업무 시스템에 연결합니다: 승인/권한/감사로그 포함.",
+            "지표로 검증합니다: 시간 절감·리드타임·품질·비용."
+          ],
+        },
+      };
+
+      const chips = document.querySelectorAll(".chip");
+      const modeTitle = document.getElementById("modeTitle");
+      const modeDesc = document.getElementById("modeDesc");
+      const modeBullets = document.getElementById("modeBullets");
+
+      function setMode(mode) {
+        chips.forEach((c) => c.classList.toggle("active", c.dataset.mode === mode));
+        modeTitle.textContent = data[mode].title;
+        modeDesc.textContent = data[mode].desc;
+        modeBullets.innerHTML = data[mode].bullets.map((t) => `
+          <li>
+            <span class="tick" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>
+            </span>
+            <span class="korean">${t}</span>
+          </li>
+        `).join("");
+      }
+
+      chips.forEach((c) => c.addEventListener("click", () => setMode(c.dataset.mode)));
+
+      // Tiny toast
+      function toast(msg) {
+        const t = document.createElement("div");
+        t.textContent = msg;
+        t.style.position = "fixed";
+        t.style.left = "50%";
+        t.style.bottom = "24px";
+        t.style.transform = "translateX(-50%)";
+        t.style.padding = "10px 12px";
+        t.style.borderRadius = "14px";
+        t.style.border = "1px solid rgba(148,163,184,.18)";
+        t.style.background = "rgba(2,6,23,.85)";
+        t.style.backdropFilter = "blur(12px)";
+        t.style.color = "rgba(226,232,240,.92)";
+        t.style.fontSize = "13px";
+        t.style.zIndex = "9999";
+        t.style.boxShadow = "0 20px 60px rgba(0,0,0,.45)";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1600);
+      }
+      window.toast = toast;
+    </script>
+  </body>
+</html>

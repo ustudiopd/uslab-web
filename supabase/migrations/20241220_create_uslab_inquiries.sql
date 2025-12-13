@@ -57,3 +57,11 @@ COMMENT ON COLUMN public.uslab_inquiries.status IS '문의 상태: pending(대�
 
 
 
+
+
+
+
+
+
+
+

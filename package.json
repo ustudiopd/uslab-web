@@ -13,7 +13,13 @@
     "@supabase/supabase-js": "^2.45.4",
     "@tailwindcss/typography": "^0.5.19",
     "@tiptap/core": "^3.13.0",
+    "@tiptap/extension-horizontal-rule": "^3.13.0",
+    "@tiptap/extension-image": "^3.13.0",
+    "@tiptap/extension-link": "^3.13.0",
+    "@tiptap/extension-task-item": "^3.13.0",
+    "@tiptap/extension-task-list": "^3.13.0",
     "@tiptap/html": "^3.13.0",
+    "@tiptap/markdown": "^3.13.0",
     "@tiptap/react": "^3.13.0",
     "@tiptap/starter-kit": "^3.13.0",
     "ai": "^5.0.112",
@@ -38,5 +44,8 @@
     "typescript": "^5.5.4"
   }
 }
+
+
+
 
 

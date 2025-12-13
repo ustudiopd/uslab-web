@@ -97,6 +97,39 @@ export async function PUT(request: Request, { params }: RouteParams) {
         })
       : authClient;
 
+    // slug가 변경되는 경우 중복 체크 (현재 포스트 제외)
+    if (body.slug && body.locale) {
+      const { data: existingPost, error: checkError } = await supabase
+        .from('uslab_posts')
+        .select('id, slug, locale, title')
+        .eq('slug', body.slug)
+        .eq('locale', body.locale)
+        .neq('id', id) // 현재 포스트는 제외
+        .maybeSingle();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Error checking slug:', checkError);
+      }
+
+      if (existingPost) {
+        return NextResponse.json(
+          { 
+            error: 'Slug already exists',
+            details: `같은 언어(${body.locale})에서 slug "${body.slug}"가 이미 사용 중입니다.`,
+            code: 'DUPLICATE_SLUG',
+            existingPost: {
+              id: existingPost.id,
+              slug: existingPost.slug,
+              locale: existingPost.locale,
+              title: existingPost.title,
+            },
+            hint: '다른 slug를 사용하거나 기존 포스트를 수정하세요.',
+          },
+          { status: 409 } // Conflict
+        );
+      }
+    }
+
     const { data: post, error: updateError } = await supabase
       .from('uslab_posts')
       .update(body)
@@ -188,6 +221,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     );
   }
 }
+
 
 
 

@@ -5,11 +5,38 @@
 :root {
   --font-noto-sans: 'Noto Sans KR', sans-serif;
   --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  
+  /* Novel.sh highlight 변수 */
+  --novel-highlight-default: #ffffff;
+  --novel-highlight-purple: #f6f3f8;
+  --novel-highlight-red: #fdebeb;
+  --novel-highlight-yellow: #fbf4a2;
+  --novel-highlight-blue: #c1ecf9;
+  --novel-highlight-green: #acf79f;
+  --novel-highlight-orange: #faebdd;
+  --novel-highlight-pink: #faf1f5;
+  --novel-highlight-gray: #f1f1ef;
+}
+
+.dark {
+  --novel-highlight-default: #000000;
+  --novel-highlight-purple: #3f2c4b;
+  --novel-highlight-red: #5c1a1a;
+  --novel-highlight-yellow: #5c4b1a;
+  --novel-highlight-blue: #1a3d5c;
+  --novel-highlight-green: #1a5c20;
+  --novel-highlight-orange: #5c3a1a;
+  --novel-highlight-pink: #5c1a3a;
+  --novel-highlight-gray: #3a3a3a;
 }
 
 body {
-  background-color: #020617; /* Slate-950 */
-  color: #e2e8f0; /* Slate-200 */
+  @apply bg-slate-950 text-slate-200;
+}
+
+/* Light mode styles */
+:root:not(.dark) body {
+  @apply bg-white text-slate-900;
 }
 
 .text-gradient {
@@ -31,16 +58,27 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  @apply bg-slate-900;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-track {
+  @apply bg-slate-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  @apply bg-slate-600 rounded;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb {
+  @apply bg-slate-400;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  @apply bg-slate-500;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500;
 }
 
 /* Selection */
@@ -55,6 +93,42 @@ body {
   overflow-wrap: break-word;
   hyphens: none;
 }
+
+/* Novel.sh ProseMirror 스타일 */
+.ProseMirror {
+  @apply p-12 px-8 sm:px-12;
+}
+
+.ProseMirror .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #64748b;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #64748b;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror img {
+  transition: filter 0.1s ease-in-out;
+}
+
+.ProseMirror img:hover {
+  cursor: pointer;
+  filter: brightness(90%);
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid #5abbf7;
+  filter: brightness(90%);
+}
+
 
 
 

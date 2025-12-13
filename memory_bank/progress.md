@@ -157,6 +157,29 @@
     - `overflow-wrap: break-word` - 긴 단어 자연스러운 줄바꿈
     - Contact 섹션 설명 텍스트에 적용
 
+## [2025-12-13] 블로그 조회수 카운터 기능 구현 완료
+- **조회수 추적 시스템 구축**:
+  - `supabase/migrations/20251213_add_blog_view_counter.sql`: 조회수 기능 마이그레이션 생성
+    - `uslab_posts.view_count` 컬럼 추가 (INTEGER, 기본값 0)
+    - 조회수 인덱스 생성 (`uslab_idx_posts_view_count`)
+    - `uslab_increment_view_count(UUID)` 함수 생성 (원자적 증가, SECURITY DEFINER)
+    - 발행된 포스트만 조회수 증가 (`is_published = true`)
+  - `app/api/posts/[id]/view/route.ts`: 조회수 증가 API 엔드포인트 생성
+    - POST 메서드로 조회수 증가
+    - 공개 API (인증 불필요)
+    - 에러 처리 및 로깅
+  - `components/blog/PostViewer.tsx`: 조회수 자동 증가 및 표시 기능 추가
+    - 포스트 페이지 로드 시 자동으로 조회수 증가 (한 번만 실행)
+    - 발행일 옆에 조회수 아이콘 및 숫자 표시
+    - 중복 증가 방지 (useRef 사용)
+- **완료된 기능**:
+  - ✅ 조회수 컬럼 및 인덱스 추가
+  - ✅ 원자적 조회수 증가 함수 (동시성 문제 방지)
+  - ✅ 조회수 증가 API 엔드포인트
+  - ✅ 프론트엔드 자동 조회수 증가
+  - ✅ 조회수 UI 표시
+  - ✅ 어드민 포스트 관리 목록에 조회수 표시 (기존 구현)
+
 ## [2025-01-02] 블로그 댓글 시스템 구현 완료
 - **댓글 테이블 마이그레이션**:
   - `supabase/migrations/20250102_create_uslab_comments.sql`: 댓글 테이블 마이그레이션 생성

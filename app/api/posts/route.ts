@@ -18,9 +18,36 @@ export async function GET(request: Request) {
     const all = searchParams.get('all') === 'true'; // Admin용: 모든 포스트 조회
 
     if (all) {
-      // Admin용: 모든 포스트 (발행/초안 모두)
-      const posts = await getAllPosts(lang);
-      return NextResponse.json({ posts });
+      // Admin용: 모든 포스트 (발행/초안 모두) - 서비스 롤 키 사용
+      const supabase = supabaseServiceRoleKey
+        ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+            auth: {
+              persistSession: false,
+              autoRefreshToken: false,
+            },
+          })
+        : createClient(supabaseUrl, supabaseAnonKey);
+
+      let query = supabase
+        .from('uslab_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (lang) {
+        query = query.eq('locale', lang);
+      }
+
+      const { data: posts, error: queryError } = await query;
+
+      if (queryError) {
+        console.error('Error fetching all posts:', queryError);
+        return NextResponse.json(
+          { error: 'Failed to fetch posts', details: queryError.message },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({ posts: posts || [] });
     } else {
       // 공개용: 발행된 포스트만
       const result = await getPublishedPosts(lang, { page, limit });
@@ -114,6 +141,37 @@ export async function POST(request: Request) {
       );
     }
 
+    // slug 중복 체크 (같은 locale에서)
+    const { data: existingPost, error: checkError } = await supabase
+      .from('uslab_posts')
+      .select('id, slug, locale, title')
+      .eq('slug', body.slug)
+      .eq('locale', body.locale)
+      .maybeSingle();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116은 "no rows returned" 오류이므로 무시
+      console.error('Error checking slug:', checkError);
+    }
+
+    if (existingPost) {
+      return NextResponse.json(
+        { 
+          error: 'Slug already exists',
+          details: `같은 언어(${body.locale})에서 slug "${body.slug}"가 이미 사용 중입니다.`,
+          code: 'DUPLICATE_SLUG',
+          existingPost: {
+            id: existingPost.id,
+            slug: existingPost.slug,
+            locale: existingPost.locale,
+            title: existingPost.title,
+          },
+          hint: '다른 slug를 사용하거나 기존 포스트를 수정하세요.',
+        },
+        { status: 409 } // Conflict
+      );
+    }
+
     // 인증된 클라이언트로 포스트 생성 (세션 설정 후)
     const { data: post, error: insertError } = await supabase
       .from('uslab_posts')
@@ -126,6 +184,19 @@ export async function POST(request: Request) {
 
     if (insertError) {
       console.error('Error creating post:', insertError);
+      
+      // Unique constraint 위반 (slug 중복)
+      if (insertError.code === '23505' || insertError.message.includes('duplicate key') || insertError.message.includes('uslab_idx_posts_locale_slug')) {
+        return NextResponse.json(
+          { 
+            error: 'Slug already exists',
+            details: `같은 언어(${body.locale})에서 slug "${body.slug}"가 이미 사용 중입니다.`,
+            code: insertError.code,
+            hint: '다른 slug를 사용하거나 기존 포스트를 수정하세요.',
+          },
+          { status: 409 } // Conflict
+        );
+      }
       
       // RLS 정책 위반인 경우 더 명확한 메시지 제공
       if (insertError.code === '42501' || insertError.message.includes('row-level security')) {
@@ -179,6 +250,7 @@ export async function POST(request: Request) {
     );
   }
 }
+
 
 
 

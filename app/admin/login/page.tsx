@@ -65,12 +65,11 @@ export default function AdminLoginPage() {
               <input
                 id="email"
                 type="email"
-                value={email}
+                value={email || ''}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
                 placeholder="admin@uslab.ai"
-                defaultValue="admin@uslab.ai"
               />
             </div>
 
@@ -81,7 +80,7 @@ export default function AdminLoginPage() {
               <input
                 id="password"
                 type="password"
-                value={password}
+                value={password || ''}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
@@ -102,6 +101,8 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+
+
 
 
 

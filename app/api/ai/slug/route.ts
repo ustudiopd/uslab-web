@@ -1,8 +1,38 @@
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export async function POST(req: Request) {
   try {
+    // 인증 확인 (관리자만 사용 가능)
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      return Response.json(
+        { error: 'Authorization header is required' },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      return Response.json(
+        { error: 'User not authenticated', details: authError?.message },
+        { status: 401 }
+      );
+    }
+
     const { title } = await req.json();
 
     if (!title || typeof title !== 'string') {
@@ -55,5 +85,6 @@ Slug:`,
     );
   }
 }
+
 
 

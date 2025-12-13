@@ -100,9 +100,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-800">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-slate-800 dark:border-slate-800 border-slate-200">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-sm font-semibold text-white">
+        <h2 className="text-sm font-semibold dark:text-white text-slate-900">
           댓글 ({comments.length})
         </h2>
         {!isFormOpen && (
@@ -117,11 +117,11 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
       {/* 댓글 작성 폼 */}
       {isFormOpen && (
-        <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-6">
+        <div className="bg-slate-900 dark:bg-slate-900 bg-slate-50 border border-slate-800 dark:border-slate-800 border-slate-200 rounded-lg p-4 mb-6">
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label htmlFor="author_name" className="block text-xs font-medium text-slate-300 mb-1">
+                <label htmlFor="author_name" className="block text-xs font-medium text-slate-300 dark:text-slate-300 text-slate-700 mb-1">
                   이름
                 </label>
                 <input
@@ -130,12 +130,12 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                   value={formData.author_name}
                   onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
                   required
-                  className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                  className="w-full dark:bg-slate-950 bg-white border dark:border-slate-700 border-slate-300 rounded px-3 py-2 text-sm dark:text-white text-slate-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
                   placeholder="이름"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-xs font-medium text-slate-300 mb-1">
+                <label htmlFor="password" className="block text-xs font-medium text-slate-300 dark:text-slate-300 text-slate-700 mb-1">
                   비밀번호
                 </label>
                 <input
@@ -144,13 +144,13 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   required
-                  className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+                  className="w-full dark:bg-slate-950 bg-white border dark:border-slate-700 border-slate-300 rounded px-3 py-2 text-sm dark:text-white text-slate-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
                   placeholder="수정/삭제용"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="content" className="block text-xs font-medium text-slate-300 mb-1">
+              <label htmlFor="content" className="block text-xs font-medium text-slate-300 dark:text-slate-300 text-slate-700 mb-1">
                 댓글
               </label>
               <textarea
@@ -159,15 +159,15 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 required
                 rows={3}
-                className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all resize-none"
+                className="w-full bg-slate-950 dark:bg-slate-950 bg-white border border-slate-700 dark:border-slate-700 border-slate-300 rounded px-3 py-2 text-sm text-white dark:text-white text-slate-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all resize-none"
                 placeholder="댓글을 입력하세요"
               />
             </div>
             {error && (
-              <div className="text-red-400 text-xs">{error}</div>
+              <div className="text-red-400 dark:text-red-400 text-red-600 text-xs">{error}</div>
             )}
             {success && (
-              <div className="text-green-400 text-xs">댓글이 작성되었습니다.</div>
+              <div className="text-green-400 dark:text-green-400 text-green-600 text-xs">댓글이 작성되었습니다.</div>
             )}
             <div className="flex gap-2">
               <button
@@ -184,7 +184,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                   setFormData({ author_name: '', password: '', content: '' });
                   setError(null);
                 }}
-                className="px-4 py-2 bg-slate-800 text-slate-300 rounded text-sm font-medium hover:bg-slate-700 transition-colors"
+                className="px-4 py-2 bg-slate-800 dark:bg-slate-800 bg-slate-200 text-slate-300 dark:text-slate-300 text-slate-700 rounded text-sm font-medium hover:bg-slate-700 dark:hover:bg-slate-700 hover:bg-slate-300 transition-colors"
               >
                 취소
               </button>
@@ -195,26 +195,26 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
       {/* 댓글 목록 */}
       {loading ? (
-        <div className="text-center py-6 text-slate-400 text-sm">댓글을 불러오는 중...</div>
+        <div className="text-center py-6 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 text-sm">댓글을 불러오는 중...</div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-6 text-slate-400 text-sm">아직 댓글이 없습니다.</div>
+        <div className="text-center py-6 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 text-sm">아직 댓글이 없습니다.</div>
       ) : (
         <div className="space-y-4">
           {comments.map((comment) => (
             <div
               key={comment.id}
-              className="bg-slate-900 border border-slate-800 rounded-lg p-4"
+              className="bg-slate-900 dark:bg-slate-900 bg-slate-50 border border-slate-800 dark:border-slate-800 border-slate-200 rounded-lg p-4"
             >
               <div className="flex items-start gap-3 mb-2">
-                <div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 font-bold text-sm flex-shrink-0">
+                <div className="w-8 h-8 bg-slate-800 dark:bg-slate-800 bg-slate-200 rounded-full flex items-center justify-center text-cyan-400 dark:text-cyan-400 text-cyan-600 font-bold text-sm flex-shrink-0">
                   {comment.author_name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="font-semibold text-white text-sm">{comment.author_name}</div>
-                    <div className="text-xs text-slate-400">{formatDate(comment.created_at)}</div>
+                    <div className="font-semibold dark:text-white text-slate-900 text-sm">{comment.author_name}</div>
+                    <div className="text-xs text-slate-400 dark:text-slate-400 text-slate-600">{formatDate(comment.created_at)}</div>
                   </div>
-                  <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
+                  <div className="text-slate-300 dark:text-slate-300 text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                     {comment.content}
                   </div>
                 </div>
@@ -226,5 +226,6 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     </div>
   );
 }
+
 
 

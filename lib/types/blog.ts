@@ -18,6 +18,7 @@ export interface UslabPost {
   author_id: string;
   locale: 'ko' | 'en';
   canonical_id: string | null;
+  view_count: number;
 }
 
 export interface UslabPostVersion {
@@ -94,6 +95,7 @@ export interface UpdateCommentData {
 export interface DeleteCommentData {
   password: string;
 }
+
 
 
 
