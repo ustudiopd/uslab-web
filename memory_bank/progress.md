@@ -323,6 +323,37 @@
   - ✅ 번역 완료 후 자동 EN 탭 전환
   - ✅ 청크 분할 + 병렬 처리 성능 최적화
 
+## [2025-12-14] SEO 기능 개선 및 발행 시 자동 생성 통합
+- ✅ **SEO 메타데이터 자동 생성 통합**
+  - 발행 시 SEO 메타데이터 자동 생성 기능 추가
+  - `app/admin/posts/[id]/page.tsx`: 편집 페이지 `handleUpdate` 함수에 SEO 생성 로직 추가
+  - `app/admin/posts/write/page.tsx`: 작성 페이지 `handlePublish` 함수에 SEO 생성 로직 추가
+  - 발행 시에만 SEO 생성 (초안 저장 시에는 생성하지 않음)
+  - SEO 생성 실패해도 발행은 정상 진행 (fallback 로직 사용)
+- ✅ **SEO API 다국어 지원**
+  - `app/api/ai/seo/route.ts`: locale 파라미터에 따라 프롬프트 언어 분기
+  - `locale === 'en'`: 영어 프롬프트로 영어 SEO 메타데이터 생성
+  - `locale === 'ko'`: 한국어 프롬프트로 한국어 SEO 메타데이터 생성
+- ✅ **SEO 메타데이터 Fallback 개선**
+  - `lib/utils/blog.ts`: `extractTextFromContent()` 함수 추가
+  - Tiptap JSON에서 텍스트 추출하여 본문 첫 150자를 description fallback으로 사용
+  - `app/[lang]/blog/[slug]/page.tsx`: `generateMetadata`에서 description fallback 적용
+  - `seo_description`이 null이어도 항상 description 생성 보장
+- ✅ **SEO 메타데이터 완성도 향상**
+  - OpenGraph 메타데이터: `type: 'article'`, `siteName` 추가
+  - Twitter 카드: `summary_large_image` 타입 추가
+  - JSON-LD 구조화 데이터: description fallback 적용
+- ✅ **Streaming Metadata 문제 해결**
+  - `next.config.mjs`: `htmlLimitedBots: /.*/` 설정 추가
+  - 모든 봇에서 metadata가 `<head>`에 포함되도록 설정
+  - SEO 도구들이 title/description을 정확히 인식할 수 있도록 개선
+- ✅ **완료된 기능**:
+  - ✅ 발행 시 SEO 메타데이터 자동 생성 (한국어/영어 자동 분기)
+  - ✅ Description fallback (본문에서 추출)
+  - ✅ OpenGraph 및 Twitter 카드 메타데이터
+  - ✅ JSON-LD 구조화 데이터 (Article, BreadcrumbList, Organization)
+  - ✅ Streaming metadata 비활성화로 SEO 도구 호환성 향상
+
 ## [2025-12-14] 메인페이지 UI/UX 개선 및 로고 섹션 최적화
 - ✅ **Hero 섹션 UI 개선**
   - "지금 시작하기" 버튼 제거 (Hero.tsx)

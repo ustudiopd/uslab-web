@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase/client';
 import type { JSONContent } from 'novel';
 import BlogEditor from '@/components/editor/BlogEditor';
 import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
+import { generateContentHTML } from '@/lib/utils/generate-html';
 
 export default function WritePostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -217,9 +218,56 @@ export default function WritePostPage() {
         return;
       }
 
+      // SEO 메타데이터 자동 생성
+      let seoData = null;
+      try {
+        // Tiptap JSON을 HTML로 변환
+        const htmlContent = generateContentHTML(content);
+        
+        // SEO API 호출
+        const seoResponse = await fetch('/api/ai/seo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            full_content: htmlContent,
+            title: title,
+            locale: locale,
+          }),
+        });
+
+        if (seoResponse.ok) {
+          seoData = await seoResponse.json();
+          console.log('SEO 메타데이터 생성 완료:', seoData);
+        } else {
+          console.warn('SEO 생성 실패, fallback 사용');
+        }
+      } catch (seoError) {
+        console.error('SEO 생성 중 오류:', seoError);
+        // SEO 생성 실패해도 발행은 진행 (fallback이 있으므로)
+      }
+
       // 이미 저장된 포스트가 있으면 업데이트, 없으면 생성
       const url = postId ? `/api/posts/${postId}` : '/api/posts';
       const method = postId ? 'PUT' : 'POST';
+
+      const postData: any = {
+        title,
+        slug,
+        content,
+        locale,
+        is_published: true,
+        published_at: new Date().toISOString(),
+      };
+
+      // SEO 데이터가 있으면 포함
+      if (seoData) {
+        postData.seo_title = seoData.seo_title;
+        postData.seo_description = seoData.seo_description;
+        postData.seo_keywords = seoData.seo_keywords;
+      }
 
       const response = await fetch(url, {
         method,
@@ -227,14 +275,7 @@ export default function WritePostPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({
-          title,
-          slug,
-          content,
-          locale,
-          is_published: true,
-          published_at: new Date().toISOString(),
-        }),
+        body: JSON.stringify(postData),
       });
 
       if (response.ok) {

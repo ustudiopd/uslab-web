@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 import type { Metadata } from 'next';
+import { extractTextFromContent } from '@/lib/utils/blog';
 
 interface BlogPostPageProps {
   params: Promise<{ lang: Locale; slug: string }>;
@@ -35,17 +36,37 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://uslab.ai';
+  const canonicalUrl = `${baseUrl}/${lang}/blog/${slug}`;
+
+  // Description fallback: seo_description이 없으면 본문 첫 150자 사용
+  const extractedDescription = extractTextFromContent(post.content, 150);
+  const description = post.seo_description || extractedDescription || (lang === 'ko' ? 'USLab.ai 블로그 포스트' : 'USLab.ai blog post');
+  const title = post.seo_title || post.title;
+  const ogImage = post.thumbnail_url ? [post.thumbnail_url] : undefined;
+
+  // 메타데이터가 항상 생성되도록 보장
   return {
-    title: post.seo_title || post.title,
-    description: post.seo_description || undefined,
+    title: title || (lang === 'ko' ? '블로그 포스트 | USLab.ai' : 'Blog Post | USLab.ai'),
+    description: description,
     keywords: post.seo_keywords || undefined,
     alternates: {
+      canonical: canonicalUrl,
       languages: alternateLanguages,
     },
     openGraph: {
-      title: post.seo_title || post.title,
-      description: post.seo_description || undefined,
-      images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
+      title: title,
+      description: description,
+      images: ogImage,
+      url: canonicalUrl,
+      type: 'article',
+      siteName: 'USLab.ai',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: ogImage,
     },
   };
 }
@@ -58,8 +79,97 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://uslab.ai';
+  const postUrl = `${baseUrl}/${lang}/blog/${slug}`;
+  const publishedDate = post.published_at || post.created_at;
+  const modifiedDate = post.updated_at || post.created_at;
+
+  // Description fallback for JSON-LD (generateMetadata와 동일하게)
+  const descriptionForJsonLd = post.seo_description || extractTextFromContent(post.content, 150);
+
+  // JSON-LD 구조화 데이터
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.seo_title || post.title,
+    description: descriptionForJsonLd,
+    image: post.thumbnail_url ? [post.thumbnail_url] : undefined,
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
+    author: {
+      '@type': 'Organization',
+      name: 'USLab.ai',
+      url: baseUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'USLab.ai',
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/img/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+  };
+
+  // BreadcrumbList JSON-LD
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: lang === 'ko' ? '홈' : 'Home',
+        item: `${baseUrl}/${lang}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: lang === 'ko' ? '블로그' : 'Blog',
+        item: `${baseUrl}/${lang}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
+
+  // Organization JSON-LD (사이트 전체)
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'USLab.ai',
+    url: baseUrl,
+    logo: `${baseUrl}/img/logo.png`,
+    sameAs: [
+      // 소셜 미디어 링크가 있다면 추가
+    ],
+  };
+
   return (
     <div className="min-h-screen dark:bg-slate-950 bg-white">
+      {/* JSON-LD 구조화 데이터 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+
       <Navbar />
       <div className="pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

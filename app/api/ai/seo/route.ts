@@ -68,7 +68,30 @@ export async function POST(req: Request) {
       );
     }
 
-    const prompt = `
+    // locale에 따라 프롬프트 언어 결정
+    const isEnglish = locale === 'en';
+    const prompt = isEnglish
+      ? `
+Generate SEO metadata for the following blog post.
+
+Title: ${title}
+Content: ${full_content.substring(0, 2000)}${full_content.length > 2000 ? '...' : ''}
+
+Respond ONLY in the following JSON format (must be valid JSON):
+{
+  "seo_title": "SEO-optimized title (within 60 characters)",
+  "seo_description": "SEO-optimized description (within 160 characters)",
+  "seo_keywords": ["keyword1", "keyword2", "keyword3"]
+}
+
+Important: 
+- seo_keywords must be a JSON array (string[]) format only.
+- seo_title should be within 60 characters.
+- seo_description should be within 160 characters.
+- Must respond in valid JSON format only.
+- All content must be in English.
+    `
+      : `
 다음 블로그 포스트의 SEO 메타데이터를 생성해주세요.
 
 제목: ${title}
@@ -86,6 +109,7 @@ export async function POST(req: Request) {
 - seo_title은 60자 이내로 작성하세요.
 - seo_description은 160자 이내로 작성하세요.
 - 반드시 유효한 JSON 형식으로만 응답하세요.
+- 모든 내용은 한국어로 작성해주세요.
     `;
 
     try {

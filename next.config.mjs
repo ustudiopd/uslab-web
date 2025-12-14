@@ -8,6 +8,10 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@tiptap/react', '@tiptap/starter-kit'],
   },
   
+  // SEO: Streaming metadata 비활성화하여 모든 봇에서 metadata가 head에 포함되도록 설정
+  // 이렇게 하면 SEO 도구들이 title/description을 정확히 인식할 수 있습니다
+  htmlLimitedBots: /.*/,
+  
   // Turbopack 명시적 활성화 (Next.js 16 기본값)
   turbopack: {},
   

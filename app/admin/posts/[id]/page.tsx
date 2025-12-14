@@ -9,6 +9,7 @@ import type { JSONContent } from 'novel';
 import BlogEditor from '@/components/editor/BlogEditor';
 import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
 import PostVersionTabs from '@/components/admin/PostVersionTabs';
+import { generateContentHTML } from '@/lib/utils/generate-html';
 
 export default function EditPostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -98,20 +99,63 @@ export default function EditPostPage() {
         return;
       }
 
+      // 발행 시 SEO 메타데이터 자동 생성
+      let seoData = null;
+      if (publish) {
+        try {
+          // Tiptap JSON을 HTML로 변환
+          const htmlContent = generateContentHTML(content);
+          
+          // SEO API 호출
+          const seoResponse = await fetch('/api/ai/seo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({
+              full_content: htmlContent,
+              title: title,
+              locale: locale,
+            }),
+          });
+
+          if (seoResponse.ok) {
+            seoData = await seoResponse.json();
+            console.log('SEO 메타데이터 생성 완료:', seoData);
+          } else {
+            console.warn('SEO 생성 실패, fallback 사용');
+          }
+        } catch (seoError) {
+          console.error('SEO 생성 중 오류:', seoError);
+          // SEO 생성 실패해도 발행은 진행 (fallback이 있으므로)
+        }
+      }
+
+      // 포스트 업데이트
+      const updateData: any = {
+        title,
+        slug,
+        content,
+        locale,
+        is_published: publish,
+        published_at: publish ? new Date().toISOString() : post?.published_at,
+      };
+
+      // SEO 데이터가 있으면 포함
+      if (seoData) {
+        updateData.seo_title = seoData.seo_title;
+        updateData.seo_description = seoData.seo_description;
+        updateData.seo_keywords = seoData.seo_keywords;
+      }
+
       const response = await fetch(`/api/posts/${postId}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({
-          title,
-          slug,
-          content,
-          locale,
-          is_published: publish,
-          published_at: publish ? new Date().toISOString() : post?.published_at,
-        }),
+        body: JSON.stringify(updateData),
       });
 
       if (response.ok) {
