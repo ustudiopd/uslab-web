@@ -1,12 +1,14 @@
 'use client';
 
-import { useMemo, useEffect, useRef } from 'react';
+import { useMemo, useEffect, useRef, useState } from 'react';
 import { generateHTML } from '@tiptap/html';
 import StarterKit from '@tiptap/starter-kit';
 import { Image } from '@tiptap/extension-image';
+import { Link } from '@tiptap/extension-link';
 import { TaskList } from '@tiptap/extension-task-list';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
+import { Small } from '@/components/editor/extensions/Small';
 import { Copy, Check } from 'lucide-react';
 import type { UslabPost } from '@/lib/types/blog';
 
@@ -17,6 +19,7 @@ interface PostViewerProps {
 export default function PostViewer({ post }: PostViewerProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const viewCountTracked = useRef(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   // 조회수 증가 (발행된 포스트만, 한 번만 실행)
   useEffect(() => {
@@ -45,9 +48,17 @@ export default function PostViewer({ post }: PostViewerProps) {
       return generateHTML(post.content, [
         StarterKit,
         Image,
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+        }),
         TaskList,
         TaskItem,
         HorizontalRule,
+        Small,
       ]);
     } catch (error) {
       console.error('Error rendering post content:', error);
@@ -55,22 +66,150 @@ export default function PostViewer({ post }: PostViewerProps) {
     }
   }, [post.content]);
 
-  // 링크를 새창으로 열리도록 설정
+  // 링크를 새창으로 열리도록 설정 및 URL 텍스트를 링크로 변환
   useEffect(() => {
     if (!contentRef.current) return;
 
-    const links = contentRef.current.querySelectorAll('a[href]');
-    
-    links.forEach((link) => {
-      const anchor = link as HTMLAnchorElement;
-      // 이미 설정되어 있으면 스킵
-      if (anchor.target === '_blank') return;
+    const setupLinks = () => {
+      const links = contentRef.current?.querySelectorAll('a[href]');
+      if (!links) return;
       
-      // 새창으로 열리도록 설정
-      anchor.target = '_blank';
-      anchor.rel = 'noopener noreferrer';
+      links.forEach((link) => {
+        const anchor = link as HTMLAnchorElement;
+        // 새창으로 열리도록 설정
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+      });
+    };
+
+    // URL 텍스트를 링크로 변환하는 함수
+    const convertUrlsToLinks = () => {
+      if (!contentRef.current) return;
+      
+      // 모든 텍스트 노드를 찾아서 URL 패턴을 링크로 변환
+      const walker = document.createTreeWalker(
+        contentRef.current,
+        NodeFilter.SHOW_TEXT,
+        null
+      );
+      
+      const textNodes: Text[] = [];
+      let node;
+      while (node = walker.nextNode()) {
+        if (node.textContent && /https?:\/\/[^\s\)]+/.test(node.textContent)) {
+          textNodes.push(node as Text);
+        }
+      }
+      
+      textNodes.forEach((textNode) => {
+        const text = textNode.textContent || '';
+        const urlPattern = /(https?:\/\/[^\s\)]+)/g;
+        const matches = Array.from(text.matchAll(urlPattern));
+        
+        if (matches.length > 0 && textNode.parentNode) {
+          const fragment = document.createDocumentFragment();
+          let lastIndex = 0;
+          
+          matches.forEach((match) => {
+            if (match.index !== undefined) {
+              // URL 앞의 텍스트 추가
+              if (match.index > lastIndex) {
+                fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
+              }
+              
+              // 링크 생성
+              const link = document.createElement('a');
+              link.href = match[0];
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.textContent = match[0];
+              link.className = 'text-cyan-500 hover:text-cyan-400 underline';
+              fragment.appendChild(link);
+              
+              lastIndex = match.index + match[0].length;
+            }
+          });
+          
+          // 남은 텍스트 추가
+          if (lastIndex < text.length) {
+            fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+          }
+          
+          // 원본 텍스트 노드를 fragment로 교체
+          textNode.parentNode.replaceChild(fragment, textNode);
+        }
+      });
+    };
+
+    // 초기 링크 설정
+    setupLinks();
+    
+    // URL 텍스트를 링크로 변환 (약간의 지연 후 실행)
+    setTimeout(() => {
+      convertUrlsToLinks();
+      setupLinks(); // 변환 후 다시 링크 설정
+    }, 100);
+
+    // MutationObserver를 사용하여 동적으로 추가되는 링크도 처리
+    const observer = new MutationObserver(() => {
+      setupLinks();
+    });
+
+    // DOM 변경 감지 시작
+    observer.observe(contentRef.current, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [htmlContent]);
+
+  // 이미지 클릭 시 라이트박스 모달 열기
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const images = contentRef.current.querySelectorAll('img');
+    
+    images.forEach((img) => {
+      const image = img as HTMLImageElement;
+      
+      // 이미 클릭 이벤트가 있으면 스킵
+      if (image.dataset.clickHandlerAdded === 'true') return;
+      
+      // 클릭 가능한 커서 스타일 추가
+      image.style.cursor = 'pointer';
+      
+      // 클릭 이벤트 추가
+      const handleImageClick = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // 라이트박스 모달 열기
+        if (image.src) {
+          setLightboxImage(image.src);
+        }
+      };
+      
+      image.addEventListener('click', handleImageClick);
+      image.dataset.clickHandlerAdded = 'true';
     });
   }, [htmlContent]);
+
+  // ESC 키로 라이트박스 닫기
+  useEffect(() => {
+    if (!lightboxImage) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLightboxImage(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [lightboxImage]);
 
   // 코드 블록에 복사 버튼 추가
   useEffect(() => {
@@ -224,9 +363,52 @@ export default function PostViewer({ post }: PostViewerProps) {
           prose-ul:dark:text-slate-300 prose-ul:text-slate-900 prose-ol:dark:text-slate-300 prose-ol:text-slate-900
           prose-li:dark:text-slate-300 prose-li:text-slate-900
           prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-800 dark:prose-img:border-slate-800 prose-img:border-slate-300 prose-img:shadow-lg
-          prose-hr:border-slate-300 dark:prose-hr:border-slate-700"
+          prose-hr:border-slate-300 dark:prose-hr:border-slate-700
+          prose-small:text-xs prose-small:dark:text-slate-400 prose-small:text-slate-600"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
+
+      {/* 이미지 라이트박스 모달 */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* 닫기 버튼 */}
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 p-3 rounded-full bg-slate-800/80 hover:bg-slate-700/80 text-white transition-colors z-10"
+            aria-label="닫기"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+
+          {/* 이미지 */}
+          <div
+            className="max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightboxImage}
+              alt="확대 이미지"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
     </article>
   );
 }

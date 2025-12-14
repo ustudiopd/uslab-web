@@ -8,6 +8,7 @@ import { Markdown } from '@tiptap/markdown';
 import { supabase } from '@/lib/supabase/client';
 import { suggestionItems, slashCommand } from './extensions';
 import { BubbleMenu } from './BubbleMenu';
+import { Small } from './extensions/Small';
 
 interface BlogEditorProps {
   initialContent?: JSONContent | null;
@@ -103,6 +104,7 @@ export default function BlogEditor({
     TaskItem,
     Horizontal, // Novel의 HorizontalRule 사용
     CustomKeymap, // 커스텀 키맵 (Ctrl+Z, Ctrl+Y 등)
+    Small, // Small 태그 지원
     slashCommand, // 슬래시 명령어 확장
   ], [imageExtension]);
 

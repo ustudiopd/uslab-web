@@ -180,6 +180,42 @@
   - ✅ 조회수 UI 표시
   - ✅ 어드민 포스트 관리 목록에 조회수 표시 (기존 구현)
 
+## [2025-12-13] 블로그 에디터 Small 태그 및 링크/이미지 기능 개선
+- **Small 태그 기능 추가**:
+  - `components/editor/extensions/Small.ts`: Small 태그 지원 extension 생성
+    - Tiptap Mark extension으로 `<small>` 태그 지원
+    - 타입 선언 추가 (`@tiptap/core` Commands 인터페이스 확장)
+    - 키보드 단축키: `Ctrl/Cmd + Shift + S`
+  - `components/editor/BlogEditor.tsx`: Small extension 추가
+  - `components/blog/PostViewer.tsx`: Small extension 추가 및 CSS 스타일 적용
+    - `prose-small:text-xs` 클래스로 작은 글씨 스타일 적용
+- **버블 메뉴에 폰트 작게 버튼 추가**:
+  - `components/editor/BubbleMenu.tsx`: Type 아이콘을 사용한 Small 토글 버튼 추가
+    - 텍스트 선택 시 버블 메뉴에서 폰트 작게 적용 가능
+    - `setSmall()`/`unsetSmall()` 명령어 사용
+    - 활성 상태 표시 (배경색 변경)
+- **슬래시 커맨드 정리**:
+  - `components/editor/extensions.tsx`: Small Text 항목 제거 (버블 메뉴에서만 사용)
+- **링크 새창 열기 기능 개선**:
+  - `components/blog/PostViewer.tsx`: 링크 새창 열기 기능 개선
+    - Tiptap Link extension 명시적 추가
+    - URL 텍스트를 자동으로 링크로 변환하는 기능 추가
+    - 모든 링크에 `target="_blank"` 및 `rel="noopener noreferrer"` 자동 적용
+    - MutationObserver를 사용하여 동적으로 추가되는 링크도 처리
+- **이미지 라이트박스 모달 기능 추가**:
+  - `components/blog/PostViewer.tsx`: 이미지 클릭 시 전체화면 모달 표시
+    - 이미지 클릭 시 라이트박스 모달 열기
+    - 닫기 버튼 추가 (우측 상단)
+    - ESC 키로 모달 닫기
+    - 배경 클릭으로 모달 닫기
+    - 이미지 최대 크기 제한 (90vw, 90vh)
+- **완료된 기능**:
+  - ✅ Small 태그 extension 생성 및 통합
+  - ✅ 버블 메뉴에 폰트 작게 버튼 추가
+  - ✅ 링크 새창 열기 기능 개선
+  - ✅ URL 텍스트 자동 링크 변환
+  - ✅ 이미지 라이트박스 모달 기능
+
 ## [2025-01-02] 블로그 댓글 시스템 구현 완료
 - **댓글 테이블 마이그레이션**:
   - `supabase/migrations/20250102_create_uslab_comments.sql`: 댓글 테이블 마이그레이션 생성

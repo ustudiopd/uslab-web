@@ -1,7 +1,7 @@
 'use client';
 
 import { EditorBubble, EditorBubbleItem, useEditor } from 'novel';
-import { Bold, Italic, Underline, Strikethrough, Code } from 'lucide-react';
+import { Bold, Italic, Underline, Strikethrough, Code, Type } from 'lucide-react';
 
 export function BubbleMenu() {
   const { editor } = useEditor();
@@ -38,6 +38,19 @@ export function BubbleMenu() {
         onSelect={() => editor.chain().focus().toggleCode().run()}
         className={`p-2 ${editor.isActive('code') ? 'bg-slate-800' : ''}`}>
         <Code className="h-4 w-4 text-slate-300" />
+      </EditorBubbleItem>
+      <EditorBubbleItem
+        onSelect={() => {
+          const chain = editor.chain().focus();
+          if (editor.isActive('small')) {
+            (chain as any).unsetSmall().run();
+          } else {
+            (chain as any).setSmall().run();
+          }
+        }}
+        className={`p-2 ${editor.isActive('small') ? 'bg-slate-800' : ''}`}
+        title="작은 글씨">
+        <Type className="h-4 w-4 text-slate-300" />
       </EditorBubbleItem>
     </EditorBubble>
   );

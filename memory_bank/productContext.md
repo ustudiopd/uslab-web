@@ -91,6 +91,28 @@
 3. 댓글 저장 (자동 승인)
 4. 댓글 수정/삭제: 비밀번호 확인 후 가능
 
+### [기능 6: 블로그 에디터 서식 기능]
+1. **버블 메뉴 (텍스트 선택 시)**:
+   - Bold (굵게): `Ctrl/Cmd + B`
+   - Italic (기울임): `Ctrl/Cmd + I`
+   - Underline (밑줄): `Ctrl/Cmd + U`
+   - Strikethrough (취소선): `Ctrl/Cmd + Shift + X`
+   - Code (인라인 코드): `Ctrl/Cmd + E`
+   - Small (작은 글씨): 버블 메뉴에서 Type 아이콘 클릭 또는 `Ctrl/Cmd + Shift + S`
+
+2. **슬래시 커맨드 (`/` 입력 시)**:
+   - Text, Heading 1-3, Bullet List, Numbered List, To-do List, Quote, Code 블록
+
+3. **링크 기능**:
+   - 본문의 URL 텍스트는 자동으로 클릭 가능한 링크로 변환
+   - 모든 링크는 새창에서 열림 (`target="_blank"`)
+   - 보안을 위해 `rel="noopener noreferrer"` 자동 적용
+
+4. **이미지 기능**:
+   - 이미지 클릭 시 전체화면 라이트박스 모달 표시
+   - ESC 키 또는 닫기 버튼으로 모달 닫기
+   - 배경 클릭으로도 모달 닫기 가능
+
 ### [기능 5: 다국어 포스트 관리]
 1. 한국어 원문 작성 및 발행
 2. 영어 번역 생성 시:

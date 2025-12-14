@@ -3,7 +3,7 @@
 import { Command, createSuggestionItems, renderItems } from 'novel';
 import { 
   CheckSquare, Code, Heading1, Heading2, Heading3, 
-  List, ListOrdered, Text, TextQuote 
+  List, ListOrdered, Text, TextQuote
 } from 'lucide-react';
 
 export const suggestionItems = createSuggestionItems([
