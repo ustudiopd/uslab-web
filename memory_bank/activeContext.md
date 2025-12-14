@@ -106,4 +106,17 @@
     - `modoolucture` → `modu_` prefix
     - `uslab.ai` → `uslab_` prefix
   - **⚠️ 주의**: uslab.ai는 독립적인 Supabase 프로젝트가 **아니며**, ustudio 프로젝트 내에서 prefix로 구분되는 하나의 웹사이트입니다.
+- ⚠️ **성능 고려사항: 블로그 번역 기능**
+  - **현재 상태**: KO/EN 자동 번역 기능 구현 완료 (`/api/ai/translate-post`)
+  - **실제 소요 시간**: 약 38초 (테스트 결과)
+  - **배포 환경**: Vercel Pro + Fluid Compute 활성화
+    - Vercel Pro 기본 타임아웃: 60초
+    - Fluid Compute: 동시성 관리 및 성능 최적화 활성화
+    - 현재 38초는 60초 제한 내에 있어 기술적으로 문제 없음
+  - **향후 개선 방안** (문제 발생 시):
+    - Vercel Queue로 전환하여 백그라운드 처리
+    - 즉시 응답 반환 + 작업 ID로 진행 상태 추적
+    - 타임아웃 걱정 없이 안정적인 처리
+    - 실패 시 자동 재시도 기능
+  - **현재 결정**: 문제 발생 시 Queue로 전환 예정
 

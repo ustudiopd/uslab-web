@@ -80,8 +80,16 @@
 
 ## 3. 배포 환경  
 - **호스팅**: 
-  - Frontend: Vercel
+  - Frontend: Vercel (Pro 플랜)
   - Backend: Supabase
+- **Vercel 설정**:
+  - **플랜**: Pro (유료)
+  - **Fluid Compute**: 활성화됨 (동시성 관리 및 성능 최적화)
+  - **Function 타임아웃**: 60초 (기본값)
+  - **성능 고려사항**:
+    - 블로그 번역 기능 (`/api/ai/translate-post`) 소요 시간: 약 38초
+    - 현재는 60초 제한 내에 있어 문제 없음
+    - 향후 더 긴 처리 시간이 필요하거나 타임아웃 이슈 발생 시 Vercel Queue로 전환 고려
 - **CI/CD**: 
   - Vercel 자동 배포 (Git 연동)
   - GitHub Actions (선택적)
