@@ -311,19 +311,23 @@ export default function AboutViewer({ about, htmlContent: serverHtmlContent }: A
       {/* 본문 (Tailwind Typography 적용) */}
       <div
         ref={contentRef}
-        className="prose dark:prose-invert prose-lg max-w-none
+        className="prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg max-w-none
           prose-headings:dark:text-white prose-headings:text-slate-900 prose-headings:font-bold
-          prose-p:dark:text-slate-300 prose-p:text-slate-900 prose-p:leading-relaxed
+          prose-h1:text-2xl sm:prose-h1:text-3xl lg:prose-h1:text-4xl
+          prose-h2:text-xl sm:prose-h2:text-2xl lg:prose-h2:text-3xl
+          prose-h3:text-lg sm:prose-h3:text-xl lg:prose-h3:text-2xl
+          prose-h4:text-base sm:prose-h4:text-lg lg:prose-h4:text-xl
+          prose-p:dark:text-slate-300 prose-p:text-slate-900 prose-p:leading-relaxed prose-p:text-sm sm:prose-p:text-base
           prose-a:text-cyan-500 prose-a:no-underline hover:prose-a:text-cyan-400 hover:prose-a:underline
           prose-strong:dark:text-white prose-strong:text-slate-900 prose-strong:font-semibold
-          prose-code:dark:text-cyan-400 prose-code:text-cyan-600 prose-code:dark:bg-slate-800 prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
-          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-900 prose-pre:bg-slate-100 prose-pre:border-2 prose-pre:border-slate-800 dark:prose-pre:border-slate-800 prose-pre:border-slate-300 prose-pre:rounded-lg prose-pre:relative
-          prose-blockquote:border-l-4 prose-blockquote:border-cyan-500 prose-blockquote:dark:text-slate-300 prose-blockquote:text-slate-800 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:pl-4 prose-blockquote:py-2 prose-blockquote:my-4
+          prose-code:dark:text-cyan-400 prose-code:text-cyan-600 prose-code:dark:bg-slate-800 prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-xs sm:prose-code:text-sm
+          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-900 prose-pre:bg-slate-100 prose-pre:border-2 prose-pre:border-slate-800 dark:prose-pre:border-slate-800 prose-pre:border-slate-300 prose-pre:rounded-lg prose-pre:relative prose-pre:text-xs sm:prose-pre:text-sm
+          prose-blockquote:border-l-4 prose-blockquote:border-cyan-500 prose-blockquote:dark:text-slate-300 prose-blockquote:text-slate-800 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:pl-3 sm:prose-blockquote:pl-4 prose-blockquote:py-2 prose-blockquote:my-3 sm:prose-blockquote:my-4
           prose-ul:dark:text-slate-300 prose-ul:text-slate-900 prose-ol:dark:text-slate-300 prose-ol:text-slate-900
-          prose-li:dark:text-slate-300 prose-li:text-slate-900
-          prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-800 dark:prose-img:border-slate-800 prose-img:border-slate-300 prose-img:shadow-lg
-          prose-hr:border-slate-300 dark:prose-hr:border-slate-700
-          prose-small:text-xs prose-small:dark:text-slate-400 prose-small:text-slate-600"
+          prose-li:dark:text-slate-300 prose-li:text-slate-900 prose-li:text-sm sm:prose-li:text-base
+          prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-800 dark:prose-img:border-slate-800 prose-img:border-slate-300 prose-img:shadow-lg prose-img:my-3 sm:prose-img:my-4
+          prose-hr:border-slate-300 dark:prose-hr:border-slate-700 prose-hr:my-3 sm:prose-hr:my-4
+          prose-small:text-[10px] sm:prose-small:text-xs prose-small:dark:text-slate-400 prose-small:text-slate-600"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
 
@@ -371,3 +375,4 @@ export default function AboutViewer({ about, htmlContent: serverHtmlContent }: A
     </div>
   );
 }
+

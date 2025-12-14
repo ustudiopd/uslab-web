@@ -40,3 +40,4 @@ COMMENT ON FUNCTION uslab_increment_about_view_count(UUID) IS '소개 페이지 
 
 -- 7. anon 및 authenticated 역할에 함수 실행 권한 부여
 GRANT EXECUTE ON FUNCTION uslab_increment_about_view_count(UUID) TO anon, authenticated;
+

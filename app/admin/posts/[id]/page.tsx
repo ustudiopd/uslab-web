@@ -353,56 +353,59 @@ export default function EditPostPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
-      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-12">
         {/* 헤더 */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-tight sm:leading-normal">포스트 편집</h1>
-            <div className="flex gap-2 flex-wrap self-start sm:self-center">
-              {/* Markdown Import/Export 버튼 */}
-              <div className="flex gap-2">
+        <div className="mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex flex-col gap-3 sm:gap-4 mb-3 sm:mb-4 lg:mb-6">
+            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-white leading-tight">포스트 편집</h1>
+            {/* 모바일: 버튼들을 세로로 배치 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+              {/* Markdown Import/Export 버튼 - 모바일에서 가로 스크롤 */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide sm:overflow-visible">
                 <button
                   onClick={handleImportMarkdown}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 파일 가져오기"
                 >
-                  Import .md
+                  Import
                 </button>
                 <button
                   onClick={handleCopyMarkdown}
                   disabled={!content}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운으로 복사"
                 >
-                  Copy MD
+                  Copy
                 </button>
                 <button
                   onClick={handleDownloadMarkdown}
                   disabled={!content}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 다운로드"
                 >
-                  Download .md
+                  Download
                 </button>
               </div>
-              <button
-                onClick={() => router.push('/admin/posts')}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
-              >
-                목록
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
-              >
-                삭제
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => router.push('/admin/posts')}
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                >
+                  목록
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-2.5 sm:px-3 py-1.5 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                >
+                  삭제
+                </button>
+              </div>
             </div>
           </div>
 
           {/* 버전 탭 */}
           {canonicalRootId && (
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <PostVersionTabs
                 canonicalRootId={canonicalRootId}
                 koPostId={canonicalRootId}
@@ -413,9 +416,9 @@ export default function EditPostPage() {
           )}
 
           {/* 상태 표시 */}
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
             <span
-              className={`px-3 py-1 rounded text-sm font-medium ${
+              className={`px-2.5 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium ${
                 post.is_published
                   ? 'bg-green-500/20 text-green-400'
                   : 'bg-yellow-500/20 text-yellow-400'
@@ -426,8 +429,8 @@ export default function EditPostPage() {
           </div>
 
           {/* 제목 입력 */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+          <div className="mb-3 sm:mb-4">
+            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
               제목
             </label>
             <input
@@ -435,13 +438,13 @@ export default function EditPostPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="포스트 제목을 입력하세요"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
           {/* Slug 입력 */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+          <div className="mb-3 sm:mb-4">
+            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
               Slug (URL 경로)
             </label>
             <input
@@ -449,26 +452,26 @@ export default function EditPostPage() {
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="ai-trend-2025"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
             />
           </div>
 
           {/* 언어 표시 (읽기 전용, 탭으로 관리) */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
               언어
             </label>
-            <div className="px-3 py-2 bg-slate-800 border border-slate-700 rounded text-slate-300">
+            <div className="px-3 py-2 bg-slate-800 border border-slate-700 rounded text-xs sm:text-sm text-slate-300">
               {locale === 'ko' ? '한국어' : 'English'}
             </div>
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs text-slate-500">
               언어는 위의 탭에서 전환할 수 있습니다.
             </p>
           </div>
         </div>
 
         {/* 에디터 */}
-        <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+        <div className="mb-4 sm:mb-6 lg:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px]">
           <BlogEditor
             key={editorKey}
             editorKey={editorKey}

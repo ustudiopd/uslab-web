@@ -94,6 +94,16 @@ body {
   hyphens: none;
 }
 
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
 /* Novel.sh ProseMirror 스타일 */
 .ProseMirror {
   @apply p-12 px-8 sm:px-12;

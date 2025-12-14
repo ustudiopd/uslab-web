@@ -156,3 +156,4 @@ export function parseSlugFromPath(pathname: string): string | null {
   const match = pathname.match(/^\/(?:ko|en)\/blog\/([^/]+)/);
   return match ? match[1] : null;
 }
+

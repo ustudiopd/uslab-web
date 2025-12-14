@@ -208,56 +208,51 @@ export default function AboutPage() {
 
 
   return (
-    <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-12">
         {/* 헤더 */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-tight sm:leading-normal">
+        <div className="mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex flex-col gap-3 sm:gap-4 mb-3 sm:mb-4 lg:mb-6">
+            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-white leading-tight">
               소개 페이지 관리
             </h1>
-            <div className="flex items-center gap-2 flex-wrap self-start sm:self-center">
+            {/* 모바일: 버튼들을 세로로 배치 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
               {saveMessage && (
-                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500/20 border border-green-500/50 text-green-400 rounded text-xs sm:text-sm whitespace-nowrap">
+                <div className="px-3 py-1.5 bg-green-500/20 border border-green-500/50 text-green-400 rounded text-xs sm:text-sm whitespace-nowrap self-start">
                   {saveMessage}
                 </div>
               )}
-              {/* Markdown Import/Export 버튼 */}
-              <div className="flex gap-2">
+              {/* Markdown Import/Export 버튼 - 모바일에서 가로 스크롤 */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide sm:overflow-visible">
                 <button
                   onClick={handleImportMarkdown}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 파일 가져오기"
                 >
-                  Import .md
+                  Import
                 </button>
                 <button
                   onClick={handleCopyMarkdown}
                   disabled={!content}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운으로 복사"
                 >
-                  Copy MD
+                  Copy
                 </button>
                 <button
                   onClick={handleDownloadMarkdown}
                   disabled={!content}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 다운로드"
                 >
-                  Download .md
+                  Download
                 </button>
               </div>
-              <button
-                onClick={() => router.push('/admin/posts')}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-xs sm:text-sm whitespace-nowrap"
-              >
-                목록
-              </button>
             </div>
           </div>
 
           {/* 버전 탭 */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <AboutVersionTabs
               key={tabsKey}
               initialTab={about?.locale || 'ko'}
@@ -268,19 +263,19 @@ export default function AboutPage() {
 
           {/* 조회수 표시 (관리자만) */}
           {about && about.view_count !== undefined && (
-            <div className="mb-4">
-              <div className="flex items-center gap-2 text-slate-400 text-sm">
+            <div className="mb-3 sm:mb-4">
+              <div className="flex items-center gap-2 text-slate-400 text-xs sm:text-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="inline-block"
+                  className="inline-block flex-shrink-0"
                 >
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
@@ -292,7 +287,7 @@ export default function AboutPage() {
         </div>
 
         {/* 에디터 */}
-        <div className="mb-6 sm:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-3 sm:p-4 lg:p-6 min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+        <div className="mb-4 sm:mb-6 lg:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px]">
           <BlogEditor
             key={editorKey}
             editorKey={editorKey}
@@ -331,3 +326,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

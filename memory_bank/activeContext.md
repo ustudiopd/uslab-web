@@ -116,6 +116,14 @@
   - hreflang 및 canonical URL 설정
   - 관리자 페이지 저장 시 AI SEO 자동 생성 기능 통합 (`/api/ai/seo`)
   - 블로그와 동일한 SEO 자동 생성 워크플로우 적용
+- ✅ **모바일 레이아웃 전체 개선**
+  - AdminLayout 모바일 최적화 (세로 레이아웃, 탭/사용자 정보 분리)
+  - 소개 페이지 모바일 최적화 (패딩, 폰트 크기 조정)
+  - 관리자 페이지 모바일 최적화 (버튼 크기, 레이아웃 개선)
+  - 포스트 작성/수정 페이지 모바일 최적화
+  - AboutVersionTabs, PostVersionTabs 모바일 최적화
+  - TranslateActions, TranslateAboutActions 모바일 최적화
+  - scrollbar-hide 유틸리티 클래스 추가
 
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)

@@ -146,3 +146,4 @@ comment on function uslab_cleanup_old_tracking() is '90일 지난 트래킹 데�
 
 -- 함수 실행 권한 부여 (service_role만, Vercel Cron에서 호출)
 grant execute on function uslab_cleanup_old_tracking() to service_role;
+

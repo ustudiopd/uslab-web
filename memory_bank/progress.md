@@ -386,6 +386,44 @@
   - ✅ 저장 시 AI SEO 자동 생성
   - ✅ 블로그와 동일한 SEO 워크플로우 적용
 
+## [2025-01-16] 모바일 레이아웃 전체 개선
+- ✅ **AdminLayout 모바일 최적화**
+  - `components/admin/AdminLayout.tsx`: 모바일에서 세로 레이아웃으로 변경
+    - 탭 네비게이션 상단 배치 (가로 스크롤 가능)
+    - 사용자 정보 하단 배치 (아바타 아이콘 + 이메일 앞부분만 표시)
+    - 탭 버튼 크기 축소 (`text-xs`, `px-2.5 py-1.5`)
+    - 로그아웃 버튼 크기 축소
+- ✅ **소개 페이지 모바일 최적화**
+  - `app/[lang]/about/page.tsx`: 패딩 조정 (`py-8 sm:py-12 lg:py-16`)
+  - `components/about/AboutViewer.tsx`: Prose 클래스 모바일 최적화
+    - 폰트 크기 반응형 (`prose-sm sm:prose-base lg:prose-lg`)
+    - 제목 크기 조정 (`prose-h1:text-2xl sm:prose-h1:text-3xl`)
+    - 본문 텍스트 크기 조정 (`prose-p:text-sm sm:prose-p:text-base`)
+    - 이미지, 코드 블록, 인용구 등 모든 요소 모바일 최적화
+- ✅ **관리자 페이지 모바일 최적화**
+  - `app/admin/about/page.tsx`: 헤더 버튼 모바일 최적화
+    - 버튼 가로 스크롤 (`overflow-x-auto scrollbar-hide`)
+    - 버튼 텍스트 축소 (`text-[10px] sm:text-xs`)
+    - 버튼 패딩 축소 (`px-2.5 sm:px-3 py-1.5`)
+  - `components/admin/AboutVersionTabs.tsx`: 탭 버튼 모바일 최적화
+  - `components/admin/TranslateAboutActions.tsx`: 번역 버튼 모바일 최적화
+- ✅ **포스트 작성/수정 페이지 모바일 최적화**
+  - `app/admin/posts/write/page.tsx`: 헤더 및 입력 필드 모바일 최적화
+  - `app/admin/posts/[id]/page.tsx`: 편집 페이지 모바일 최적화
+  - `components/admin/PostVersionTabs.tsx`: 탭 버튼 모바일 최적화
+  - `components/admin/TranslateActions.tsx`: 번역 버튼 모바일 최적화
+- ✅ **유틸리티 클래스 추가**
+  - `app/globals.css`: `scrollbar-hide` 클래스 추가
+    - 가로 스크롤 버튼 영역에서 스크롤바 숨김
+    - 브라우저 호환성 고려 (IE/Edge, Firefox, Chrome/Safari/Opera)
+- ✅ **완료된 기능**:
+  - ✅ AdminLayout 모바일 세로 레이아웃
+  - ✅ 소개 페이지 모바일 최적화
+  - ✅ 관리자 페이지 모바일 최적화
+  - ✅ 포스트 작성/수정 페이지 모바일 최적화
+  - ✅ 모든 탭 및 버튼 컴포넌트 모바일 최적화
+  - ✅ scrollbar-hide 유틸리티 클래스 추가
+
 ## [2025-12-14] 메인페이지 UI/UX 개선 및 로고 섹션 최적화
 - ✅ **Hero 섹션 UI 개선**
   - "지금 시작하기" 버튼 제거 (Hero.tsx)

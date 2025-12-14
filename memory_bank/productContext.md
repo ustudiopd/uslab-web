@@ -27,21 +27,7 @@
   - 한국어 원문 생성 시: `canonical_id = id` (self 참조)
   - 영어 번역 생성 시: `canonical_id = 원문 id`
   - 같은 `canonical_id`를 가진 포스트들이 하나의 "글 그룹"
-- **자동 번역 기능**:
-  - **Create 모드**: KO 포스트를 기반으로 EN 초안 생성
-    - KO의 Tiptap JSON 구조(이미지 포함) 그대로 복제
-    - 텍스트 노드만 번역하여 적용
-    - 제목, SEO 제목, SEO 설명도 함께 번역
-  - **Update 모드**: EN 포스트의 텍스트만 업데이트
-    - 경로 기반 매칭(80% 이상): 같은 경로의 텍스트 노드만 업데이트
-    - 순서 기반 fallback(50~80%): 인덱스 기반으로 매칭하여 업데이트
-    - 구조 mismatch(50% 미만): 409 에러 + rebase 옵션 제시
-  - **Rebase 모드**: KO 구조로 EN 완전 재생성 (EN 이미지도 KO로 변경됨)
-- **번역 모델**: Gemini 2.0 Flash
-- **번역 품질**:
-  - 기술 용어 유지 (SOP, LLM, agent, USlab.ai, RAG, TTS, API, SDK 등)
-  - 자연스러운 en-US 톤
-  - 코드 블록, inline code, URL은 번역 제외
+- **원문 수정 → 번역 자동 업데이트**: 아니오 (수동 번역 필요)
 - **hreflang 태그**: `canonical_id`를 활용하여 자동 생성 (향후 구현)
 
 #### 삭제 정책
@@ -95,39 +81,15 @@
 
 3. **SEO 자동 생성** (`/api/ai/seo`):
    - 관리자 인증 확인
-   - 발행 시 자동 호출 (편집/작성 페이지에서 통합)
-   - locale에 따라 한국어/영어 프롬프트 분기
-   - SEO 메타데이터 생성 (seo_title, seo_description, seo_keywords)
-   - 파싱 실패 시 fallback 전략 (제목/본문에서 추출)
-   - 생성 실패해도 발행은 정상 진행 (페이지 레벨 fallback 사용)
+   - 발행 시 자동 호출
+   - SEO 메타데이터 생성 (zod 스키마 검증)
+   - 파싱 실패 시 fallback 전략
 
 ### [기능 4: 댓글 작성 및 관리]
 1. 사용자가 블로그 포스트 페이지에서 댓글 작성
 2. 이름, 비밀번호, 댓글 내용 입력
 3. 댓글 저장 (자동 승인)
 4. 댓글 수정/삭제: 비밀번호 확인 후 가능
-
-### [기능 6: 블로그 에디터 서식 기능]
-1. **버블 메뉴 (텍스트 선택 시)**:
-   - Bold (굵게): `Ctrl/Cmd + B`
-   - Italic (기울임): `Ctrl/Cmd + I`
-   - Underline (밑줄): `Ctrl/Cmd + U`
-   - Strikethrough (취소선): `Ctrl/Cmd + Shift + X`
-   - Code (인라인 코드): `Ctrl/Cmd + E`
-   - Small (작은 글씨): 버블 메뉴에서 Type 아이콘 클릭 또는 `Ctrl/Cmd + Shift + S`
-
-2. **슬래시 커맨드 (`/` 입력 시)**:
-   - Text, Heading 1-3, Bullet List, Numbered List, To-do List, Quote, Code 블록
-
-3. **링크 기능**:
-   - 본문의 URL 텍스트는 자동으로 클릭 가능한 링크로 변환
-   - 모든 링크는 새창에서 열림 (`target="_blank"`)
-   - 보안을 위해 `rel="noopener noreferrer"` 자동 적용
-
-4. **이미지 기능**:
-   - 이미지 클릭 시 전체화면 라이트박스 모달 표시
-   - ESC 키 또는 닫기 버튼으로 모달 닫기
-   - 배경 클릭으로도 모달 닫기 가능
 
 ### [기능 5: 다국어 포스트 관리]
 1. 한국어 원문 작성 및 발행
