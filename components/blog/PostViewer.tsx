@@ -40,28 +40,58 @@ export default function PostViewer({ post }: PostViewerProps) {
 
   // Tiptap JSON을 HTML로 변환
   const htmlContent = useMemo(() => {
-    try {
-      if (!post.content || typeof post.content !== 'object') {
-        return '<p>콘텐츠를 불러올 수 없습니다.</p>';
-      }
+    if (!post.content || typeof post.content !== 'object') {
+      return '<p>콘텐츠를 불러올 수 없습니다.</p>';
+    }
 
-      return generateHTML(post.content, [
-        StarterKit,
-        Image,
-        Link.configure({
-          openOnClick: false,
-          HTMLAttributes: {
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          },
-        }),
-        TaskList,
-        TaskItem,
-        HorizontalRule,
-        Small,
-      ]);
+    // 기본 extension 배열
+    const extensions = [
+      StarterKit,
+      Image,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        },
+      }),
+      TaskList,
+      TaskItem,
+      HorizontalRule,
+    ];
+
+    // Small extension을 안전하게 추가
+    try {
+      if (Small && typeof Small === 'object' && Small.name === 'small') {
+        extensions.push(Small);
+      }
+    } catch (smallError) {
+      console.warn('Small extension 추가 실패 (Small 없이 계속):', smallError);
+    }
+
+    // HTML 생성 시도
+    try {
+      return generateHTML(post.content, extensions);
     } catch (error) {
       console.error('Error rendering post content:', error);
+      // 에러 상세 정보를 콘솔에 출력
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+        });
+      }
+      // Small extension을 제거하고 재시도
+      if (extensions.includes(Small)) {
+        console.warn('Small extension 제거 후 재시도');
+        const extensionsWithoutSmall = extensions.filter(ext => ext !== Small);
+        try {
+          return generateHTML(post.content, extensionsWithoutSmall);
+        } catch (fallbackError) {
+          console.error('Small 없이도 렌더링 실패:', fallbackError);
+        }
+      }
       return '<p>콘텐츠를 렌더링하는 중 오류가 발생했습니다.</p>';
     }
   }, [post.content]);
