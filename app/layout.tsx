@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_KR, JetBrains_Mono } from 'next/font/google';
+import { Suspense } from 'react';
 import './globals.css';
+import Tracker from '@/components/analytics/Tracker';
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -50,6 +52,9 @@ export default function RootLayout({
         className={`${notoSansKR.variable} ${jetbrainsMono.variable} antialiased selection:bg-cyan-500/30 selection:text-cyan-200`}
       >
         {children}
+        <Suspense fallback={null}>
+          <Tracker />
+        </Suspense>
       </body>
     </html>
   );

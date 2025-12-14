@@ -35,7 +35,7 @@ export default function Philosophy() {
   return (
     <section
       id="about"
-      className="py-12 sm:py-16 lg:py-24 bg-slate-950 relative border-t border-slate-900"
+      className="pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 lg:pb-24 bg-slate-950 relative border-t border-slate-900"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16 lg:mb-20">

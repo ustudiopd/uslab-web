@@ -65,7 +65,7 @@ export default function Services() {
               <div
                 className={`absolute inset-0 bg-gradient-to-r ${service.gradient} to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg`}
               />
-              <div className="relative p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8">
+              <div className="relative p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-start gap-4 sm:gap-6 md:gap-8">
                 <div
                   className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-slate-900 rounded border border-slate-700 flex items-center justify-center text-2xl sm:text-3xl text-slate-300 group-hover:text-${service.hoverColor}-400 group-hover:border-${service.hoverColor}-500/50 transition-colors`}
                 >
@@ -86,11 +86,6 @@ export default function Services() {
                       </span>
                     ))}
                   </div>
-                </div>
-                <div className="flex-shrink-0 self-start md:self-center">
-                  <i
-                    className={`fas fa-arrow-right text-slate-600 group-hover:text-${service.hoverColor}-400 transform group-hover:translate-x-2 transition-all text-lg sm:text-xl`}
-                  />
                 </div>
               </div>
             </div>

@@ -323,3 +323,33 @@
   - ✅ 번역 완료 후 자동 EN 탭 전환
   - ✅ 청크 분할 + 병렬 처리 성능 최적화
 
+## [2025-12-14] 메인페이지 UI/UX 개선 및 로고 섹션 최적화
+- ✅ **Hero 섹션 UI 개선**
+  - "지금 시작하기" 버튼 제거 (Hero.tsx)
+  - 제목 두 줄 간격 조정 (`mt-2 sm:mt-3 md:mt-4`)
+  - 불필요한 Link import 제거
+- ✅ **Navbar 모바일 메뉴 개선**
+  - 모바일 메뉴에서 "문의하기" 버튼 제거
+  - 모바일 메뉴 간소화 (소개, 블로그, 언어 전환만)
+- ✅ **Logos 섹션 독립화**
+  - Hero와 Philosophy 사이에 별도의 Logos 섹션 생성 (`components/sections/Logos.tsx`)
+  - 로고 이미지 교체 (logo3.png → logo5.png → logo6.png)
+  - 위아래 마진 100px 설정 (`py-[100px]`)
+  - 다른 섹션과 동일한 템플릿 패턴 적용 (`max-w-7xl`, `px-4 sm:px-6 lg:px-8`)
+  - 원본 이미지 크기로 표시 (`unoptimized`, `w-auto h-auto`)
+  - `app/[lang]/page.tsx`에 Logos 컴포넌트 추가
+- ✅ **Portfolio 섹션 호버 효과 추가**
+  - 호버 시 border 색상 변경 (`hover:border-slate-600`)
+  - 이미지 확대 효과 (`group-hover:scale-105`)
+  - 제목 색상 변경 (`group-hover:text-${color}-400`)
+  - 전환 효과 (`transition-all`, `transition-transform`)
+  - 커서 포인터 추가 (`cursor-pointer`)
+- ✅ **어드민 대시보드 및 트래킹 시스템 구현 (Step 1 MVP)**
+  - 트래킹 테이블 마이그레이션 (`uslab_sessions`, `uslab_page_views`)
+  - Bot 필터링 및 Retention 정책 (90일)
+  - `/api/track` API 엔드포인트 (sendBeacon 지원)
+  - Tracker 컴포넌트 (세션 관리, UTM/Referrer 파싱)
+  - Analytics 쿼리 함수 (오늘/7일/30일 통계)
+  - `/admin/dashboard` 페이지 (KPI 카드, Top 데이터, 최근 활동)
+  - 로그인 후 대시보드로 리다이렉트
+

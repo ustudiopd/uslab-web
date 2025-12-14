@@ -56,23 +56,16 @@ export default function Portfolio() {
           {cases.map((caseItem, index) => (
             <div
               key={index}
-              className="group bg-slate-900 rounded border border-slate-800 overflow-hidden hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-900/10 transition-all"
+              className="bg-slate-900 rounded border border-slate-800 overflow-hidden hover:border-slate-600 transition-all group cursor-pointer"
             >
               <div className="h-40 sm:h-48 bg-slate-800 relative overflow-hidden">
-                <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-500">
-                  <Image
-                    src={caseItem.image}
-                    alt={t(`portfolio.cases.${caseItem.caseKey}.title`)}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-cyan-400 border border-cyan-400 px-3 sm:px-4 py-1 text-xs sm:text-sm rounded hover:bg-cyan-400 hover:text-slate-950 transition-colors">
-                    {t('portfolio.viewDetails')}
-                  </span>
-                </div>
+                <Image
+                  src={caseItem.image}
+                  alt={t(`portfolio.cases.${caseItem.caseKey}.title`)}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               </div>
               <div className="p-4 sm:p-6">
                 <div className="flex justify-between items-center mb-2 sm:mb-3">
@@ -86,7 +79,7 @@ export default function Portfolio() {
                   </span>
                 </div>
                 <h4
-                  className={`text-base sm:text-lg font-bold text-white mb-2 group-hover:text-${caseItem.color}-400 transition-colors leading-tight`}
+                  className={`text-base sm:text-lg font-bold text-white mb-2 leading-tight group-hover:text-${caseItem.color}-400 transition-colors`}
                 >
                   {t(`portfolio.cases.${caseItem.caseKey}.title`)}
                 </h4>

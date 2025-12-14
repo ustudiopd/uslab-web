@@ -30,8 +30,8 @@ export default function AdminLoginPage() {
       }
 
       if (data.user) {
-        // 로그인 성공 시 어드민 페이지로 리다이렉트
-        router.push('/admin/posts');
+        // 로그인 성공 시 대시보드로 리다이렉트
+        router.push('/admin/dashboard');
         router.refresh();
       }
     } catch (err) {

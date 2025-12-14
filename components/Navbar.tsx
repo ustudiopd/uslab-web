@@ -78,18 +78,6 @@ export default function Navbar() {
             >
               {t('nav.about')}
             </Link>
-            <a
-              href="#services"
-              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
-            >
-              {t('nav.services')}
-            </a>
-            <a
-              href="#portfolio"
-              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
-            >
-              {t('nav.portfolio')}
-            </a>
             <Link
               href={`/${locale}/blog`}
               className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
@@ -142,20 +130,6 @@ export default function Navbar() {
           >
             {t('nav.about')}
           </Link>
-          <a
-            href="#services"
-            onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
-          >
-            {t('nav.services')}
-          </a>
-          <a
-            href="#portfolio"
-            onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
-          >
-            {t('nav.portfolio')}
-          </a>
           <Link
             href={`/${locale}/blog`}
             onClick={handleLinkClick}
@@ -163,13 +137,6 @@ export default function Navbar() {
           >
             {t('nav.blog')}
           </Link>
-          <a
-            href="#contact"
-            onClick={handleContactClick}
-            className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 dark:hover:bg-slate-800 hover:bg-slate-100 rounded cursor-pointer"
-          >
-            {t('nav.contact')}
-          </a>
           {/* Mobile Language Toggle */}
           <Link
             href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
