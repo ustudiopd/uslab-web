@@ -27,7 +27,21 @@
   - 한국어 원문 생성 시: `canonical_id = id` (self 참조)
   - 영어 번역 생성 시: `canonical_id = 원문 id`
   - 같은 `canonical_id`를 가진 포스트들이 하나의 "글 그룹"
-- **원문 수정 → 번역 자동 업데이트**: 아니오 (수동 번역 필요)
+- **자동 번역 기능**:
+  - **Create 모드**: KO 포스트를 기반으로 EN 초안 생성
+    - KO의 Tiptap JSON 구조(이미지 포함) 그대로 복제
+    - 텍스트 노드만 번역하여 적용
+    - 제목, SEO 제목, SEO 설명도 함께 번역
+  - **Update 모드**: EN 포스트의 텍스트만 업데이트
+    - 경로 기반 매칭(80% 이상): 같은 경로의 텍스트 노드만 업데이트
+    - 순서 기반 fallback(50~80%): 인덱스 기반으로 매칭하여 업데이트
+    - 구조 mismatch(50% 미만): 409 에러 + rebase 옵션 제시
+  - **Rebase 모드**: KO 구조로 EN 완전 재생성 (EN 이미지도 KO로 변경됨)
+- **번역 모델**: Gemini 2.0 Flash
+- **번역 품질**:
+  - 기술 용어 유지 (SOP, LLM, agent, USlab.ai, RAG, TTS, API, SDK 등)
+  - 자연스러운 en-US 톤
+  - 코드 블록, inline code, URL은 번역 제외
 - **hreflang 태그**: `canonical_id`를 활용하여 자동 생성 (향후 구현)
 
 #### 삭제 정책

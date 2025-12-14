@@ -8,6 +8,7 @@ import type { UslabPost } from '@/lib/types/blog';
 import type { JSONContent } from 'novel';
 import BlogEditor from '@/components/editor/BlogEditor';
 import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
+import PostVersionTabs from '@/components/admin/PostVersionTabs';
 
 export default function EditPostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -32,6 +33,7 @@ export default function EditPostPage() {
   const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editorKey, setEditorKey] = useState(0); // 에디터 재생성을 위한 key
+  const [canonicalRootId, setCanonicalRootId] = useState<string>(''); // canonical_id 추적
 
   useEffect(() => {
     fetchPost();
@@ -61,6 +63,7 @@ export default function EditPostPage() {
         setLocale(postData.locale);
         setContent(postData.content);
         setThumbnailUrl(postData.thumbnail_url || '');
+        setCanonicalRootId(postData.canonical_id || postData.id);
       } else {
         const error = await response.json();
         alert(`포스트를 불러올 수 없습니다: ${error.error || '알 수 없는 오류'}`);
@@ -212,6 +215,21 @@ export default function EditPostPage() {
     router.push('/admin/posts');
   };
 
+  // 탭에서 포스트 변경 시 호출
+  const handlePostChange = (newPost: UslabPost) => {
+    setPost(newPost);
+    setTitle(newPost.title);
+    setSlug(newPost.slug);
+    setLocale(newPost.locale);
+    setContent(newPost.content);
+    setThumbnailUrl(newPost.thumbnail_url || '');
+    setCanonicalRootId(newPost.canonical_id || newPost.id);
+    // 에디터 재생성
+    setEditorKey(prev => prev + 1);
+    // URL 업데이트 (새 포스트 ID로)
+    router.replace(`/admin/posts/${newPost.id}`);
+  };
+
   // Markdown Import
   const handleImportMarkdown = async () => {
     fileInputRef.current?.click();
@@ -338,6 +356,18 @@ export default function EditPostPage() {
             </div>
           </div>
 
+          {/* 버전 탭 */}
+          {canonicalRootId && (
+            <div className="mb-6">
+              <PostVersionTabs
+                canonicalRootId={canonicalRootId}
+                koPostId={canonicalRootId}
+                initialTab={locale}
+                onPostChange={handlePostChange}
+              />
+            </div>
+          )}
+
           {/* 상태 표시 */}
           <div className="mb-4">
             <span
@@ -379,33 +409,17 @@ export default function EditPostPage() {
             />
           </div>
 
-          {/* 언어 선택 */}
+          {/* 언어 표시 (읽기 전용, 탭으로 관리) */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-slate-300 mb-2">
               언어
             </label>
-            <div className="flex gap-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="ko"
-                  checked={locale === 'ko'}
-                  onChange={(e) => setLocale(e.target.value as 'ko' | 'en')}
-                  className="mr-2"
-                />
-                <span className="text-slate-300">한국어</span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="en"
-                  checked={locale === 'en'}
-                  onChange={(e) => setLocale(e.target.value as 'ko' | 'en')}
-                  className="mr-2"
-                />
-                <span className="text-slate-300">English</span>
-              </label>
+            <div className="px-3 py-2 bg-slate-800 border border-slate-700 rounded text-slate-300">
+              {locale === 'ko' ? '한국어' : 'English'}
             </div>
+            <p className="mt-2 text-xs text-slate-500">
+              언어는 위의 탭에서 전환할 수 있습니다.
+            </p>
           </div>
         </div>
 

@@ -242,3 +242,48 @@
     - `modoolucture` (modu_ prefix)
     - `uslab.ai` (uslab_ prefix)
 
+## [2025-01-15] 블로그 KO/EN 버전 탭 및 자동 번역 기능 구현 완료
+- **KO/EN 버전 탭 시스템 구축**:
+  - `components/admin/PostVersionTabs.tsx`: KO/EN 버전 탭 컴포넌트 생성
+    - KO/EN 포스트 로드 및 탭 전환 기능
+    - 상태 배지 표시 (발행됨/초안/없음)
+    - 번역 완료 후 자동 EN 탭 전환
+  - `components/admin/TranslateActions.tsx`: 번역 액션 컴포넌트 생성
+    - Create 모드: "영문 번역으로 초안 생성" 버튼
+    - Update 모드: "자동 번역 업데이트" 버튼
+    - Rebase 옵션: "KO 구조로 재생성" 버튼
+    - 에러 처리 및 모달 (409 구조 mismatch 시 rebase 옵션 제시)
+- **번역 API 라우트 구현**:
+  - `app/api/ai/translate-post/route.ts`: 번역 API 엔드포인트 생성
+    - Create 모드: KO 구조 복제 + 텍스트만 번역
+    - Update 모드: 경로 기반 매칭(80% 이상) → 순서 기반 fallback(50~80%) → 409 에러(50% 미만)
+    - Rebase 모드: KO 구조로 완전 재생성
+    - 제목, SEO 제목, SEO 설명 번역 포함
+    - Gemini 2.0 Flash 모델 사용
+    - 청크 분할 + 병렬 처리로 성능 최적화
+- **번역 유틸리티 함수**:
+  - `lib/translate/tiptapSegments.ts`: Tiptap JSON 번역 처리 유틸리티
+    - `collectTranslatableTextNodes`: 번역 대상 텍스트 노드 수집 (codeBlock, inline code 제외)
+    - `applyTranslationsByPath`: Create 모드용 경로 기반 번역 적용
+    - `applyTranslationsByIndex`: Update 모드용 인덱스 기반 번역 적용
+    - `applyTranslationsByPathMatch`: Update 모드용 경로 매칭 번역 적용
+    - `calculatePathMatchRate`: 경로 기반 매칭률 계산
+- **관리자 편집 화면 통합**:
+  - `app/admin/posts/[id]/page.tsx`: PostVersionTabs 컴포넌트 통합
+    - 언어 선택 라디오 버튼을 탭으로 대체
+    - 탭 전환 시 포스트 자동 로드
+    - 번역 완료 후 자동 EN 탭 전환 및 편집 화면 업데이트
+- **제목 번역 기능**:
+  - `translateTitle` 함수 추가: 제목, SEO 제목, SEO 설명 별도 번역
+  - Create/Update 모드 모두에서 제목 번역 적용
+  - 기술 용어 유지 (SOP, LLM, agent, USlab.ai 등)
+- **완료된 기능**:
+  - ✅ KO/EN 버전 탭 UI
+  - ✅ Create 모드: KO 구조 복제 + 텍스트 번역
+  - ✅ Update 모드: EN 이미지 유지 + 텍스트만 업데이트
+  - ✅ 경로 기반 매칭 + 순서 기반 fallback
+  - ✅ 구조 mismatch 처리 (409 에러 + rebase 옵션)
+  - ✅ 제목 번역 (title, seo_title, seo_description)
+  - ✅ 번역 완료 후 자동 EN 탭 전환
+  - ✅ 청크 분할 + 병렬 처리 성능 최적화
+
