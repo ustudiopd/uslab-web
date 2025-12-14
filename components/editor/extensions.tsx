@@ -3,7 +3,7 @@
 import { Command, createSuggestionItems, renderItems } from 'novel';
 import { 
   CheckSquare, Code, Heading1, Heading2, Heading3, 
-  List, ListOrdered, Text, TextQuote
+  List, ListOrdered, Text, TextQuote, Youtube
 } from 'lucide-react';
 
 export const suggestionItems = createSuggestionItems([
@@ -85,6 +85,37 @@ export const suggestionItems = createSuggestionItems([
     icon: <Code size={18} />,
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
+  },
+  {
+    title: 'YouTube',
+    description: 'Embed a YouTube video.',
+    searchTerms: ['youtube', 'video', 'embed', '유튜브'],
+    icon: <Youtube size={18} />,
+    command: ({ editor, range }) => {
+      const url = prompt('YouTube URL을 입력하세요:');
+      if (!url) return;
+      
+      // YouTube URL에서 video ID 추출
+      const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+      const match = url.match(youtubeRegex);
+      
+      if (match) {
+        const videoId = match[1];
+        editor
+          .chain()
+          .focus()
+          .deleteRange(range)
+          .insertContent({
+            type: 'youtube',
+            attrs: {
+              src: `https://www.youtube.com/embed/${videoId}`,
+            },
+          })
+          .run();
+      } else {
+        alert('유효한 YouTube URL이 아닙니다.');
+      }
+    },
   },
 ]);
 

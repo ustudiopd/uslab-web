@@ -5,6 +5,7 @@ import { EditorRoot, EditorContent, StarterKit, UpdatedImage, createImageUpload,
 import { handleCommandNavigation } from 'novel';
 import type { JSONContent } from 'novel';
 import { Markdown } from '@tiptap/markdown';
+import { Youtube } from '@tiptap/extension-youtube';
 import { supabase } from '@/lib/supabase/client';
 import { suggestionItems, slashCommand } from './extensions';
 import { BubbleMenu } from './BubbleMenu';
@@ -92,6 +93,20 @@ export default function BlogEditor({
     });
   }, []);
 
+  // YouTube 확장 설정
+  const youtubeExtension = useMemo(() => {
+    return Youtube.configure({
+      controls: true,
+      nocookie: false,
+      width: 640,
+      height: 360, // 16:9 비율
+      HTMLAttributes: {
+        class: 'rounded-lg border border-slate-700 w-full',
+        style: 'aspect-ratio: 16/9;',
+      },
+    });
+  }, []);
+
   // 확장 설정을 메모이제이션
   const extensions = useMemo(() => [
     StarterKit.configure({
@@ -100,13 +115,14 @@ export default function BlogEditor({
     }),
     Markdown as any,
     imageExtension,
+    youtubeExtension,
     TaskList,
     TaskItem,
     Horizontal, // Novel의 HorizontalRule 사용
     CustomKeymap, // 커스텀 키맵 (Ctrl+Z, Ctrl+Y 등)
     Small, // Small 태그 지원
     slashCommand, // 슬래시 명령어 확장
-  ], [imageExtension]);
+  ], [imageExtension, youtubeExtension]);
 
   return (
     <EditorRoot>
@@ -132,9 +148,12 @@ export default function BlogEditor({
             const handled = handleImagePaste(view, event, uploadFn);
             if (handled) return true;
 
-            // URL 붙여넣기 감지 (이미지 URL인 경우)
+            // URL 붙여넣기 감지
             const text = event.clipboardData?.getData('text/plain');
-            if (text && /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(text)) {
+            if (!text) return false;
+
+            // 이미지 URL인 경우
+            if (/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(text)) {
               event.preventDefault();
               const { state, dispatch } = view;
               const { selection } = state;
@@ -145,6 +164,23 @@ export default function BlogEditor({
               dispatch(transaction);
               return true;
             }
+
+            // YouTube URL인 경우
+            const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const youtubeMatch = text.match(youtubeRegex);
+            if (youtubeMatch) {
+              event.preventDefault();
+              const { state, dispatch } = view;
+              const { selection } = state;
+              const videoId = youtubeMatch[1];
+              const youtubeNode = state.schema.nodes.youtube.create({
+                src: `https://www.youtube.com/embed/${videoId}`,
+              });
+              const transaction = state.tr.replaceSelectionWith(youtubeNode);
+              dispatch(transaction);
+              return true;
+            }
+
             return false;
           },
           handleDrop: (view, event, slice, moved) => {

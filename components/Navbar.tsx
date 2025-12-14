@@ -37,6 +37,15 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    // 메일 앱 열기
+    const subject = encodeURIComponent('USlab.ai 문의');
+    const body = encodeURIComponent('안녕하세요,\n\nUSlab.ai에 대한 문의사항이 있어 연락드립니다.\n\n');
+    window.location.href = `mailto:contact@uslab.ai?subject=${subject}&body=${body}`;
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav
       className={`fixed w-full z-50 dark:bg-slate-950/80 bg-white/80 backdrop-blur-md border-b transition-all duration-300 ${
@@ -63,12 +72,12 @@ export default function Navbar() {
 
           {/* Desktop Menu - 오른쪽 정렬 */}
           <div className="hidden md:flex items-center space-x-10 ml-auto">
-            <a
-              href="#about"
+            <Link
+              href={`/${locale}/about`}
               className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
             >
               {t('nav.about')}
-            </a>
+            </Link>
             <a
               href="#services"
               className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
@@ -89,7 +98,8 @@ export default function Navbar() {
             </Link>
             <a
               href="#contact"
-              className="bg-white/5 dark:bg-white/5 bg-slate-100 border border-slate-700 dark:border-slate-700 border-slate-300 text-white dark:text-white dark:hover:text-white text-slate-900 hover:text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 text-sm"
+              onClick={handleContactClick}
+              className="bg-white/5 dark:bg-white/5 bg-slate-100 border border-slate-700 dark:border-slate-700 border-slate-300 text-white dark:text-white dark:hover:text-white text-slate-900 hover:text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 text-sm cursor-pointer"
             >
               {t('nav.contact')}
             </a>
@@ -125,13 +135,13 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 py-4 space-y-3">
-          <a
-            href="#about"
+          <Link
+            href={`/${locale}/about`}
             onClick={handleLinkClick}
             className="block px-3 py-2 text-base font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-slate-900 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
           >
             {t('nav.about')}
-          </a>
+          </Link>
           <a
             href="#services"
             onClick={handleLinkClick}
@@ -155,8 +165,8 @@ export default function Navbar() {
           </Link>
           <a
             href="#contact"
-            onClick={handleLinkClick}
-            className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 dark:hover:bg-slate-800 hover:bg-slate-100 rounded"
+            onClick={handleContactClick}
+            className="block px-3 py-2 text-base font-medium text-cyan-400 hover:bg-slate-800 dark:hover:bg-slate-800 hover:bg-slate-100 rounded cursor-pointer"
           >
             {t('nav.contact')}
           </a>

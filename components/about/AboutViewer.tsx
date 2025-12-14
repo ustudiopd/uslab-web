@@ -10,26 +10,32 @@ import { TaskItem } from '@tiptap/extension-task-item';
 import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import { Youtube } from '@tiptap/extension-youtube';
 import { Small } from '@/components/editor/extensions/Small';
-import { Copy, Check } from 'lucide-react';
-import type { UslabPost } from '@/lib/types/blog';
+import type { UslabAbout } from '@/lib/types/about';
 
-interface PostViewerProps {
-  post: UslabPost;
+interface AboutViewerProps {
+  about: UslabAbout;
+  htmlContent?: string; // 서버에서 생성된 HTML (선택적)
 }
 
-export default function PostViewer({ post }: PostViewerProps) {
+export default function AboutViewer({ about, htmlContent: serverHtmlContent }: AboutViewerProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const viewCountTracked = useRef(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // 조회수 증가 (발행된 포스트만, 한 번만 실행)
+  // 클라이언트 마운트 확인
   useEffect(() => {
-    if (viewCountTracked.current || !post.is_published) return;
+    setMounted(true);
+  }, []);
+
+  // 조회수 증가 (한 번만 실행)
+  useEffect(() => {
+    if (viewCountTracked.current || !mounted) return;
     
     viewCountTracked.current = true;
     
     // 조회수 증가 API 호출
-    fetch(`/api/posts/${post.id}/view`, {
+    fetch(`/api/about/${about.locale}/view`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,11 +43,22 @@ export default function PostViewer({ post }: PostViewerProps) {
     }).catch((error) => {
       console.error('Failed to increment view count:', error);
     });
-  }, [post.id, post.is_published]);
+  }, [about.locale, mounted]);
 
   // Tiptap JSON을 HTML로 변환
+  // 서버에서 HTML이 제공되면 사용하고, 없으면 클라이언트에서 생성
   const htmlContent = useMemo(() => {
-    if (!post.content || typeof post.content !== 'object') {
+    // 서버에서 생성된 HTML이 있으면 사용
+    if (serverHtmlContent) {
+      return serverHtmlContent;
+    }
+
+    // 클라이언트에서만 생성 (서버 HTML이 없는 경우)
+    if (!mounted) {
+      return '';
+    }
+
+    if (!about.content || typeof about.content !== 'object') {
       return '<p>콘텐츠를 불러올 수 없습니다.</p>';
     }
 
@@ -82,9 +99,9 @@ export default function PostViewer({ post }: PostViewerProps) {
 
     // HTML 생성 시도
     try {
-      return generateHTML(post.content, extensions);
+      return generateHTML(about.content, extensions);
     } catch (error) {
-      console.error('Error rendering post content:', error);
+      console.error('Error rendering about content:', error);
       // 에러 상세 정보를 콘솔에 출력
       if (error instanceof Error) {
         console.error('Error details:', {
@@ -98,18 +115,18 @@ export default function PostViewer({ post }: PostViewerProps) {
         console.warn('Small extension 제거 후 재시도');
         const extensionsWithoutSmall = extensions.filter(ext => ext !== Small);
         try {
-          return generateHTML(post.content, extensionsWithoutSmall);
+          return generateHTML(about.content, extensionsWithoutSmall);
         } catch (fallbackError) {
           console.error('Small 없이도 렌더링 실패:', fallbackError);
         }
       }
       return '<p>콘텐츠를 렌더링하는 중 오류가 발생했습니다.</p>';
     }
-  }, [post.content]);
+  }, [about.content, mounted, serverHtmlContent]);
 
   // 링크를 새창으로 열리도록 설정 및 URL 텍스트를 링크로 변환
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (!contentRef.current || !mounted) return;
 
     const setupLinks = () => {
       const links = contentRef.current?.querySelectorAll('a[href]');
@@ -205,11 +222,11 @@ export default function PostViewer({ post }: PostViewerProps) {
     return () => {
       observer.disconnect();
     };
-  }, [htmlContent]);
+  }, [htmlContent, mounted]);
 
   // 이미지 클릭 시 라이트박스 모달 열기
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (!contentRef.current || !mounted) return;
 
     const images = contentRef.current.querySelectorAll('img');
     
@@ -236,7 +253,7 @@ export default function PostViewer({ post }: PostViewerProps) {
       image.addEventListener('click', handleImageClick);
       image.dataset.clickHandlerAdded = 'true';
     });
-  }, [htmlContent]);
+  }, [htmlContent, mounted]);
 
   // ESC 키로 라이트박스 닫기
   useEffect(() => {
@@ -252,84 +269,9 @@ export default function PostViewer({ post }: PostViewerProps) {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [lightboxImage]);
 
-  // 코드 블록에 복사 버튼 추가
-  useEffect(() => {
-    if (!contentRef.current) return;
-
-    const preElements = contentRef.current.querySelectorAll('pre');
-    
-    preElements.forEach((element) => {
-      const pre = element as HTMLPreElement;
-      
-      // 이미 복사 버튼이 있으면 스킵
-      if (pre.querySelector('.copy-code-button')) return;
-
-      // pre 요소를 relative로 만들기
-      pre.style.position = 'relative';
-
-      // 복사 버튼 생성 (pre 요소 안에 직접 추가)
-      const copyButton = document.createElement('button');
-      copyButton.className = 'copy-code-button absolute top-3 right-3 p-2 rounded-full border dark:border-slate-600 border-slate-400 dark:bg-slate-700/90 bg-slate-800/95 backdrop-blur-sm dark:text-slate-300 text-white hover:bg-slate-700 dark:hover:bg-slate-600 hover:bg-slate-900 transition-all z-20 shadow-lg';
-      copyButton.setAttribute('aria-label', '코드 복사');
-      
-      const copyIcon = document.createElement('div');
-      copyIcon.className = 'copy-icon';
-      copyIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2"/></svg>';
-      copyButton.appendChild(copyIcon);
-
-      // 툴팁 생성
-      const tooltip = document.createElement('div');
-      tooltip.className = 'absolute top-full right-0 mt-2 px-2 py-1 text-xs font-medium text-white bg-slate-900 dark:bg-slate-800 rounded shadow-lg opacity-0 pointer-events-none transition-opacity whitespace-nowrap z-30';
-      tooltip.textContent = '코드 복사';
-      copyButton.appendChild(tooltip);
-
-      // 툴팁 표시/숨김
-      copyButton.addEventListener('mouseenter', () => {
-        tooltip.classList.remove('opacity-0');
-        tooltip.classList.add('opacity-100');
-      });
-      copyButton.addEventListener('mouseleave', () => {
-        tooltip.classList.remove('opacity-100');
-        tooltip.classList.add('opacity-0');
-      });
-
-      // pre 요소에 직접 추가
-      pre.appendChild(copyButton);
-
-      // 복사 기능
-      const handleCopy = async () => {
-        const codeElement = pre.querySelector('code');
-        if (!codeElement) return;
-
-        const codeText = codeElement.textContent || '';
-        
-        try {
-          await navigator.clipboard.writeText(codeText);
-          
-          // 복사 성공 피드백
-          copyIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
-          copyButton.classList.remove('text-white', 'dark:text-slate-300');
-          copyButton.classList.add('text-green-400', 'dark:text-green-400');
-          tooltip.textContent = '복사됨!';
-          
-          setTimeout(() => {
-            copyIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2"/></svg>';
-            copyButton.classList.remove('text-green-400', 'dark:text-green-400');
-            copyButton.classList.add('dark:text-slate-300', 'text-white');
-            tooltip.textContent = '코드 복사';
-          }, 2000);
-        } catch (error) {
-          console.error('복사 실패:', error);
-        }
-      };
-
-      copyButton.addEventListener('click', handleCopy);
-    });
-  }, [htmlContent]);
-
   // YouTube iframe을 16:9 비율로 조정
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (!contentRef.current || !mounted) return;
 
     const youtubeIframes = contentRef.current.querySelectorAll('iframe[src*="youtube"], iframe[src*="youtu.be"]');
     
@@ -362,71 +304,10 @@ export default function PostViewer({ post }: PostViewerProps) {
         element.dataset.aspectRatioApplied = 'true';
       }
     });
-  }, [htmlContent]);
+  }, [htmlContent, mounted]);
 
   return (
-    <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* 제목 */}
-      <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold dark:text-white text-slate-900 mb-4">
-          {post.title}
-        </h1>
-        {post.published_at && (
-          <div className="flex items-center gap-4 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 text-sm">
-            <time dateTime={post.published_at}>
-              {new Date(post.published_at).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-            {post.view_count !== undefined && (
-              <span className="flex items-center gap-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="inline-block"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                {post.view_count.toLocaleString()}
-              </span>
-            )}
-            {post.seo_keywords && post.seo_keywords.length > 0 && (
-              <div className="flex items-center gap-2">
-                {post.seo_keywords.map((keyword, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-slate-800 dark:bg-slate-800 bg-slate-100 rounded text-cyan-500 text-xs"
-                  >
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </header>
-
-      {/* 썸네일 */}
-      {post.thumbnail_url && (
-        <div className="mb-8 rounded-lg overflow-hidden">
-          <img
-            src={post.thumbnail_url}
-            alt={post.title}
-            className="w-full h-auto object-cover"
-          />
-        </div>
-      )}
-
+    <div className="max-w-4xl mx-auto">
       {/* 본문 (Tailwind Typography 적용) */}
       <div
         ref={contentRef}
@@ -487,17 +368,6 @@ export default function PostViewer({ post }: PostViewerProps) {
           </div>
         </div>
       )}
-    </article>
+    </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-

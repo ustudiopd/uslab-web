@@ -17,6 +17,17 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   
+  // 이미지 도메인 설정 (Supabase Storage)
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
+  
   // 파일 감시 설정 (Windows 환경 최적화)
   webpack: (config, { dev }) => {
     if (dev) {

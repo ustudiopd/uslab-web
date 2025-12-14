@@ -242,6 +242,42 @@
     - `modoolucture` (modu_ prefix)
     - `uslab.ai` (uslab_ prefix)
 
+## [2025-01-15] 소개 페이지 시스템 구현 완료
+- **소개 페이지 인프라 구축**:
+  - `supabase/migrations/20250115_add_about_view_counter.sql`: 소개 페이지 조회수 기능 마이그레이션 생성 (MCP로 적용)
+    - `uslab_about.view_count` 컬럼 추가 (INTEGER, 기본값 0)
+    - 조회수 인덱스 생성 (`uslab_idx_about_view_count`)
+    - `uslab_increment_about_view_count(UUID)` 함수 생성 (원자적 증가, SECURITY DEFINER)
+  - `app/api/about/route.ts`: 소개 페이지 조회/수정 API 엔드포인트
+  - `app/api/about/[locale]/view/route.ts`: 조회수 증가 API 엔드포인트
+  - `app/[lang]/about/page.tsx`: 소개 페이지 라우트 (서버 컴포넌트)
+  - `components/about/AboutViewer.tsx`: 소개 페이지 뷰어 컴포넌트
+- **관리자 인터페이스**:
+  - `app/admin/about/page.tsx`: 소개 페이지 관리 페이지
+  - `components/admin/AboutVersionTabs.tsx`: KO/EN 버전 탭 컴포넌트
+  - 블로그 에디터와 동일한 UI/UX (한글/영문 탭, 자동 번역 기능)
+  - 조회수 표시 (관리자만 볼 수 있음)
+- **번역 기능**:
+  - `app/api/ai/translate-about/route.ts`: 소개 페이지 자동 번역 API
+  - 블로그 번역과 동일한 로직 (Create/Update 모드)
+  - Gemini 2.0 Flash 모델 사용
+- **YouTube 임베딩 기능**:
+  - `@tiptap/extension-youtube` 통합
+  - 에디터에서 YouTube URL 붙여넣기 시 자동 임베딩
+  - 16:9 비율 유지 (CSS aspect-ratio 사용)
+  - 슬래시 커맨드로 YouTube 삽입 가능
+- **Hydration Mismatch 해결**:
+  - `lib/utils/generate-html.ts`: 서버/클라이언트 공통 HTML 생성 유틸리티 함수 생성
+  - 서버 컴포넌트에서 HTML 생성 후 클라이언트로 전달
+  - `mounted` 상태를 사용하여 클라이언트 DOM 조작 시점 제어
+- **완료된 기능**:
+  - ✅ 소개 페이지 CRUD 기능
+  - ✅ KO/EN 버전 관리
+  - ✅ 자동 번역 기능
+  - ✅ 조회수 추적 및 표시
+  - ✅ YouTube 임베딩 (16:9 비율)
+  - ✅ 서버 사이드 HTML 생성 (hydration mismatch 해결)
+
 ## [2025-01-15] 블로그 KO/EN 버전 탭 및 자동 번역 기능 구현 완료
 - **KO/EN 버전 탭 시스템 구축**:
   - `components/admin/PostVersionTabs.tsx`: KO/EN 버전 탭 컴포넌트 생성

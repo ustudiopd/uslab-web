@@ -1,10 +1,10 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: 블로그 시스템 완성 (Phase 1-2 완료, Phase 3 진행 중, 댓글 시스템 완료)
-- **목표**: Novel.sh 에디터 기반 블로그 시스템 구축, AI 기능 통합, 댓글 시스템 운영
+- **작업명**: 소개 페이지 시스템 완성 및 블로그 시스템 개선
+- **목표**: 소개 페이지 관리 시스템 구축, YouTube 임베딩 기능 추가, hydration mismatch 해결
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ Phase 1-2 완료 (에디터 통합, CRUD 기능), ✅ Phase 3 일부 완료 (AI Slug 생성), ✅ 댓글 시스템 완료, ⏳ Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
+- **상태**: ✅ 소개 페이지 시스템 완료, ✅ YouTube 임베딩 완료, ✅ hydration mismatch 해결 완료
 
 ## 2. 최근 완료된 작업
 ### [2024-12-20]
@@ -69,6 +69,18 @@
 - ✅ **프로젝트 구조 명확화**
   - ⚠️ 중요: uslab.ai는 ustudio 프로젝트(`gzguucdzsrfypbkqlyku`) 내에서 prefix로 구분되는 하나의 웹사이트입니다.
   - ustudio 프로젝트에 3개 웹사이트가 함께 사용됨 (ustudio, modoolucture, uslab)
+
+### [2025-01-15]
+- ✅ **소개 페이지 시스템 구현 완료**
+  - 소개 페이지 CRUD 기능 구현 (`/[lang]/about` 라우트)
+  - 관리자 인터페이스 구현 (`/admin/about`)
+  - KO/EN 버전 탭 및 자동 번역 기능
+  - 조회수 추적 및 표시 (관리자만)
+  - YouTube 임베딩 기능 (16:9 비율)
+- ✅ **Hydration Mismatch 해결**
+  - 서버 사이드 HTML 생성 유틸리티 함수 생성 (`lib/utils/generate-html.ts`)
+  - 서버 컴포넌트에서 HTML 생성 후 클라이언트로 전달
+  - 클라이언트 DOM 조작 시점 제어 (`mounted` 상태)
 
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)

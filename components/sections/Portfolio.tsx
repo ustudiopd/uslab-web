@@ -1,23 +1,33 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n/hooks';
+import { supabase } from '@/lib/supabase/client';
 
 export default function Portfolio() {
   const { t } = useTranslation();
 
+  // Supabase Storage에서 이미지 URL 생성
+  const getImageUrl = (path: string) => {
+    const { data } = supabase.storage
+      .from('uslab-images')
+      .getPublicUrl(path);
+    return data.publicUrl;
+  };
+
   const cases = [
     {
-      icon: 'fas fa-server',
+      image: getImageUrl('portfolio/lgcns-ax-platform.png'),
       caseKey: 'lgcns',
       color: 'cyan',
     },
     {
-      icon: 'fab fa-microsoft',
+      image: getImageUrl('portfolio/microsoft-copilot.png'),
       caseKey: 'microsoft',
       color: 'indigo',
     },
     {
-      icon: 'fas fa-building-columns',
+      image: getImageUrl('portfolio/hack-for-public.png'),
       caseKey: 'mss',
       color: 'emerald',
     },
@@ -49,8 +59,14 @@ export default function Portfolio() {
               className="group bg-slate-900 rounded border border-slate-800 overflow-hidden hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-900/10 transition-all"
             >
               <div className="h-40 sm:h-48 bg-slate-800 relative overflow-hidden">
-                <div className="absolute inset-0 bg-slate-800 group-hover:scale-105 transition-transform duration-500 flex items-center justify-center">
-                  <i className={`${caseItem.icon} text-3xl sm:text-4xl text-slate-700`} />
+                <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-500">
+                  <Image
+                    src={caseItem.image}
+                    alt={t(`portfolio.cases.${caseItem.caseKey}.title`)}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span className="text-cyan-400 border border-cyan-400 px-3 sm:px-4 py-1 text-xs sm:text-sm rounded hover:bg-cyan-400 hover:text-slate-950 transition-colors">
