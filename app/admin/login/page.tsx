@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-slate-900 border border-slate-800 rounded-lg p-8">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">USlab.ai Admin</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">USLab.ai Admin</h1>
             <p className="text-slate-400">관리자 로그인</p>
           </div>
 

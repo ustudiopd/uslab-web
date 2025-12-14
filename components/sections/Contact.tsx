@@ -7,8 +7,8 @@ export default function Contact() {
 
   const handleContactClick = () => {
     // 메일 앱 열기
-    const subject = encodeURIComponent('USlab.ai 문의');
-    const body = encodeURIComponent('안녕하세요,\n\nUSlab.ai에 대한 문의사항이 있어 연락드립니다.\n\n');
+    const subject = encodeURIComponent('USLab.ai 문의');
+    const body = encodeURIComponent('안녕하세요,\n\nUSLab.ai에 대한 문의사항이 있어 연락드립니다.\n\n');
     window.location.href = `mailto:contact@uslab.ai?subject=${subject}&body=${body}`;
   };
 

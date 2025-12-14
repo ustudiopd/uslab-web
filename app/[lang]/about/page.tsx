@@ -17,10 +17,10 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
   const dict = await getDictionary(lang);
 
   return {
-    title: lang === 'ko' ? '소개 | USlab.ai' : 'About | USlab.ai',
+    title: lang === 'ko' ? '소개 | USLab.ai' : 'About | USLab.ai',
     description: lang === 'ko' 
-      ? 'USlab.ai 소개'
-      : 'About USlab.ai',
+      ? 'USLab.ai 소개'
+      : 'About USLab.ai',
   };
 }
 

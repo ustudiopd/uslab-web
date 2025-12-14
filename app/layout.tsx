@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'USlab.ai | AI 역량 강화',
+  title: 'USLab.ai | AI 역량 강화',
   description: 'AI 대전환(AX), 이제 모두를 위한 기술이 됩니다.',
 };
 

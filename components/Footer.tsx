@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="w-6 h-6 dark:bg-slate-800 bg-slate-200 rounded flex items-center justify-center dark:text-white text-slate-900 font-mono font-bold text-xs">
             US
           </div>
-          <span className="font-bold text-slate-300 dark:text-slate-300 text-slate-700">USlab.ai</span>
+          <span className="font-bold text-slate-300 dark:text-slate-300 text-slate-700">USLab.ai</span>
         </div>
 
         <div className="flex gap-6">

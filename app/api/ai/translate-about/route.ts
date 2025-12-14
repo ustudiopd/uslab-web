@@ -49,7 +49,7 @@ async function translateSegments(
   try {
     const systemPrompt = `You are a professional translator/editor for a technical blog.
 - Translate Korean to natural US English
-- Maintain technical terms: SOP, LLM, agent, USlab.ai, RAG, TTS, API, SDK (do not translate)
+- Maintain technical terms: SOP, LLM, agent, USLab.ai, RAG, TTS, API, SDK (do not translate)
 - Keep code blocks, URLs, and inline code unchanged
 - Return valid JSON only`;
 

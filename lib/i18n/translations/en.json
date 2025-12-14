@@ -19,7 +19,7 @@
   "philosophy": {
     "badge": "USLAB.AI PHILOSOPHY",
     "title": "What Makes",
-    "titleHighlight": "USlab.ai Special?",
+    "titleHighlight": "USLab.ai Special?",
     "description": "We provide four clear strategies to help our clients maximize the 'judgment' needed in the AI era and build unwavering competitiveness.",
     "strategies": {
       "value": {
@@ -44,7 +44,7 @@
     "badge": "OUR SERVICES",
     "title": "Three Solutions",
     "titleHighlight": "for Your Success",
-    "description": "USlab.ai provides one-stop solutions for every stage of your AI Transformation (AX) journey.",
+    "description": "USLab.ai provides one-stop solutions for every stage of your AI Transformation (AX) journey.",
     "items": {
       "consulting": {
         "title": "AI Consulting",
@@ -65,7 +65,7 @@
   },
   "portfolio": {
     "badge": "SUCCESS STORIES",
-    "title": "USlab.ai's Expertise",
+    "title": "USLab.ai's Expertise",
     "titleHighlight": "Proven by Results",
     "viewDetails": "View Details",
     "cases": {
@@ -91,7 +91,7 @@
   },
   "contact": {
     "title": "Start Your AI Transformation",
-    "titleHighlight": "with USlab.ai Today",
+    "titleHighlight": "with USLab.ai Today",
     "description": "AI tools are now a constant given to everyone.",
     "descriptionHighlight": "The real competition will be won by those who build their",
     "descriptionHighlightEnd": "'own system' by incorporating their unique work methods using this tool.",
@@ -112,10 +112,10 @@
   "footer": {
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "copyright": "© 2025 USlab.ai. All rights reserved."
+    "copyright": "© 2025 USLab.ai. All rights reserved."
   },
   "meta": {
-    "title": "USlab.ai | AI Capability Enhancement",
+    "title": "USLab.ai | AI Capability Enhancement",
     "description": "AI Transformation (AX), now technology for everyone."
   }
 }

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const dict = await getDictionary(lang);
 
   return {
-    title: lang === 'ko' ? '블로그 | USlab.ai' : 'Blog | USlab.ai',
+    title: lang === 'ko' ? '블로그 | USLab.ai' : 'Blog | USLab.ai',
     description: lang === 'ko' 
       ? 'AI 연구 인사이트 및 기술 아티클'
       : 'AI research insights and technical articles',

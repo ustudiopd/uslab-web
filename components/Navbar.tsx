@@ -40,8 +40,8 @@ export default function Navbar() {
   const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     // 메일 앱 열기
-    const subject = encodeURIComponent('USlab.ai 문의');
-    const body = encodeURIComponent('안녕하세요,\n\nUSlab.ai에 대한 문의사항이 있어 연락드립니다.\n\n');
+    const subject = encodeURIComponent('USLab.ai 문의');
+    const body = encodeURIComponent('안녕하세요,\n\nUSLab.ai에 대한 문의사항이 있어 연락드립니다.\n\n');
     window.location.href = `mailto:contact@uslab.ai?subject=${subject}&body=${body}`;
     setIsMobileMenuOpen(false);
   };
@@ -66,7 +66,7 @@ export default function Navbar() {
               US
             </div>
             <span className="text-xl font-bold tracking-tight dark:text-white dark:group-hover:text-cyan-400 text-slate-900 group-hover:text-cyan-600 transition-colors">
-              USlab<span className="text-cyan-500 dark:text-cyan-500">.ai</span>
+              USLab<span className="text-cyan-500 dark:text-cyan-500">.ai</span>
             </span>
           </Link>
 

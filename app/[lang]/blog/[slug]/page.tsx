@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: lang === 'ko' ? '포스트를 찾을 수 없습니다 | USlab.ai' : 'Post not found | USlab.ai',
+      title: lang === 'ko' ? '포스트를 찾을 수 없습니다 | USLab.ai' : 'Post not found | USLab.ai',
     };
   }
 
