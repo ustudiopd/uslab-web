@@ -95,7 +95,12 @@ export async function PUT(request: Request) {
       supabase = authClient;
     }
 
-    const body: UpdateAboutData & { locale: Locale } = await request.json();
+    const body: UpdateAboutData & { 
+      locale: Locale;
+      seo_title?: string | null;
+      seo_description?: string | null;
+      seo_keywords?: string[] | null;
+    } = await request.json();
 
     // 필수 필드 검증
     if (!body.content || !body.locale) {
@@ -123,10 +128,15 @@ export async function PUT(request: Request) {
     let about;
 
     if (existing) {
-      // 업데이트
+      // 업데이트 (SEO 필드 포함)
+      const updateData: any = { content: body.content };
+      if (body.seo_title !== undefined) updateData.seo_title = body.seo_title;
+      if (body.seo_description !== undefined) updateData.seo_description = body.seo_description;
+      if (body.seo_keywords !== undefined) updateData.seo_keywords = body.seo_keywords;
+
       const { data: updated, error: updateError } = await supabase
         .from('uslab_about')
-        .update({ content: body.content })
+        .update(updateData)
         .eq('locale', body.locale)
         .select()
         .single();
@@ -145,14 +155,19 @@ export async function PUT(request: Request) {
 
       about = updated;
     } else {
-      // 생성 (없는 경우)
+      // 생성 (없는 경우, SEO 필드 포함)
+      const insertData: any = {
+        locale: body.locale,
+        content: body.content,
+        author_id: user.id,
+      };
+      if (body.seo_title !== undefined) insertData.seo_title = body.seo_title;
+      if (body.seo_description !== undefined) insertData.seo_description = body.seo_description;
+      if (body.seo_keywords !== undefined) insertData.seo_keywords = body.seo_keywords;
+
       const { data: created, error: insertError } = await supabase
         .from('uslab_about')
-        .insert({
-          locale: body.locale,
-          content: body.content,
-          author_id: user.id,
-        })
+        .insert(insertData)
         .select()
         .single();
 

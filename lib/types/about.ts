@@ -10,6 +10,9 @@ export interface UslabAbout {
   created_at: string;
   author_id: string | null;
   view_count?: number; // 조회수
+  seo_title?: string | null; // SEO 제목
+  seo_description?: string | null; // SEO 설명
+  seo_keywords?: string[] | null; // SEO 키워드
 }
 
 export interface UpdateAboutData {

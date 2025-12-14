@@ -354,6 +354,38 @@
   - ✅ JSON-LD 구조화 데이터 (Article, BreadcrumbList, Organization)
   - ✅ Streaming metadata 비활성화로 SEO 도구 호환성 향상
 
+## [2025-01-16] 소개 페이지 SEO 기능 추가
+- ✅ **소개 페이지 SEO 메타데이터 시스템 구축**
+  - `supabase/migrations/20250116_add_about_seo_fields.sql`: SEO 필드 마이그레이션 생성
+    - `uslab_about.seo_title` 컬럼 추가 (TEXT)
+    - `uslab_about.seo_description` 컬럼 추가 (TEXT)
+    - `uslab_about.seo_keywords` 컬럼 추가 (TEXT[])
+    - 컬럼 주석 추가 (검색 노출용 설명)
+  - `lib/types/about.ts`: `UslabAbout` 인터페이스에 SEO 필드 추가
+  - `lib/types/uslab.ts`: Database 타입에 SEO 필드 추가
+- ✅ **동적 SEO 메타데이터 생성**
+  - `app/[lang]/about/page.tsx`: `generateMetadata` 함수 업데이트
+    - `getAboutByLocale`로 소개 페이지 데이터 동적 로드
+    - SEO 필드 우선 사용, 없으면 본문에서 추출
+    - OpenGraph 메타데이터 (title, description, images, url, type, siteName)
+    - Twitter 카드 메타데이터 (card, title, description, images)
+    - hreflang 및 canonical URL 설정
+    - JSON-LD 구조화된 데이터 (AboutPage, BreadcrumbList, Organization)
+- ✅ **AI SEO 자동 생성 통합**
+  - `app/admin/about/page.tsx`: 저장 시 AI SEO 자동 생성 기능 추가
+    - `handleSave` 함수에 `/api/ai/seo` 호출 추가
+    - Tiptap JSON을 HTML로 변환하여 AI에 전달
+    - 생성된 SEO 데이터를 저장 요청에 포함
+    - SEO 생성 실패해도 저장은 정상 진행 (fallback)
+  - `app/api/about/route.ts`: PUT 핸들러에 SEO 필드 저장 로직 추가
+- ✅ **완료된 기능**:
+  - ✅ 소개 페이지 SEO 필드 추가 (DB 마이그레이션)
+  - ✅ 동적 SEO 메타데이터 생성 (generateMetadata)
+  - ✅ OpenGraph 및 Twitter 카드 지원
+  - ✅ JSON-LD 구조화된 데이터
+  - ✅ 저장 시 AI SEO 자동 생성
+  - ✅ 블로그와 동일한 SEO 워크플로우 적용
+
 ## [2025-12-14] 메인페이지 UI/UX 개선 및 로고 섹션 최적화
 - ✅ **Hero 섹션 UI 개선**
   - "지금 시작하기" 버튼 제거 (Hero.tsx)

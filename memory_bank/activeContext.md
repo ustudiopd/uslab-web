@@ -107,6 +107,16 @@
   - 서버 컴포넌트에서 HTML 생성 후 클라이언트로 전달
   - 클라이언트 DOM 조작 시점 제어 (`mounted` 상태)
 
+### [2025-01-16]
+- ✅ **소개 페이지 SEO 기능 추가**
+  - `uslab_about` 테이블에 SEO 필드 추가 마이그레이션 (`seo_title`, `seo_description`, `seo_keywords`)
+  - `generateMetadata` 함수 업데이트 (동적 SEO 메타데이터 생성)
+  - OpenGraph 및 Twitter Card 메타데이터 지원
+  - JSON-LD 구조화된 데이터 추가 (AboutPage, BreadcrumbList, Organization)
+  - hreflang 및 canonical URL 설정
+  - 관리자 페이지 저장 시 AI SEO 자동 생성 기능 통합 (`/api/ai/seo`)
+  - 블로그와 동일한 SEO 자동 생성 워크플로우 적용
+
 ## 3. 다음 예정 작업  
 ### Phase 3: AI 기능 통합 (블로그에디터.md 참고)
 - ✅ **AI 패키지 설치** (완료)

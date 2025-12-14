@@ -194,10 +194,8 @@ export default function AdminPostsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-          <p className="text-slate-400 text-sm sm:text-base">로딩 중...</p>
-        </div>
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <p className="text-slate-400 text-sm sm:text-base">로딩 중...</p>
       </div>
     );
   }
@@ -207,8 +205,7 @@ export default function AdminPostsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
           <div>
@@ -216,15 +213,6 @@ export default function AdminPostsPage() {
             <p className="text-xs sm:text-sm text-slate-400">블로그 포스트를 작성하고 관리하세요.</p>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
-            <span className="text-xs sm:text-sm text-slate-400 hidden sm:inline">
-              {user.email}
-            </span>
-            <button
-              onClick={signOut}
-              className="px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded text-xs sm:text-sm hover:border-slate-600 transition-colors"
-            >
-              로그아웃
-            </button>
             <button
               onClick={handleOpenGarbageModal}
               className="px-3 sm:px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 rounded font-medium hover:bg-yellow-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
@@ -305,7 +293,6 @@ export default function AdminPostsPage() {
             ))}
           </div>
         )}
-      </div>
 
       {/* 가비지 관리 모달 */}
       {showGarbageModal && (

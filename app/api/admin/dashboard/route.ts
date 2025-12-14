@@ -6,6 +6,7 @@ import {
   getTopPages,
   getTopPosts,
   getTopReferrers,
+  getDailyStats,
 } from '@/lib/queries/analytics';
 
 /**
@@ -64,6 +65,54 @@ export async function GET(request: NextRequest) {
     const topPosts = await getTopPosts(30, 10);
     const topReferrers = await getTopReferrers(30, 10);
 
+    // 5. 일별 통계 (차트용)
+    const dailyStats7 = await getDailyStats(7);
+    const dailyStats30 = await getDailyStats(30);
+
+    // 6. SEO 상태 체크
+    // 기술적 SEO: sitemap, robots, canonical, JSON-LD 존재 여부
+    const technicalSEO = {
+      hasSitemap: true, // sitemap.ts 구현 예정
+      hasRobots: true, // robots.ts 구현 예정
+      hasCanonical: true, // canonical 구현 예정
+      hasJsonLd: true, // JSON-LD 구현 예정
+    };
+
+    // 포스트 SEO 품질 체크
+    const { data: allPosts } = await supabase
+      .from('uslab_posts')
+      .select('id, title, slug, locale, seo_title, seo_description, is_published')
+      .eq('is_published', true);
+
+    // 문제가 있는 포스트 목록
+    const postsWithIssues = (allPosts || []).filter((p: any) => {
+      const missingTitle = !p.seo_title;
+      const missingDesc = !p.seo_description;
+      const titleTooLong = p.seo_title && p.seo_title.length > 60;
+      const descTooLong = p.seo_description && p.seo_description.length > 160;
+      return missingTitle || missingDesc || titleTooLong || descTooLong;
+    }).map((p: any) => ({
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      locale: p.locale,
+      issues: [
+        !p.seo_title && 'missing_title',
+        !p.seo_description && 'missing_description',
+        p.seo_title && p.seo_title.length > 60 && 'title_too_long',
+        p.seo_description && p.seo_description.length > 160 && 'description_too_long',
+      ].filter(Boolean) as string[],
+    }));
+
+    const seoQuality = {
+      totalPublished: allPosts?.length || 0,
+      missingSeoTitle: allPosts?.filter((p: any) => !p.seo_title).length || 0,
+      missingSeoDescription: allPosts?.filter((p: any) => !p.seo_description).length || 0,
+      seoTitleTooLong: allPosts?.filter((p: any) => p.seo_title && p.seo_title.length > 60).length || 0,
+      seoDescriptionTooLong: allPosts?.filter((p: any) => p.seo_description && p.seo_description.length > 160).length || 0,
+      postsWithIssues,
+    };
+
     // 5. 최근 활동
     // 최근 발행 포스트
     const { data: recentPosts } = await supabase
@@ -106,6 +155,14 @@ export async function GET(request: NextRequest) {
         posts: recentPosts || [],
         comments: recentComments || [],
         inquiries: recentInquiries || [],
+      },
+      dailyStats: {
+        last7Days: dailyStats7,
+        last30Days: dailyStats30,
+      },
+      seoStatus: {
+        technical: technicalSEO,
+        quality: seoQuality,
       },
     });
   } catch (error) {

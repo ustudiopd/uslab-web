@@ -157,6 +157,44 @@ export type Database = {
           updated_at?: string;
         };
       };
+      uslab_about: {
+        Row: {
+          id: string;
+          locale: 'ko' | 'en';
+          content: any; // jsonb
+          updated_at: string;
+          created_at: string;
+          author_id: string | null;
+          view_count: number;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_keywords: string[] | null;
+        };
+        Insert: {
+          id?: string;
+          locale: 'ko' | 'en';
+          content: any; // jsonb
+          updated_at?: string;
+          created_at?: string;
+          author_id?: string | null;
+          view_count?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_keywords?: string[] | null;
+        };
+        Update: {
+          id?: string;
+          locale?: 'ko' | 'en';
+          content?: any; // jsonb
+          updated_at?: string;
+          created_at?: string;
+          author_id?: string | null;
+          view_count?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_keywords?: string[] | null;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

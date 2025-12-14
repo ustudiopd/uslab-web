@@ -9,6 +9,7 @@ import type { JSONContent } from 'novel';
 import BlogEditor from '@/components/editor/BlogEditor';
 import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
 import AboutVersionTabs from '@/components/admin/AboutVersionTabs';
+import { generateContentHTML } from '@/lib/utils/generate-html';
 
 export default function AboutPage() {
   const { user, loading: authLoading } = useAuth();
@@ -50,6 +51,40 @@ export default function AboutPage() {
         return;
       }
 
+      // SEO 메타데이터 자동 생성
+      let seoData = null;
+      try {
+        // Tiptap JSON을 HTML로 변환
+        const htmlContent = generateContentHTML(content);
+        
+        // 소개 페이지 제목 (locale에 따라)
+        const title = about.locale === 'ko' ? '소개 | USLab.ai' : 'About | USLab.ai';
+        
+        // SEO API 호출
+        const seoResponse = await fetch('/api/ai/seo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            full_content: htmlContent,
+            title: title,
+            locale: about.locale,
+          }),
+        });
+
+        if (seoResponse.ok) {
+          seoData = await seoResponse.json();
+          console.log('SEO 메타데이터 생성 완료:', seoData);
+        } else {
+          console.warn('SEO 생성 실패, fallback 사용');
+        }
+      } catch (seoError) {
+        console.error('SEO 생성 중 오류:', seoError);
+        // SEO 생성 실패해도 저장은 진행 (fallback이 있으므로)
+      }
+
       const response = await fetch('/api/about', {
         method: 'PUT',
         headers: { 
@@ -59,6 +94,9 @@ export default function AboutPage() {
         body: JSON.stringify({
           locale: about.locale,
           content,
+          seo_title: seoData?.seo_title,
+          seo_description: seoData?.seo_description,
+          seo_keywords: seoData?.seo_keywords,
         }),
       });
 
@@ -158,10 +196,8 @@ export default function AboutPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-slate-400">로딩 중...</p>
-        </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <p className="text-slate-400">로딩 중...</p>
       </div>
     );
   }
@@ -172,8 +208,7 @@ export default function AboutPage() {
 
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
-      <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -293,7 +328,6 @@ export default function AboutPage() {
             {isSaving ? '저장 중...' : '저장하기'}
           </button>
         </div>
-      </div>
     </div>
   );
 }
