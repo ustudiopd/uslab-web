@@ -24,8 +24,8 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
 
   const tabs = [
     { name: '대시보드', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: '포스트 관리', href: '/admin/posts', icon: FileText },
     { name: '운영진 보드', href: '/admin/exec-board', icon: Users },
+    { name: '포스트 관리', href: '/admin/posts', icon: FileText },
     { name: '소개 페이지', href: '/admin/about', icon: Info },
   ];
 
