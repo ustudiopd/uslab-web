@@ -2,6 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 이미지 리사이즈 핸들 스타일 */
+.resizable-image {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.resizable-image:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background-color: #3b82f6;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: se-resize;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.resizable-image-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: #3b82f6;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: se-resize;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+
+.resize-handle:hover {
+  transform: scale(1.2);
+  background-color: #2563eb;
+}
+
 :root {
   --font-noto-sans: 'Noto Sans KR', sans-serif;
   --font-jetbrains-mono: 'JetBrains Mono', monospace;

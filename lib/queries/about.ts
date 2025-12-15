@@ -95,3 +95,4 @@ export async function updateAbout(locale: Locale, data: UpdateAboutData): Promis
   }
 }
 
+

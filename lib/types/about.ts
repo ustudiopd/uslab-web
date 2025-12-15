@@ -19,3 +19,4 @@ export interface UpdateAboutData {
   content: any; // Tiptap JSON
 }
 
+

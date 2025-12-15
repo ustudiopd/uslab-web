@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase/client';
 import { suggestionItems, slashCommand } from './extensions';
 import { BubbleMenu } from './BubbleMenu';
 import { Small } from './extensions/Small';
+import { ImageResizeExtension } from './extensions/ImageResizeExtension';
 
 interface BlogEditorProps {
   initialContent?: JSONContent | null;
@@ -75,21 +76,59 @@ export default function BlogEditor({
     });
   }, []);
 
-  // 이미지 확장 설정 (업로드 플러그인 포함)
+  // 이미지 확장 설정 (업로드 플러그인 포함 + 리사이즈 기능)
   const imageExtension = useMemo(() => {
     return UpdatedImage.extend({
+      addAttributes() {
+        return {
+          ...this.parent?.(),
+          width: {
+            default: null,
+            parseHTML: (element) => {
+              const width = element.getAttribute('width');
+              return width ? parseInt(width, 10) : null;
+            },
+            renderHTML: (attributes) => {
+              if (!attributes.width) {
+                return {};
+              }
+              return {
+                width: attributes.width,
+              };
+            },
+          },
+          height: {
+            default: null,
+            parseHTML: (element) => {
+              const height = element.getAttribute('height');
+              return height ? parseInt(height, 10) : null;
+            },
+            renderHTML: (attributes) => {
+              if (!attributes.height) {
+                return {};
+              }
+              return {
+                height: attributes.height,
+              };
+            },
+          },
+        };
+      },
       addProseMirrorPlugins() {
         return [
           UploadImagesPlugin({
             imageClass: 'opacity-40 rounded-lg border border-slate-600',
           }),
+          // ImageResizePlugin은 ImageResizeExtension으로 별도 등록
         ];
       },
     }).configure({
       allowBase64: false,
       HTMLAttributes: {
-        class: 'rounded-lg border border-slate-700',
+        class: 'rounded-lg border border-slate-700 resizable-image',
+        style: 'max-width: 100%; height: auto; max-height: 600px; object-fit: contain; cursor: pointer;',
       },
+      inline: false,
     });
   }, []);
 
@@ -122,6 +161,7 @@ export default function BlogEditor({
     CustomKeymap, // 커스텀 키맵 (Ctrl+Z, Ctrl+Y 등)
     Small, // Small 태그 지원
     slashCommand, // 슬래시 명령어 확장
+    ImageResizeExtension, // 이미지 리사이즈 Extension (명세서 해결책 A)
   ], [imageExtension, youtubeExtension]);
 
   return (
@@ -141,7 +181,7 @@ export default function BlogEditor({
             keydown: (_view, event) => handleCommandNavigation(event),
           },
           attributes: {
-            class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base',
+            class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base [&_img]:max-w-full [&_img]:h-auto [&_img]:max-h-[600px] [&_img]:object-contain',
           },
           handlePaste: (view, event) => {
             // 이미지 붙여넣기 처리

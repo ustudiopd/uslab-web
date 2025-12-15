@@ -157,3 +157,4 @@ export function parseSlugFromPath(pathname: string): string | null {
   return match ? match[1] : null;
 }
 
+

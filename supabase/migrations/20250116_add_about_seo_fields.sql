@@ -12,3 +12,4 @@ COMMENT ON COLUMN uslab_about.seo_title IS '검색 노출용 제목 (<title>)';
 COMMENT ON COLUMN uslab_about.seo_description IS '검색 노출용 요약 (<meta name="description">)';
 COMMENT ON COLUMN uslab_about.seo_keywords IS '키워드 태그 배열';
 
+

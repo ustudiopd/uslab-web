@@ -86,6 +86,7 @@ interface SEOStatus {
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [topPages, setTopPages] = useState<TopPage[]>([]);
@@ -636,4 +637,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
 
