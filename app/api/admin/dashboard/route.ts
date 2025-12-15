@@ -8,6 +8,8 @@ import {
   getTopReferrers,
   getDailyStats,
 } from '@/lib/queries/analytics';
+import { getAllBoards } from '@/lib/queries/execBoards';
+import { getTopDocByBoardId } from '@/lib/queries/execDocs';
 
 /**
  * GET /api/admin/dashboard
@@ -137,6 +139,19 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(5);
 
+    // 운영진 보드 최상단 하이라이트 (첫 번째 보드의 최상단 문서)
+    let topExecDoc = null;
+    try {
+      const boards = await getAllBoards();
+      if (boards.length > 0) {
+        const firstBoard = boards[0];
+        topExecDoc = await getTopDocByBoardId(firstBoard.id);
+      }
+    } catch (error) {
+      console.error('Error fetching top exec doc:', error);
+      // 에러가 나도 대시보드는 정상 작동하도록
+    }
+
     return NextResponse.json({
       stats: {
         totalPosts: totalPosts || 0,
@@ -164,6 +179,7 @@ export async function GET(request: NextRequest) {
         technical: technicalSEO,
         quality: seoQuality,
       },
+      topExecDoc,
     });
   } catch (error) {
     console.error('Dashboard API error:', error);

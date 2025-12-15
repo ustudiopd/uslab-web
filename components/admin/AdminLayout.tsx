@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { LanguageProvider } from '@/lib/i18n/context';
 import type { Locale } from '@/lib/i18n/config';
 import type { Translations } from '@/lib/i18n/server';
-import { LayoutDashboard, FileText, Users, Info, LogOut, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, FileText, Users, Info, LogOut, ChevronDown, User } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -64,7 +64,7 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
             {/* 모바일: 세로 레이아웃 */}
             <div className="flex flex-col sm:hidden">
-              {/* 상단: 탭 네비게이션 (아이콘만) */}
+              {/* 상단: 탭 네비게이션 (아이콘만) + 계정 아이콘 (오른쪽 위) */}
               <div className="flex items-center justify-between h-14">
                 <nav className="flex items-center gap-1 flex-1 overflow-x-auto scrollbar-hide px-1">
                   {tabs.map((tab) => {
@@ -85,51 +85,44 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                     );
                   })}
                 </nav>
+                {/* 오른쪽 위: 계정 아이콘 */}
+                {user && (
+                  <div className="relative flex-shrink-0" ref={accountMenuRef}>
+                    <button
+                      onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+                      className="p-2 rounded transition-colors text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                      aria-label="계정 메뉴"
+                    >
+                      <User size={20} />
+                    </button>
+                    {/* 드롭다운 메뉴 */}
+                    {isAccountMenuOpen && (
+                      <div className="absolute top-full right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-50 min-w-[200px]">
+                        {/* 계정 정보 */}
+                        <div className="px-4 py-3 border-b border-slate-800">
+                          <div className="text-sm font-medium text-white">
+                            {user.email?.split('@')[0] || '관리자'}
+                          </div>
+                          <div className="text-xs text-slate-400 mt-0.5 truncate">
+                            {user.email || '관리자 계정'}
+                          </div>
+                        </div>
+                        {/* 로그아웃 버튼 */}
+                        <button
+                          onClick={() => {
+                            signOut();
+                            setIsAccountMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                        >
+                          <LogOut size={16} />
+                          <span>로그아웃</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-              {/* 하단: 사용자 정보 및 로그아웃 (드롭다운) */}
-              {user && (
-                <div className="relative border-t border-slate-800" ref={accountMenuRef}>
-                  <button
-                    onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                    className="w-full flex items-center justify-between px-3 py-2 hover:bg-slate-800 transition-colors"
-                  >
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <div className="w-7 h-7 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-cyan-400 text-xs font-bold">A</span>
-                      </div>
-                      <div className="min-w-0 flex-1 text-left">
-                        <div className="text-xs font-medium text-white truncate">
-                          {user.email?.split('@')[0] || '관리자'}
-                        </div>
-                        <div className="text-[10px] text-slate-400 truncate">
-                          {user.email || '관리자 계정'}
-                        </div>
-                      </div>
-                    </div>
-                    <ChevronDown
-                      size={16}
-                      className={`text-slate-400 transition-transform flex-shrink-0 ${
-                        isAccountMenuOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {/* 드롭다운 메뉴 */}
-                  {isAccountMenuOpen && (
-                    <div className="absolute top-full left-0 right-0 bg-slate-900 border-t border-slate-800 shadow-lg z-50">
-                      <button
-                        onClick={() => {
-                          signOut();
-                          setIsAccountMenuOpen(false);
-                        }}
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-                      >
-                        <LogOut size={16} />
-                        <span>로그아웃</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
 
             {/* 데스크톱: 가로 레이아웃 */}

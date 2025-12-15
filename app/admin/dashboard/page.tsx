@@ -66,6 +66,13 @@ interface PostWithIssue {
   issues: string[];
 }
 
+interface TopExecDoc {
+  id: string;
+  title: string;
+  updated_at: string;
+  board_id: string;
+}
+
 interface SEOStatus {
   technical: {
     hasSitemap: boolean;
@@ -97,6 +104,7 @@ export default function AdminDashboard() {
   const [dailyStats30, setDailyStats30] = useState<DailyStat[]>([]);
   const [chartRange, setChartRange] = useState<7 | 30>(7);
   const [seoStatus, setSeoStatus] = useState<SEOStatus | null>(null);
+  const [topExecDoc, setTopExecDoc] = useState<TopExecDoc | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -137,6 +145,7 @@ export default function AdminDashboard() {
       setDailyStats7(data.dailyStats?.last7Days || []);
       setDailyStats30(data.dailyStats?.last30Days || []);
       setSeoStatus(data.seoStatus || null);
+      setTopExecDoc(data.topExecDoc || null);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -165,6 +174,27 @@ export default function AdminDashboard() {
         </h1>
         <p className="text-xs sm:text-sm text-slate-400">콘텐츠 운영 현황 및 트래픽 분석</p>
       </div>
+
+      {/* 운영진 보드 최상단 하이라이트 */}
+      {topExecDoc && (
+        <div className="mb-6 sm:mb-8">
+          <Link
+            href={`/admin/exec-board?doc=${topExecDoc.id}`}
+            className="block bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/30 rounded-lg p-4 sm:p-6 cursor-pointer hover:border-cyan-500/50 transition-colors"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <div className="text-xs font-mono text-cyan-400 mb-2">최상단 하이라이트</div>
+                <h3 className="text-base sm:text-xl font-bold text-white mb-2">{topExecDoc.title}</h3>
+                <div className="text-xs text-slate-500 mt-3">
+                  마지막 수정: {new Date(topExecDoc.updated_at).toLocaleString('ko-KR')}
+                </div>
+              </div>
+              <div className="text-cyan-400 flex-shrink-0">→</div>
+            </div>
+          </Link>
+        </div>
+      )}
 
         {/* KPI 카드 */}
         {stats && (
