@@ -51,7 +51,7 @@ export default function PostCard({ post, lang, variant = 'card' }: PostCardProps
                 </>
               )}
             </div>
-            <h3 className="text-xl font-bold dark:text-white text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors">
+            <h3 className="text-xl font-bold dark:text-white text-slate-950 mb-2 group-hover:text-cyan-400 transition-colors">
               {post.title}
             </h3>
             {post.seo_description && (
@@ -94,7 +94,7 @@ export default function PostCard({ post, lang, variant = 'card' }: PostCardProps
             </>
           )}
         </div>
-        <h3 className="text-xl font-bold text-white dark:text-white text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors">
+        <h3 className="text-xl font-bold text-white dark:text-white text-slate-950 mb-2 group-hover:text-cyan-400 transition-colors">
           {post.title}
         </h3>
         {post.seo_description && (

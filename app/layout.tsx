@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className="dark scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="ko" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"
@@ -39,10 +39,15 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                // 라이트 테마 강제 적용 (향후 다크/라이트 토글 기능 추가 예정)
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                
+                /* 다크 테마 코드 (향후 토글 기능 추가 시 사용)
                 // 다크 테마만 강제 적용
                 document.documentElement.classList.add('dark');
-                // localStorage의 테마 설정 무시
                 localStorage.setItem('theme', 'dark');
+                */
               })();
             `,
           }}

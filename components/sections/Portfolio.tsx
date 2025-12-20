@@ -36,14 +36,14 @@ export default function Portfolio() {
   return (
     <section
       id="portfolio"
-      className="py-12 sm:py-16 lg:py-24 bg-slate-950 border-t border-slate-900"
+      className="py-12 sm:py-16 lg:py-24 dark:bg-slate-950 bg-white border-t dark:border-slate-900 border-slate-300"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
           <h2 className="text-xs font-mono text-cyan-500 mb-2">
             {t('portfolio.badge')}
           </h2>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-900 leading-tight">
             {t('portfolio.title')}
             <br className="md:hidden" />
             <span className="md:ml-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
@@ -56,9 +56,9 @@ export default function Portfolio() {
           {cases.map((caseItem, index) => (
             <div
               key={index}
-              className="bg-slate-900 rounded border border-slate-800 overflow-hidden hover:border-slate-600 transition-all group cursor-pointer"
+              className="dark:bg-slate-900 bg-slate-50 rounded border dark:border-slate-800 border-slate-300 overflow-hidden dark:hover:border-slate-600 hover:border-slate-500 transition-all group cursor-pointer shadow-sm"
             >
-              <div className="h-40 sm:h-48 bg-slate-800 relative overflow-hidden">
+              <div className="h-40 sm:h-48 dark:bg-slate-800 bg-slate-200 relative overflow-hidden">
                 <Image
                   src={caseItem.image}
                   alt={t(`portfolio.cases.${caseItem.caseKey}.title`)}
@@ -74,16 +74,16 @@ export default function Portfolio() {
                   >
                     {t(`portfolio.cases.${caseItem.caseKey}.client`)}
                   </span>
-                  <span className="text-slate-600 text-xs font-mono">
+                  <span className="dark:text-slate-600 text-slate-500 text-xs font-mono">
                     {t(`portfolio.cases.${caseItem.caseKey}.category`)}
                   </span>
                 </div>
                 <h4
-                  className={`text-base sm:text-lg font-bold text-white mb-2 leading-tight group-hover:text-${caseItem.color}-400 transition-colors`}
+                  className={`text-base sm:text-lg font-bold dark:text-white text-slate-900 mb-2 leading-tight group-hover:text-${caseItem.color}-400 transition-colors`}
                 >
                   {t(`portfolio.cases.${caseItem.caseKey}.title`)}
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-400 line-clamp-2 leading-relaxed">
+                <p className="text-xs sm:text-sm dark:text-slate-400 text-slate-700 line-clamp-2 leading-relaxed">
                   {t(`portfolio.cases.${caseItem.caseKey}.description`)}
                 </p>
               </div>

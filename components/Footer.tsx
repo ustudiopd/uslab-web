@@ -7,49 +7,37 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-slate-950 dark:bg-slate-950 bg-white border-t border-slate-900 dark:border-slate-900 border-slate-200 py-12 text-sm text-slate-500 dark:text-slate-500 text-slate-600">
+    <footer className="bg-slate-950 dark:bg-slate-950 bg-white border-t border-slate-900 dark:border-slate-900 border-slate-300 py-12 text-sm text-slate-500 dark:text-slate-500 text-slate-700">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 dark:bg-slate-800 bg-slate-200 rounded flex items-center justify-center dark:text-white text-slate-900 font-mono font-bold text-xs">
-            US
-          </div>
-          <span className="font-bold text-slate-300 dark:text-slate-300 text-slate-700">USLab.ai</span>
+          <span className="font-bold text-slate-300 dark:text-slate-300 text-slate-800">
+            USLab <span className="text-cyan-500 dark:text-cyan-500">AI</span>
+          </span>
         </div>
 
-        <div className="flex gap-6">
-          <Link href="#" className="text-slate-500 dark:text-slate-500 text-slate-600 hover:text-cyan-400 transition-colors">
-            {t('footer.privacy')}
-          </Link>
-          <Link href="#" className="text-slate-500 dark:text-slate-500 text-slate-600 hover:text-cyan-400 transition-colors">
-            {t('footer.terms')}
-          </Link>
-        </div>
-
-        <div className="flex gap-4 text-lg">
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-semibold text-slate-400 dark:text-slate-400 text-slate-600">
+            {t('footer.familySites')}
+          </span>
           <a
-            href="#"
-            className="text-slate-500 dark:text-slate-500 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
-            aria-label="GitHub"
+            href="https://www.ustudio.co.kr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-500 dark:text-slate-500 text-slate-700 hover:text-cyan-500 transition-colors text-xs"
           >
-            <i className="fab fa-github" />
+            U-Studio
           </a>
           <a
-            href="#"
-            className="text-slate-500 dark:text-slate-500 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
-            aria-label="LinkedIn"
+            href="https://www.modoolecture.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-500 dark:text-slate-500 text-slate-700 hover:text-cyan-500 transition-colors text-xs"
           >
-            <i className="fab fa-linkedin" />
-          </a>
-          <a
-            href="#"
-            className="text-slate-500 dark:text-slate-500 text-slate-600 hover:text-white dark:hover:text-white hover:text-slate-900 transition-colors"
-            aria-label="Email"
-          >
-            <i className="fas fa-envelope" />
+            Modoolecture
           </a>
         </div>
       </div>
-      <div className="text-center mt-8 text-xs font-mono text-slate-500 dark:text-slate-700 text-slate-500">
+      <div className="text-center mt-8 text-xs font-mono text-slate-500 dark:text-slate-700 text-slate-600">
         {t('footer.copyright')}
       </div>
     </footer>

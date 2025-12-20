@@ -18,7 +18,7 @@
   },
   "philosophy": {
     "badge": "USLAB.AI PHILOSOPHY",
-    "title": "무엇이 USLab.ai를",
+    "title": "무엇이 USLab AI를",
     "titleHighlight": "특별하게 만드는가?",
     "description": "우리는 고객이 AI 시대에 필요한 '판단력'을 극대화하고 흔들리지 않는 경쟁력을 갖출 수 있도록, 명확한 4가지 전략을 제공합니다.",
     "strategies": {
@@ -44,7 +44,7 @@
     "badge": "OUR SERVICES",
     "title": "당신의 성공을 위한",
     "titleHighlight": "3가지 솔루션",
-    "description": "USLab.ai는 AI 대전환(AX) 여정의 모든 단계에서 필요한 솔루션을 원스톱으로 제공합니다.",
+    "description": "USLab AI는 AI 대전환(AX) 여정의 모든 단계에서 필요한 솔루션을 원스톱으로 제공합니다.",
     "items": {
       "consulting": {
         "title": "AI 컨설팅 (Consulting)",
@@ -66,7 +66,7 @@
   "portfolio": {
     "badge": "SUCCESS STORIES",
     "title": "결과로 증명하는",
-    "titleHighlight": "USLab.ai의 전문성",
+    "titleHighlight": "USLab AI의 전문성",
     "viewDetails": "자세히 보기",
     "cases": {
       "lgcns": {
@@ -90,7 +90,7 @@
     }
   },
   "contact": {
-    "title": "지금 바로 USLab.ai와 함께",
+    "title": "지금 바로 USLab AI와 함께",
     "titleHighlight": "AI 대전환을 시작하십시오.",
     "description": "AI라는 도구는 이제 모두에게 주어진 상수입니다.",
     "descriptionHighlight": "진짜 승부는 이 도구를 활용해 자신만의 업무 방식을 녹여낸",
@@ -112,7 +112,8 @@
   "footer": {
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
-    "copyright": "© 2025 USLab.ai. All rights reserved."
+    "familySites": "패밀리 사이트",
+    "copyright": "© 2025 USLab AI. All rights reserved."
   },
   "meta": {
     "title": "USLab.ai | AI 역량 강화",

@@ -35,40 +35,37 @@ export default function Philosophy() {
   return (
     <section
       id="about"
-      className="pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 lg:pb-24 bg-slate-950 relative border-t border-slate-900"
+      className="pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 lg:pb-24 dark:bg-slate-950 bg-white relative border-t dark:border-slate-900 border-slate-300"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16 lg:mb-20">
           <h2 className="text-xs font-mono text-cyan-500 mb-2">
             {t('philosophy.badge')}
           </h2>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-900 mb-4 sm:mb-6 leading-tight">
             {t('philosophy.title')}
             <br className="md:hidden" />
             <span className="md:ml-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
               {t('philosophy.titleHighlight')}
             </span>
           </h3>
-          <p className="text-sm sm:text-base text-slate-400 max-w-2xl leading-relaxed">
-            {t('philosophy.description')}
-          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {strategies.map((strategy, index) => (
             <div
               key={index}
-              className="p-6 sm:p-8 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all group"
+              className="p-6 sm:p-8 rounded-lg dark:bg-slate-900/50 bg-slate-50 border dark:border-slate-800 border-slate-300 dark:hover:border-cyan-500/50 hover:border-cyan-500/50 transition-all group shadow-sm"
             >
               <div
-                className={`w-10 h-10 sm:w-12 sm:h-12 bg-slate-800 rounded flex items-center justify-center mb-4 sm:mb-6 text-${strategy.color}-400 text-lg sm:text-xl group-hover:bg-${strategy.color}-500/20 group-hover:text-${strategy.color}-300 transition-colors`}
+                className={`w-10 h-10 sm:w-12 sm:h-12 dark:bg-slate-800 bg-slate-200 rounded flex items-center justify-center mb-4 sm:mb-6 text-${strategy.color}-400 text-lg sm:text-xl group-hover:bg-${strategy.color}-500/20 group-hover:text-${strategy.color}-300 transition-colors`}
               >
                 <i className={strategy.icon} />
               </div>
-              <h4 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3 leading-tight">
+              <h4 className="text-base sm:text-lg font-bold dark:text-white text-slate-900 mb-2 sm:mb-3 leading-tight">
                 {t(strategy.titleKey)}
               </h4>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm dark:text-slate-400 text-slate-700 leading-relaxed">
                 {t(strategy.descriptionKey)}
               </p>
             </div>

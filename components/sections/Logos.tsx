@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Logos() {
   return (
-    <section className="py-[100px] bg-slate-950 border-t border-slate-800">
+    <section className="py-[100px] dark:bg-slate-950 bg-white border-t dark:border-slate-800 border-slate-200">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
         <div className="opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex items-center justify-center">
           <Image

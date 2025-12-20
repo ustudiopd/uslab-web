@@ -1,12 +1,49 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: 메인페이지 UI/UX 개선 및 로고 섹션 최적화
-- **목표**: Hero 섹션 버튼 제거, 로고 섹션 독립화, Portfolio 호버 효과 추가
+- **작업명**: 라이트 테마 전환 및 UI/UX 개선
+- **목표**: 다크 테마에서 라이트 테마로 전환, UI 요소 최적화
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ Hero 버튼 제거 완료, ✅ Logos 섹션 생성 완료, ✅ Portfolio 호버 효과 완료
+- **상태**: ✅ 라이트 테마 전환 완료, ✅ UI 요소 최적화 완료
 
 ## 2. 최근 완료된 작업
+### [2025-01-XX] 라이트 테마 전환 및 UI/UX 개선
+- ✅ **다크 테마 → 라이트 테마 전환**
+  - `lib/hooks/useTheme.ts`: 라이트 테마를 기본값으로 설정 (다크 테마 코드는 주석으로 보존)
+  - `app/layout.tsx`: HTML의 `dark` 클래스 제거, 스크립트 수정
+  - `app/globals.css`: body 기본 스타일을 라이트 테마로 변경
+  - `tailwind.config.ts`: grid-pattern을 라이트 테마에 맞게 조정
+  - 모든 섹션 컴포넌트에 라이트 테마 클래스 추가 (Hero, Services, Portfolio, Philosophy, Contact, Logos)
+  - 색상 대비 개선: 텍스트 색상 강화 (`text-slate-600` → `text-slate-700/800`), 보더 색상 강화
+- ✅ **Hero 섹션 최적화**
+  - 로고 아이콘들 제거 (Python, AWS, Google, Microchip, Database)
+  - "지금 시작하기", "포트폴리오 보기" 버튼 제거
+  - 로고 이미지 제거
+  - 색상 톤 추가 (`bg-gradient-to-b from-cyan-50/40 via-blue-50/30 to-white`)
+- ✅ **Logos 섹션 제거**
+  - `app/[lang]/page.tsx`에서 Logos 컴포넌트 제거
+- ✅ **섹션 설명 텍스트 제거**
+  - Philosophy 섹션 설명 텍스트 제거
+  - Services 섹션 설명 텍스트 제거
+- ✅ **Services 카드 색상 톤 개선**
+  - 기본적으로 색상 적용 (그라데이션 배경 50% 투명도)
+  - 호버 시 효과만 강화 (75% 투명도, 보더 진하게, 아이콘 확대)
+- ✅ **Navbar 개선**
+  - US 아이콘 박스 제거
+  - 로고 텍스트 변경: "USLab.ai" → "USLab AI" (AI는 cyan 색상)
+  - 문의하기 버튼 텍스트 색상 개선
+- ✅ **Footer 개선**
+  - 개인정보처리방침 및 이용약관 제거
+  - 패밀리 사이트 섹션 추가 (U-Studio, Modoolecture)
+  - 패밀리 사이트 가로 배치
+  - US 아이콘 박스 제거, "USLab AI" 텍스트로 변경
+- ✅ **블로그 UI 개선**
+  - 포스트 카드 제목 색상 개선 (`text-slate-900` → `text-slate-950`)
+  - 뷰 모드 전환 버튼 배경 색상 개선 (선택되지 않은 버튼: `bg-white`)
+- ✅ **번역 파일 업데이트**
+  - "USLab.ai" → "USLab AI"로 전체 변경 (ko.json, en.json)
+  - 패밀리 사이트 번역 추가
+
 ### [2025-12-14]
 - ✅ **메인페이지 UI/UX 개선**
   - Hero 섹션에서 "지금 시작하기" 버튼 제거

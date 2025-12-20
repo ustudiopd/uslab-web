@@ -2,7 +2,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SmoothScroll from '@/components/SmoothScroll';
 import Hero from '@/components/sections/Hero';
-import Logos from '@/components/sections/Logos';
 import Philosophy from '@/components/sections/Philosophy';
 import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
@@ -38,7 +37,6 @@ export default function Home() {
       <SmoothScroll />
       <Navbar />
       <Hero />
-      <Logos />
       <Philosophy />
       <Services />
       <Portfolio />

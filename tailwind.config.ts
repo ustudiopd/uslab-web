@@ -24,7 +24,11 @@ const config: Config = {
       },
       backgroundImage: {
         'grid-pattern':
+          'linear-gradient(to right, #cbd5e1 1px, transparent 1px), linear-gradient(to bottom, #cbd5e1 1px, transparent 1px)',
+        /* 다크 테마용 grid-pattern (향후 토글 기능 추가 시 사용)
+        'grid-pattern-dark':
           'linear-gradient(to right, #1e293b 1px, transparent 1px), linear-gradient(to bottom, #1e293b 1px, transparent 1px)',
+        */
       },
     },
   },

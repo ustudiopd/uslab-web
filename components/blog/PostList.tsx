@@ -35,7 +35,7 @@ export default function PostList({ posts, lang }: PostListProps) {
           className={`p-2 rounded-lg border transition-colors ${
             viewMode === 'card'
               ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400'
-              : 'bg-slate-800 dark:bg-slate-800 bg-slate-100 border-slate-700 dark:border-slate-700 border-slate-300 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 hover:border-slate-600 dark:hover:border-slate-600 hover:border-slate-400'
+              : 'bg-slate-800 dark:bg-slate-800 bg-white border-slate-700 dark:border-slate-700 border-slate-300 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 hover:border-slate-600 dark:hover:border-slate-600 hover:border-slate-400'
           }`}
           aria-label={lang === 'ko' ? '카드형 보기' : 'Card view'}
         >
@@ -46,7 +46,7 @@ export default function PostList({ posts, lang }: PostListProps) {
           className={`p-2 rounded-lg border transition-colors ${
             viewMode === 'list'
               ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400'
-              : 'bg-slate-800 dark:bg-slate-800 bg-slate-100 border-slate-700 dark:border-slate-700 border-slate-300 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 hover:border-slate-600 dark:hover:border-slate-600 hover:border-slate-400'
+              : 'bg-slate-800 dark:bg-slate-800 bg-white border-slate-700 dark:border-slate-700 border-slate-300 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 hover:border-slate-600 dark:hover:border-slate-600 hover:border-slate-400'
           }`}
           aria-label={lang === 'ko' ? '리스트형 보기' : 'List view'}
         >
