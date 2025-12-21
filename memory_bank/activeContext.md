@@ -51,6 +51,7 @@
   - 버전 탭 컴포넌트 (PostVersionTabs, AboutVersionTabs) 라이트 테마로 변경
   - 모든 다크 테마 색상 (bg-slate-900, text-white 등) → 라이트 테마 색상 (bg-white, text-slate-900 등)으로 변경
   - cyan 색상 → blue 색상으로 통일 (bg-cyan-500 → bg-blue-600)
+  - 포스트 관리 페이지 배경 라이트 테마 적용 (min-h-screen bg-slate-50)
 
 ### [2025-12-14]
 - ✅ **메인페이지 UI/UX 개선**

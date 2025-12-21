@@ -194,8 +194,10 @@ export default function AdminPostsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <p className="text-slate-600 text-sm sm:text-base">로딩 중...</p>
+      <div className="min-h-screen bg-slate-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+          <p className="text-slate-600 text-sm sm:text-base">로딩 중...</p>
+        </div>
       </div>
     );
   }
@@ -205,7 +207,8 @@ export default function AdminPostsPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
         {/* 헤더 */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
           <div>
@@ -394,6 +397,7 @@ export default function AdminPostsPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
