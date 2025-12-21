@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USLab.ai - Editorial Tech Theme (Warm Stone)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Editorial 테마를 위한 Stone (Warm Gray) 팔레트
+                        stone: {
+                            50: '#FAFAF9',  // 배경색 (따뜻한 미색)
+                            100: '#F5F5F4', // 카드 배경/구분선
+                            200: '#E7E5E4', // 테두리 색상
+                            600: '#57534E', // 본문 텍스트 (부드러운 회색)
+                            800: '#292524', // 서브 헤드라인
+                            900: '#1C1917', // 메인 헤드라인 (거의 검정에 가까운 웜그레이)
+                        },
+                        // 포인트 컬러: 차분한 Teal (지적인 느낌)
+                        brand: {
+                            teal: '#0D9488', 
+                            tealLight: '#CCFBF1',
+                        }
+                    },
+                    fontFamily: {
+                        // 가독성을 위해 본문 간격(Tracking) 조절 예정
+                        sans: ['Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'], // 영문 헤드라인용 (옵션)
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+        body { font-family: 'Pretendard', sans-serif; }
+        
+        /* Editorial 테마 특유의 링크 밑줄 효과 */
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #0D9488;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 antialiased">
+
+    <nav class="bg-stone-50/90 backdrop-blur border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-tighter text-stone-900">USLab<span class="text-brand-teal">.ai</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-stone-600 hover:text-stone-900 font-medium transition-colors hover-underline-animation">Service</a>
+                    <a href="#" class="text-stone-600 hover:text-stone-900 font-medium transition-colors hover-underline-animation">Insights</a>
+                    <a href="#" class="text-stone-600 hover:text-stone-900 font-medium transition-colors hover-underline-animation">About</a>
+                    <a href="#" class="border border-stone-300 text-stone-900 px-5 py-2 rounded font-medium hover:bg-stone-900 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-24 border-b border-stone-200">
+        <div class="max-w-5xl mx-auto px-4">
+            <span class="text-brand-teal font-bold tracking-wider text-sm uppercase mb-4 block">Editorial Focus</span>
+            <h1 class="text-5xl lg:text-7xl font-bold text-stone-900 mb-8 leading-[1.1] tracking-tight">
+                AI는 기술이 아니라,<br>
+                <span class="text-stone-500">새로운 문법입니다.</span>
+            </h1>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <p class="text-xl text-stone-600 max-w-2xl leading-relaxed">
+                    데이터의 가치를 발견하고, 일하는 판을 바꾸며, 압도적인 속도로 실행합니다.
+                    USLab.ai는 당신의 비즈니스에 명확한 '판단력'을 더합니다.
+                </p>
+                <div class="flex gap-4">
+                     <a href="#" class="group flex items-center gap-2 text-stone-900 font-bold border-b-2 border-stone-900 pb-1 hover:text-brand-teal hover:border-brand-teal transition-colors">
+                        우리의 철학 읽기 
+                        <span class="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="flex justify-between items-baseline mb-12 border-b border-stone-200 pb-4">
+                <h2 class="text-3xl font-bold text-stone-900">Featured Articles</h2>
+                <a href="#" class="text-sm font-semibold text-stone-500 hover:text-brand-teal">View All Posts</a>
+            </div>
+
+            <div class="grid gap-12">
+                
+                <article class="bg-white border border-stone-200 p-8 md:p-10 rounded-none md:rounded-xl hover:border-brand-teal transition-colors group cursor-pointer">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-4 text-xs font-bold uppercase tracking-wide">
+                                <span class="text-brand-teal">Tech Column</span>
+                                <span class="text-stone-300">|</span>
+                                <span class="text-stone-500">Dec 18, 2025</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-stone-900 mb-4 leading-tight group-hover:text-brand-teal transition-colors">
+                                생성형 AI 시대, 개발자의 생존 전략:<br>'바이브코딩'이란 무엇인가?
+                            </h3>
+                            <p class="text-stone-600 text-lg leading-relaxed mb-6">
+                                코드를 한 줄씩 짜는 시대는 끝났습니다. 이제는 AI와 리듬을 맞추며 전체를 지휘해야 합니다. 
+                                완벽함보다는 '속도'와 '수정 능력'이 새로운 경쟁력이 되는 이유를 심층 분석합니다.
+                            </p>
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-semibold text-stone-900">양승철 CEO</span>
+                                <span class="text-stone-400 text-sm">· 5 min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-white border border-stone-200 p-8 md:p-10 rounded-none md:rounded-xl hover:border-brand-teal transition-colors group cursor-pointer">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-4 text-xs font-bold uppercase tracking-wide">
+                                <span class="text-brand-teal">Success Story</span>
+                                <span class="text-stone-300">|</span>
+                                <span class="text-stone-500">Dec 15, 2025</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-stone-900 mb-4 leading-tight group-hover:text-brand-teal transition-colors">
+                                인사혁신처 X Microsoft: <br>공공 행정의 AI 리터러시를 높이다
+                            </h3>
+                            <p class="text-stone-600 text-lg leading-relaxed mb-6">
+                                공무원이 AI를 이해하면 정책이 바뀝니다. 12,000명의 공무원과 함께한 AI 역량 강화 프로젝트의 
+                                기획 의도부터 실행 과정, 그리고 놀라운 성과까지.
+                            </p>
+                            <div class="flex items-center gap-3">
+                                <span class="text-sm font-semibold text-stone-900">USLab Team</span>
+                                <span class="text-stone-400 text-sm">· 8 min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                    <div class="bg-white border border-stone-200 p-6 rounded-lg hover:border-stone-400 transition-colors">
+                        <span class="text-xs font-bold text-stone-400 uppercase mb-2 block">Trend</span>
+                        <h4 class="text-xl font-bold text-stone-900 mb-2">B2B2C: AI 에이전트의 미래</h4>
+                        <p class="text-stone-600 text-sm mb-4">기업형 맞춤 제작을 넘어, 구독형 플랫폼으로 가는 길.</p>
+                        <a href="#" class="text-sm font-bold text-brand-teal hover:underline">Read more →</a>
+                    </div>
+                    <div class="bg-white border border-stone-200 p-6 rounded-lg hover:border-stone-400 transition-colors">
+                        <span class="text-xs font-bold text-stone-400 uppercase mb-2 block">Insight</span>
+                        <h4 class="text-xl font-bold text-stone-900 mb-2">데이터가 가치가 되는 순간</h4>
+                        <p class="text-stone-600 text-sm mb-4">잠들어 있는 데이터를 깨워 비즈니스 자산으로 만드는 법.</p>
+                        <a href="#" class="text-sm font-bold text-brand-teal hover:underline">Read more →</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-stone-100 border-y border-stone-200 py-20">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-stone-900 mb-4">인사이트를 놓치지 마세요</h2>
+            <p class="text-stone-600 mb-8">매주 AI 트렌드와 USLab의 칼럼을 메일로 보내드립니다.</p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input type="email" placeholder="Email address" class="flex-1 px-4 py-3 bg-white border border-stone-300 rounded focus:outline-none focus:border-stone-500 text-stone-900">
+                <button class="px-6 py-3 bg-stone-900 text-white font-bold rounded hover:bg-stone-700 transition-colors">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-stone-50 py-12">
+        <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-stone-500">
+            <p>&copy; 2025 USLab.ai. Driven by Intelligence.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-stone-900">Privacy</a>
+                <a href="#" class="hover:text-stone-900">Terms</a>
+                <a href="#" class="hover:text-stone-900">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

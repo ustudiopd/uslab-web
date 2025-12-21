@@ -512,3 +512,69 @@
   - Navbar, Contact 컴포넌트의 이메일 제목/본문도 "USLab AI"로 변경
 - ✅ **빌드 테스트 성공**: 모든 변경사항 빌드 통과
 
+## [2025-01-XX] 어드민 페이지 라이트 테마 전환 완료
+- ✅ **어드민 레이아웃 라이트 테마 전환**
+  - `components/admin/AdminLayout.tsx`: 배경색, 헤더, 네비게이션 탭, 계정 메뉴 모두 라이트 테마로 변경
+    - 배경: `bg-slate-950` → `bg-slate-50`
+    - 헤더: `bg-slate-900` → `bg-white`, `border-slate-800` → `border-slate-200/80`
+    - 탭: 활성 `bg-cyan-500/20 text-cyan-400` → `bg-blue-500/20 text-blue-600`
+    - 탭: 비활성 `text-slate-400 hover:text-slate-200` → `text-slate-600 hover:text-slate-900`
+    - 계정 메뉴: `bg-slate-900/800` → `bg-white/100`, `text-white/slate-300` → `text-slate-900/600`
+- ✅ **로그인 페이지 라이트 테마 전환**
+  - `app/admin/login/page.tsx`: 전체 UI 라이트 테마로 변경
+    - 배경: `bg-slate-950` → `bg-slate-50`
+    - 로그인 카드: `bg-slate-900 border-slate-800` → `bg-white border-slate-200`
+    - 입력 필드: `bg-slate-800 text-white` → `bg-white text-slate-900`
+    - 버튼: `bg-cyan-500` → `bg-blue-600`
+- ✅ **대시보드 페이지 라이트 테마 전환**
+  - `app/admin/dashboard/page.tsx`: 모든 섹션 라이트 테마로 변경
+    - KPI 카드: `bg-slate-900` → `bg-white`, `text-white` → `text-slate-900`
+    - 트래픽 차트: 그리드 색상 `#334155` → `#e2e8f0`, 축 색상 조정
+    - 툴팁: 배경 `#1e293b` → `#ffffff`, 텍스트 `#e2e8f0` → `#1e293b`
+    - 섹션 카드: `bg-slate-900` → `bg-white`, 모든 텍스트 색상 조정
+    - 상태 색상: `-400` → `-600` (green, yellow, red)
+- ✅ **포스트 관리 페이지 라이트 테마 전환**
+  - `app/admin/posts/page.tsx`: 목록, 버튼, 모달 모두 라이트 테마로 변경
+    - 포스트 아이템: `bg-slate-900` → `bg-white`
+    - 텍스트: `text-white` → `text-slate-900`
+    - 버튼: `bg-slate-800` → `bg-slate-100`
+    - 휴지통 모달: 전체 라이트 테마로 변경
+- ✅ **소개 페이지 관리 라이트 테마 전환**
+  - `app/admin/about/page.tsx`: 버튼 스타일 라이트 테마로 변경
+- ✅ **운영진 보드 라이트 테마 전환**
+  - `app/admin/exec-board/page.tsx`: 헤더 텍스트 색상 조정
+  - `components/admin/exec-board/ExecBoardTab.tsx`: 하이라이트 카드 라이트 테마
+  - `components/admin/exec-board/ExecBoardSelector.tsx`: 드롭다운, 버튼, 모달 라이트 테마
+  - `components/admin/exec-board/ExecDocList.tsx`: 문서 목록, 버튼 라이트 테마
+  - `components/admin/exec-board/ExecTrashView.tsx`: 휴지통 뷰 라이트 테마
+  - `components/admin/exec-board/ExecDocEditor.tsx`: 에디터 컨테이너, 입력 필드 라이트 테마
+- ✅ **블로그 에디터 라이트 테마 전환**
+  - `components/editor/BlogEditor.tsx`: 에디터 콘텐츠, 이미지, YouTube, 슬래시 메뉴 라이트 테마
+    - `prose prose-invert` → `prose prose-slate`
+    - 이미지/YouTube 보더: `border-slate-600/700` → `border-slate-300`
+    - 슬래시 메뉴: `bg-slate-900` → `bg-white`, `text-slate-200/400` → `text-slate-900/600`
+  - `components/editor/BubbleMenu.tsx`: 버블 메뉴 라이트 테마
+    - 배경: `bg-slate-900` → `bg-white`
+    - 활성 아이템: `bg-slate-800` → `bg-slate-100`
+    - 아이콘: `text-slate-300` → `text-slate-700`
+  - `app/globals.css`: `.ProseMirror` placeholder 색상 조정 (`#64748b` → `#94a3b8`)
+- ✅ **포스트 작성/편집 페이지 라이트 테마 전환**
+  - `app/admin/posts/write/page.tsx`: 전체 UI 라이트 테마로 변경
+    - 배경: `bg-slate-950` → `bg-slate-50`
+    - 제목: `text-white` → `text-slate-900`
+    - 입력 필드: `bg-slate-900 text-white` → `bg-white text-slate-900`
+    - 에디터 컨테이너: `bg-slate-900` → `bg-white`
+    - 버튼: `bg-slate-800` → `bg-slate-100`, `bg-cyan-500` → `bg-blue-600`
+  - `app/admin/posts/[id]/page.tsx`: 편집 페이지 전체 라이트 테마로 변경
+    - 동일한 스타일 변경 적용
+    - 버전 탭 컴포넌트도 라이트 테마로 변경
+- ✅ **소개 페이지 에디터 라이트 테마 전환**
+  - `app/admin/about/page.tsx`: 에디터 컨테이너 및 버튼 라이트 테마로 변경
+- ✅ **버전 탭 컴포넌트 라이트 테마 전환**
+  - `components/admin/PostVersionTabs.tsx`: 탭, 상태 배지, 메시지 박스 라이트 테마
+    - 탭: `bg-slate-800` → `bg-slate-100`, `bg-cyan-500` → `bg-blue-600`
+    - 텍스트: `text-slate-300/400` → `text-slate-600/700`
+    - 메시지 박스: `bg-slate-800/50` → `bg-slate-50`
+  - `components/admin/AboutVersionTabs.tsx`: 동일한 라이트 테마 변경 적용
+- ✅ **빌드 테스트 성공**: 모든 변경사항 빌드 통과
+

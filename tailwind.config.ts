@@ -30,6 +30,12 @@ const config: Config = {
           'linear-gradient(to right, #1e293b 1px, transparent 1px), linear-gradient(to bottom, #1e293b 1px, transparent 1px)',
         */
       },
+      boxShadow: {
+        'blue-glow': '0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(59, 130, 246, 0.1)',
+      },
+      maxWidth: {
+        '1160': '1160px',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')],

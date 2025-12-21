@@ -195,7 +195,7 @@ export default function AdminPostsPage() {
   if (authLoading || loading) {
     return (
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <p className="text-slate-400 text-sm sm:text-base">로딩 중...</p>
+        <p className="text-slate-600 text-sm sm:text-base">로딩 중...</p>
       </div>
     );
   }
@@ -209,8 +209,8 @@ export default function AdminPostsPage() {
         {/* 헤더 */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight sm:leading-normal">포스트 관리</h1>
-            <p className="text-xs sm:text-sm text-slate-400">블로그 포스트를 작성하고 관리하세요.</p>
+            <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-2 leading-tight sm:leading-normal">포스트 관리</h1>
+            <p className="text-xs sm:text-sm text-slate-600">블로그 포스트를 작성하고 관리하세요.</p>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
             <button
@@ -221,7 +221,7 @@ export default function AdminPostsPage() {
             </button>
             <Link
               href="/admin/posts/write"
-              className="px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors text-xs sm:text-sm text-center"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors text-xs sm:text-sm text-center"
             >
               새 포스트 작성
             </Link>
@@ -231,10 +231,10 @@ export default function AdminPostsPage() {
         {/* 포스트 목록 */}
         {posts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-slate-400 text-lg mb-4">아직 포스트가 없습니다.</p>
+            <p className="text-slate-600 text-lg mb-4">아직 포스트가 없습니다.</p>
             <Link
               href="/admin/posts/write"
-              className="text-cyan-500 hover:text-cyan-400"
+              className="text-blue-600 hover:text-blue-700"
             >
               첫 포스트 작성하기
             </Link>
@@ -244,12 +244,12 @@ export default function AdminPostsPage() {
             {posts.map((post) => (
               <div
                 key={post.id}
-                className="bg-slate-900 border border-slate-800 rounded-lg p-4 sm:p-6 hover:border-slate-700 transition-colors"
+                className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 hover:border-slate-300 transition-colors shadow-sm"
               >
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white break-words">{post.title}</h3>
+                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-900 break-words">{post.title}</h3>
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
                           post.is_published
@@ -259,12 +259,12 @@ export default function AdminPostsPage() {
                       >
                         {post.is_published ? '발행됨' : '초안'}
                       </span>
-                      <span className="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400 whitespace-nowrap">
+                      <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-700 whitespace-nowrap">
                         {post.locale === 'ko' ? '한국어' : 'English'}
                       </span>
                     </div>
-                    <p className="text-slate-400 text-xs sm:text-sm mb-2 break-all">
-                      Slug: <code className="text-cyan-500">{post.slug}</code>
+                    <p className="text-slate-600 text-xs sm:text-sm mb-2 break-all">
+                      Slug: <code className="text-blue-600">{post.slug}</code>
                     </p>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-500">
                       <span>생성: {formatDate(post.created_at)}</span>
@@ -277,7 +277,7 @@ export default function AdminPostsPage() {
                   <div className="flex items-center gap-2 sm:ml-4 flex-shrink-0">
                     <Link
                       href={`/admin/posts/${post.id}`}
-                      className="px-3 sm:px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded hover:border-cyan-500 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                      className="px-3 sm:px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-blue-500 transition-colors text-xs sm:text-sm whitespace-nowrap"
                     >
                       수정
                     </Link>
@@ -297,13 +297,13 @@ export default function AdminPostsPage() {
       {/* 가비지 관리 모달 */}
       {showGarbageModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white border border-slate-200 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-xl">
             {/* 헤더 */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-800">
-              <h2 className="text-lg sm:text-xl font-bold text-white">가비지 관리 - 미아 이미지</h2>
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">가비지 관리 - 미아 이미지</h2>
               <button
                 onClick={() => setShowGarbageModal(false)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-600 hover:text-slate-900 transition-colors"
               >
                 ✕
               </button>
@@ -313,23 +313,23 @@ export default function AdminPostsPage() {
             <div className="flex-1 overflow-y-auto p-4 sm:p-6">
               {garbageLoading ? (
                 <div className="text-center py-12">
-                  <p className="text-slate-400">미아 이미지를 검색 중...</p>
+                  <p className="text-slate-600">미아 이미지를 검색 중...</p>
                 </div>
               ) : orphanFiles.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-slate-400 text-lg mb-2">미아 이미지가 없습니다!</p>
+                  <p className="text-slate-600 text-lg mb-2">미아 이미지가 없습니다!</p>
                   <p className="text-slate-500 text-sm">모든 이미지가 포스트에서 사용 중입니다.</p>
                 </div>
               ) : (
                 <>
                   <div className="mb-4 flex items-center justify-between">
-                    <div className="text-sm text-slate-400">
+                    <div className="text-sm text-slate-600">
                       총 {orphanFiles.length}개의 미아 이미지 발견
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={handleSelectAll}
-                        className="px-3 py-1.5 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors"
+                        className="px-3 py-1.5 text-xs bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors"
                       >
                         {selectedFiles.size === orphanFiles.length ? '전체 해제' : '전체 선택'}
                       </button>
@@ -352,25 +352,25 @@ export default function AdminPostsPage() {
                         className={`flex items-center gap-3 p-3 rounded border ${
                           selectedFiles.has(file.path)
                             ? 'bg-yellow-500/10 border-yellow-500/50'
-                            : 'bg-slate-800/50 border-slate-700'
+                            : 'bg-slate-50 border-slate-200'
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={selectedFiles.has(file.path)}
                           onChange={() => handleToggleFileSelection(file.path)}
-                          className="w-4 h-4 rounded border-slate-600 text-yellow-500 focus:ring-yellow-500"
+                          className="w-4 h-4 rounded border-slate-300 text-yellow-500 focus:ring-yellow-500"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white truncate font-mono">{file.name}</p>
-                          <p className="text-xs text-slate-400">
+                          <p className="text-sm text-slate-900 truncate font-mono">{file.name}</p>
+                          <p className="text-xs text-slate-600">
                             {formatFileSize(file.size)} • {formatDate(file.created_at)}
                           </p>
                         </div>
                         <img
                           src={supabase.storage.from('uslab-images').getPublicUrl(file.path).data.publicUrl}
                           alt={file.name}
-                          className="w-16 h-16 object-cover rounded border border-slate-700"
+                          className="w-16 h-16 object-cover rounded border border-slate-200"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                           }}
@@ -383,10 +383,10 @@ export default function AdminPostsPage() {
             </div>
 
             {/* 푸터 */}
-            <div className="p-4 sm:p-6 border-t border-slate-800 flex justify-end">
+            <div className="p-4 sm:p-6 border-t border-slate-200 flex justify-end">
               <button
                 onClick={() => setShowGarbageModal(false)}
-                className="px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded hover:border-slate-600 transition-colors text-sm"
+                className="px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-slate-400 transition-colors text-sm"
               >
                 닫기
               </button>

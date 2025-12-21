@@ -58,9 +58,9 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
 
   return (
     <LanguageProvider initialLang={initialLang} dict={dict}>
-      <div className="min-h-screen bg-slate-950 flex flex-col">
+      <div className="min-h-screen bg-slate-50 flex flex-col">
         {/* 헤더 */}
-        <header className="sticky top-0 z-50 bg-slate-900 border-b border-slate-800">
+        <header className="sticky top-0 z-50 bg-white border-b border-slate-200/80">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
             {/* 모바일: 세로 레이아웃 */}
             <div className="flex flex-col sm:hidden">
@@ -75,8 +75,8 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                         href={tab.href}
                         className={`p-2 rounded transition-colors flex-shrink-0 ${
                           isActive(tab.href)
-                            ? 'bg-cyan-500/20 text-cyan-400'
-                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                            ? 'bg-blue-500/20 text-blue-600'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                         }`}
                         title={tab.name}
                       >
@@ -90,20 +90,20 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                   <div className="relative flex-shrink-0" ref={accountMenuRef}>
                     <button
                       onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                      className="p-2 rounded transition-colors text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                      className="p-2 rounded transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                       aria-label="계정 메뉴"
                     >
                       <User size={20} />
                     </button>
                     {/* 드롭다운 메뉴 */}
                     {isAccountMenuOpen && (
-                      <div className="absolute top-full right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-50 min-w-[200px]">
+                      <div className="absolute top-full right-0 mt-1 bg-white border border-slate-200 rounded shadow-lg z-50 min-w-[200px]">
                         {/* 계정 정보 */}
-                        <div className="px-4 py-3 border-b border-slate-800">
-                          <div className="text-sm font-medium text-white">
+                        <div className="px-4 py-3 border-b border-slate-200">
+                          <div className="text-sm font-medium text-slate-900">
                             {user.email?.split('@')[0] || '관리자'}
                           </div>
-                          <div className="text-xs text-slate-400 mt-0.5 truncate">
+                          <div className="text-xs text-slate-600 mt-0.5 truncate">
                             {user.email || '관리자 계정'}
                           </div>
                         </div>
@@ -113,7 +113,7 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                             signOut();
                             setIsAccountMenuOpen(false);
                           }}
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                         >
                           <LogOut size={16} />
                           <span>로그아웃</span>
@@ -137,8 +137,8 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                       href={tab.href}
                       className={`px-4 py-2 text-sm font-medium rounded transition-colors flex items-center gap-2 ${
                         isActive(tab.href)
-                          ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                          ? 'bg-blue-500/20 text-blue-600 border border-blue-500/30'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
                       <Icon size={18} />
@@ -154,30 +154,30 @@ export default function AdminLayout({ children, initialLang, dict }: AdminLayout
                   <div className="relative" ref={accountMenuRef}>
                     <button
                       onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                      className="flex items-center gap-3 px-3 py-2 rounded hover:bg-slate-800 transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 rounded hover:bg-slate-100 transition-colors"
                     >
                       <div className="text-right">
-                        <div className="text-sm font-medium text-white">
+                        <div className="text-sm font-medium text-slate-900">
                           {user.email || '관리자'}
                         </div>
-                        <div className="text-xs text-slate-400">관리자 계정</div>
+                        <div className="text-xs text-slate-600">관리자 계정</div>
                       </div>
                       <ChevronDown
                         size={16}
-                        className={`text-slate-400 transition-transform ${
+                        className={`text-slate-600 transition-transform ${
                           isAccountMenuOpen ? 'rotate-180' : ''
                         }`}
                       />
                     </button>
                     {/* 드롭다운 메뉴 */}
                     {isAccountMenuOpen && (
-                      <div className="absolute top-full right-0 mt-1 bg-slate-900 border border-slate-800 rounded shadow-lg z-50 min-w-[160px]">
+                      <div className="absolute top-full right-0 mt-1 bg-white border border-slate-200 rounded shadow-lg z-50 min-w-[160px]">
                         <button
                           onClick={() => {
                             signOut();
                             setIsAccountMenuOpen(false);
                           }}
-                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-colors rounded"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors rounded"
                         >
                           <LogOut size={16} />
                           <span>로그아웃</span>

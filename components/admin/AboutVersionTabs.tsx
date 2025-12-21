@@ -140,14 +140,14 @@ export default function AboutVersionTabs({
     return (
       <div className="mb-6">
         <div className="flex gap-2 mb-4">
-          <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded text-slate-400">
+          <div className="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-slate-600">
             한국어
           </div>
-          <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded text-slate-400">
+          <div className="px-4 py-2 bg-slate-100 border border-slate-300 rounded text-slate-600">
             English
           </div>
         </div>
-        <p className="text-slate-400 text-sm">로딩 중...</p>
+        <p className="text-slate-600 text-sm">로딩 중...</p>
       </div>
     );
   }
@@ -155,7 +155,7 @@ export default function AboutVersionTabs({
   if (error) {
     return (
       <div className="mb-6">
-        <div className="p-4 bg-red-500/20 border border-red-500/50 rounded text-red-400">
+        <div className="p-4 bg-red-500/20 border border-red-500/50 rounded text-red-600">
           {error}
         </div>
       </div>
@@ -175,8 +175,8 @@ export default function AboutVersionTabs({
           }}
           className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded font-medium transition-colors text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 ${
             activeTab === 'ko'
-              ? 'bg-cyan-500 text-white'
-              : 'bg-slate-800 border border-slate-700 text-slate-300 hover:border-slate-600'
+              ? 'bg-blue-600 text-white'
+              : 'bg-slate-100 border border-slate-300 text-slate-700 hover:border-slate-400'
           }`}
         >
           <span>한국어</span>
@@ -185,7 +185,7 @@ export default function AboutVersionTabs({
               저장됨
             </span>
           ) : (
-            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700 text-slate-400 rounded text-[10px] sm:text-xs whitespace-nowrap">
+            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-[10px] sm:text-xs whitespace-nowrap">
               없음
             </span>
           )}
@@ -199,8 +199,8 @@ export default function AboutVersionTabs({
           }}
           className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded font-medium transition-colors text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 ${
             activeTab === 'en'
-              ? 'bg-cyan-500 text-white'
-              : 'bg-slate-800 border border-slate-700 text-slate-300 hover:border-slate-600'
+              ? 'bg-blue-600 text-white'
+              : 'bg-slate-100 border border-slate-300 text-slate-700 hover:border-slate-400'
           }`}
         >
           <span>English</span>
@@ -209,7 +209,7 @@ export default function AboutVersionTabs({
               저장됨
             </span>
           ) : (
-            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700 text-slate-400 rounded text-[10px] sm:text-xs whitespace-nowrap">
+            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-[10px] sm:text-xs whitespace-nowrap">
               없음
             </span>
           )}
@@ -228,9 +228,9 @@ export default function AboutVersionTabs({
 
       {/* 현재 선택된 소개 페이지 정보 표시 */}
       {activeTab === 'en' && !enAbout && (
-        <div className="p-3 sm:p-4 bg-slate-800/50 border border-slate-700 rounded mb-3 sm:mb-4">
-          <p className="text-slate-300 mb-2 sm:mb-3 text-sm sm:text-base">영문 버전이 아직 없습니다.</p>
-          <p className="text-slate-400 text-xs sm:text-sm">
+        <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded mb-3 sm:mb-4">
+          <p className="text-slate-700 mb-2 sm:mb-3 text-sm sm:text-base">영문 버전이 아직 없습니다.</p>
+          <p className="text-slate-600 text-xs sm:text-sm">
             아래 버튼을 클릭하여 KO 소개 페이지를 기반으로 EN 초안을 생성할 수 있습니다.
           </p>
         </div>

@@ -43,12 +43,12 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-slate-900 border border-slate-800 rounded-lg p-8">
+        <div className="bg-white border border-slate-200 rounded-lg p-8 shadow-sm">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">USLab.ai Admin</h1>
-            <p className="text-slate-400">관리자 로그인</p>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">USLab AI Admin</h1>
+            <p className="text-slate-600">관리자 로그인</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
                 이메일
               </label>
               <input
@@ -68,13 +68,13 @@ export default function AdminLoginPage() {
                 value={email || ''}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
                 placeholder="admin@uslab.ai"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
                 비밀번호
               </label>
               <input
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
                 value={password || ''}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
                 placeholder="••••••••"
               />
             </div>
@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? '로그인 중...' : '로그인'}
             </button>

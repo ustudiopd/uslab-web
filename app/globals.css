@@ -78,7 +78,7 @@
 
 /* 기본 스타일 (라이트 테마) */
 body {
-  @apply bg-white text-slate-900;
+  @apply bg-slate-50 text-slate-700;
 }
 
 /* 다크 테마 스타일 (향후 토글 기능 추가 시 사용) */
@@ -87,7 +87,7 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 0%, #4f46e5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -164,7 +164,7 @@ body {
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: #64748b;
+  color: #94a3b8;
   pointer-events: none;
   height: 0;
 }
@@ -172,7 +172,7 @@ body {
 .ProseMirror .is-empty::before {
   content: attr(data-placeholder);
   float: left;
-  color: #64748b;
+  color: #94a3b8;
   pointer-events: none;
   height: 0;
 }

@@ -121,7 +121,7 @@ export default function ExecBoardSelector({
         <select
           value={selectedBoardId || ''}
           onChange={(e) => onBoardChange(e.target.value)}
-          className="px-4 py-2 bg-slate-900 border border-slate-800 rounded text-white text-sm focus:outline-none focus:border-cyan-500"
+          className="px-4 py-2 bg-white border border-slate-300 rounded text-slate-900 text-sm focus:outline-none focus:border-blue-500"
         >
           {boards.map((board) => (
             <option key={board.id} value={board.id}>
@@ -151,7 +151,7 @@ export default function ExecBoardSelector({
       {/* 새 보드 버튼 */}
       <button
         onClick={() => setShowCreateModal(true)}
-        className="px-4 py-2 bg-cyan-500 text-white rounded text-sm font-medium hover:bg-cyan-600 transition-colors"
+        className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 transition-colors"
       >
         + 새 보드
       </button>
@@ -159,26 +159,26 @@ export default function ExecBoardSelector({
       {/* 새 보드 생성 모달 */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold text-white mb-4">새 보드 생성</h3>
+          <div className="bg-white border border-slate-200 rounded-lg p-6 max-w-md w-full shadow-xl">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">새 보드 생성</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm text-slate-300 mb-2">보드 이름 *</label>
+                <label className="block text-sm text-slate-700 mb-2">보드 이름 *</label>
                 <input
                   type="text"
                   value={newBoardName}
                   onChange={(e) => setNewBoardName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded text-white text-sm focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded text-slate-900 text-sm focus:outline-none focus:border-blue-500"
                   placeholder="예: 공지, 회의록"
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-300 mb-2">설명 (선택)</label>
+                <label className="block text-sm text-slate-700 mb-2">설명 (선택)</label>
                 <input
                   type="text"
                   value={newBoardDescription}
                   onChange={(e) => setNewBoardDescription(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded text-white text-sm focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded text-slate-900 text-sm focus:outline-none focus:border-blue-500"
                   placeholder="보드 설명"
                 />
               </div>
@@ -189,14 +189,14 @@ export default function ExecBoardSelector({
                     setNewBoardName('');
                     setNewBoardDescription('');
                   }}
-                  className="px-4 py-2 bg-slate-800 border border-slate-700 text-white rounded text-sm hover:bg-slate-700 transition-colors"
+                  className="px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded text-sm hover:bg-slate-200 transition-colors"
                 >
                   취소
                 </button>
                 <button
                   onClick={handleCreateBoard}
                   disabled={creating}
-                  className="px-4 py-2 bg-cyan-500 text-white rounded text-sm font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
                 >
                   {creating ? '생성 중...' : '생성'}
                 </button>

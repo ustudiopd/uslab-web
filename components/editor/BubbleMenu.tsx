@@ -13,31 +13,31 @@ export function BubbleMenu() {
       tippyOptions={{
         placement: 'top',
       }}
-      className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-slate-700 bg-slate-900 shadow-xl">
+      className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-slate-200 bg-white shadow-xl">
       <EditorBubbleItem
         onSelect={() => editor.chain().focus().toggleBold().run()}
-        className={`p-2 ${editor.isActive('bold') ? 'bg-slate-800' : ''}`}>
-        <Bold className="h-4 w-4 text-slate-300" />
+        className={`p-2 ${editor.isActive('bold') ? 'bg-slate-100' : ''}`}>
+        <Bold className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
       <EditorBubbleItem
         onSelect={() => editor.chain().focus().toggleItalic().run()}
-        className={`p-2 ${editor.isActive('italic') ? 'bg-slate-800' : ''}`}>
-        <Italic className="h-4 w-4 text-slate-300" />
+        className={`p-2 ${editor.isActive('italic') ? 'bg-slate-100' : ''}`}>
+        <Italic className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
       <EditorBubbleItem
         onSelect={() => editor.chain().focus().toggleUnderline().run()}
-        className={`p-2 ${editor.isActive('underline') ? 'bg-slate-800' : ''}`}>
-        <Underline className="h-4 w-4 text-slate-300" />
+        className={`p-2 ${editor.isActive('underline') ? 'bg-slate-100' : ''}`}>
+        <Underline className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
       <EditorBubbleItem
         onSelect={() => editor.chain().focus().toggleStrike().run()}
-        className={`p-2 ${editor.isActive('strike') ? 'bg-slate-800' : ''}`}>
-        <Strikethrough className="h-4 w-4 text-slate-300" />
+        className={`p-2 ${editor.isActive('strike') ? 'bg-slate-100' : ''}`}>
+        <Strikethrough className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
       <EditorBubbleItem
         onSelect={() => editor.chain().focus().toggleCode().run()}
-        className={`p-2 ${editor.isActive('code') ? 'bg-slate-800' : ''}`}>
-        <Code className="h-4 w-4 text-slate-300" />
+        className={`p-2 ${editor.isActive('code') ? 'bg-slate-100' : ''}`}>
+        <Code className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
       <EditorBubbleItem
         onSelect={() => {
@@ -48,9 +48,9 @@ export function BubbleMenu() {
             (chain as any).setSmall().run();
           }
         }}
-        className={`p-2 ${editor.isActive('small') ? 'bg-slate-800' : ''}`}
+        className={`p-2 ${editor.isActive('small') ? 'bg-slate-100' : ''}`}
         title="작은 글씨">
-        <Type className="h-4 w-4 text-slate-300" />
+        <Type className="h-4 w-4 text-slate-700" />
       </EditorBubbleItem>
     </EditorBubble>
   );

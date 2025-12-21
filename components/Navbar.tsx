@@ -48,13 +48,13 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full z-50 dark:bg-slate-950/80 bg-white/95 backdrop-blur-md border-b transition-all duration-300 ${
+      className={`fixed w-full z-50 dark:bg-slate-950/80 bg-white/90 backdrop-blur-md border-b transition-all duration-300 ${
         isScrolled 
-          ? 'dark:border-slate-800 border-slate-300 dark:bg-slate-950/90 bg-white/95' 
-          : 'dark:border-slate-800 border-slate-300'
+          ? 'dark:border-slate-800 border-slate-200/80 dark:bg-slate-950/90 bg-white/90' 
+          : 'dark:border-slate-800 border-slate-200/80'
       }`}
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-1160 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-20">
           {/* Logo */}
           <Link
@@ -62,8 +62,8 @@ export default function Navbar() {
             className="flex-shrink-0 flex items-center cursor-pointer group"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <span className="text-xl font-bold tracking-tight dark:text-white dark:group-hover:text-cyan-400 text-slate-900 group-hover:text-cyan-600 transition-colors">
-              USLab <span className="text-cyan-500 dark:text-cyan-500">AI</span>
+            <span className="text-xl font-bold tracking-tight dark:text-white dark:group-hover:text-blue-400 text-slate-900 group-hover:text-blue-600 transition-colors">
+              USLab <span className="text-blue-600 dark:text-blue-500">AI</span>
             </span>
           </Link>
 
@@ -71,27 +71,27 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-10 ml-auto">
             <Link
               href={`/${locale}/about`}
-              className="text-sm font-medium dark:text-slate-400 text-slate-700 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-blue-600 transition-colors uppercase tracking-wider px-4 py-2 rounded-lg hover:bg-slate-50"
             >
               {t('nav.about')}
             </Link>
             <Link
               href={`/${locale}/blog`}
-              className="text-sm font-medium dark:text-slate-400 text-slate-700 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-blue-600 transition-colors uppercase tracking-wider px-4 py-2 rounded-lg hover:bg-slate-50"
             >
               {t('nav.blog')}
             </Link>
             <a
               href="#contact"
               onClick={handleContactClick}
-              className="bg-white/5 dark:bg-white/5 bg-slate-100 border border-slate-700 dark:border-slate-700 border-slate-300 dark:text-white dark:hover:text-white text-slate-800 hover:text-white px-6 py-2 rounded font-medium hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 text-sm cursor-pointer"
+              className="bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-600 transition-all duration-300 text-sm cursor-pointer shadow-sm hover:shadow-md"
             >
               {t('nav.contact')}
             </a>
             {/* Language Toggle */}
             <Link
               href={locale === 'ko' ? `/en${basePath}` : `/ko${basePath}`}
-              className="text-sm font-medium dark:text-slate-400 text-slate-700 dark:hover:text-white hover:text-slate-900 transition-colors uppercase tracking-wider px-3 py-1 rounded dark:border-slate-700 border-slate-400 hover:border-cyan-500"
+              className="text-sm font-medium dark:text-slate-400 text-slate-600 dark:hover:text-white hover:text-blue-600 transition-colors uppercase tracking-wider px-3 py-1 rounded dark:border-slate-700 border-slate-200 hover:border-blue-500"
               aria-label="Toggle language"
             >
               {locale === 'ko' ? 'ENG' : 'KOR'}

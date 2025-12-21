@@ -15,20 +15,19 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-12 sm:py-16 lg:py-24 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 bg-gradient-to-b from-cyan-50/40 via-blue-50/30 to-white border-t dark:border-slate-800 border-slate-300 relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-24 dark:bg-slate-900 bg-slate-900 relative overflow-hidden"
     >
       {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-cyan-900/20 dark:bg-cyan-900/20 bg-cyan-400/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[600px] h-[300px] bg-blue-400/15 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full max-w-1160 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black dark:text-white text-slate-900 mb-4 sm:mb-6 leading-tight px-2">
+          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             {t('contact.title')}
             <br />
-            {t('contact.titleHighlight')}
+            <span className="text-blue-400">{t('contact.titleHighlight')}</span>
           </h2>
-          <p className="text-sm sm:text-base md:text-lg dark:text-slate-400 text-slate-700 leading-relaxed px-2 korean-text max-w-2xl mx-auto">
+          <p className="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
             {t('contact.description')}
             <br />
             {t('contact.descriptionHighlight')}
@@ -40,9 +39,12 @@ export default function Contact() {
         <div className="flex justify-center">
           <button
             onClick={handleContactClick}
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-4 sm:py-5 px-8 sm:px-12 rounded-lg text-base sm:text-lg transition-all shadow-lg transform hover:-translate-y-0.5 hover:shadow-xl"
+            className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
           >
             {t('contact.form.submit')}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </button>
         </div>
       </div>

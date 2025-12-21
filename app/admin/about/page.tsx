@@ -212,7 +212,7 @@ export default function AboutPage() {
         {/* 헤더 */}
         <div className="mb-4 sm:mb-6 lg:mb-8">
           <div className="flex flex-col gap-3 sm:gap-4 mb-3 sm:mb-4 lg:mb-6">
-            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-white leading-tight">
+            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-slate-900 leading-tight">
               소개 페이지 관리
             </h1>
             {/* 모바일: 버튼들을 세로로 배치 */}
@@ -226,7 +226,7 @@ export default function AboutPage() {
               <div className="flex gap-2 overflow-x-auto scrollbar-hide sm:overflow-visible">
                 <button
                   onClick={handleImportMarkdown}
-                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 파일 가져오기"
                 >
                   Import
@@ -264,7 +264,7 @@ export default function AboutPage() {
           {/* 조회수 표시 (관리자만) */}
           {about && about.view_count !== undefined && (
             <div className="mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 text-slate-400 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 text-slate-600 text-xs sm:text-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="14"
@@ -287,7 +287,7 @@ export default function AboutPage() {
         </div>
 
         {/* 에디터 */}
-        <div className="mb-4 sm:mb-6 lg:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px]">
+        <div className="mb-4 sm:mb-6 lg:mb-8 bg-white border border-slate-200 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px] shadow-sm">
           <BlogEditor
             key={editorKey}
             editorKey={editorKey}
@@ -311,14 +311,14 @@ export default function AboutPage() {
           <button
             onClick={() => router.push('/admin/posts')}
             disabled={isSaving}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border border-slate-300 text-slate-900 rounded font-medium hover:border-slate-400 transition-colors disabled:opacity-50 text-sm sm:text-base"
           >
             목록으로
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving || !about}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
           >
             {isSaving ? '저장 중...' : '저장하기'}
           </button>

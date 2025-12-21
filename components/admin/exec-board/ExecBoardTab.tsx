@@ -145,7 +145,7 @@ export default function ExecBoardTab() {
   if (loading) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-400">로딩 중...</p>
+        <p className="text-slate-600">로딩 중...</p>
       </div>
     );
   }
@@ -169,20 +169,20 @@ export default function ExecBoardTab() {
       {topDoc && (
         <div
           onClick={() => handleDocSelect(topDoc.id)}
-          className="bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/30 rounded-lg p-6 cursor-pointer hover:border-cyan-500/50 transition-colors"
+          className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-lg p-6 cursor-pointer hover:border-blue-500/50 transition-colors"
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <div className="text-xs font-mono text-cyan-400 mb-2">최상단 하이라이트</div>
-              <h3 className="text-xl font-bold text-white mb-2">{topDoc.title}</h3>
-              <p className="text-sm text-slate-400 line-clamp-2">
+              <div className="text-xs font-mono text-blue-600 mb-2">최상단 하이라이트</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">{topDoc.title}</h3>
+              <p className="text-sm text-slate-600 line-clamp-2">
                 {/* 요약 텍스트는 추후 추가 */}
               </p>
               <div className="text-xs text-slate-500 mt-3">
                 마지막 수정: {new Date(topDoc.updated_at).toLocaleString('ko-KR')}
               </div>
             </div>
-            <div className="text-cyan-400">→</div>
+            <div className="text-blue-600">→</div>
           </div>
         </div>
       )}

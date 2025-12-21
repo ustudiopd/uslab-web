@@ -5,9 +5,16 @@ import Hero from '@/components/sections/Hero';
 import Philosophy from '@/components/sections/Philosophy';
 import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
+import Insights from '@/components/sections/Insights';
 import Contact from '@/components/sections/Contact';
+import type { Locale } from '@/lib/i18n/config';
 
-export default function Home() {
+interface HomeProps {
+  params: Promise<{ lang: Locale }>;
+}
+
+export default async function Home({ params }: HomeProps) {
+  const { lang } = await params;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://uslab.ai';
 
   // Organization JSON-LD
@@ -40,6 +47,7 @@ export default function Home() {
       <Philosophy />
       <Services />
       <Portfolio />
+      <Insights lang={lang} />
       <Contact />
       <Footer />
     </main>

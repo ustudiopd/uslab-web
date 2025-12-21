@@ -55,7 +55,7 @@ function SortableDocItem({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors cursor-pointer group"
+      className="bg-white border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors cursor-pointer group shadow-sm"
       onClick={onSelect}
     >
       <div className="flex items-start justify-between gap-3">
@@ -64,7 +64,7 @@ function SortableDocItem({
           <button
             {...attributes}
             {...listeners}
-            className="cursor-grab active:cursor-grabbing text-slate-500 hover:text-slate-300 mt-1"
+            className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 mt-1"
             onClick={(e) => e.stopPropagation()}
           >
             <svg
@@ -83,8 +83,8 @@ function SortableDocItem({
             </svg>
           </button>
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-medium text-white mb-1 truncate">{doc.title}</h3>
-            <div className="text-xs text-slate-400">
+            <h3 className="text-base font-medium text-slate-900 mb-1 truncate">{doc.title}</h3>
+            <div className="text-xs text-slate-600">
               {new Date(doc.updated_at).toLocaleString('ko-KR')}
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function ExecDocList({
   if (!boardId) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-400">보드를 선택해주세요.</p>
+        <p className="text-slate-600">보드를 선택해주세요.</p>
       </div>
     );
   }
@@ -245,11 +245,11 @@ export default function ExecDocList({
     <div>
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-white">문서 목록</h2>
+        <h2 className="text-lg font-bold text-slate-900">문서 목록</h2>
         <div className="flex gap-2">
           <button
             onClick={() => setShowTrash(true)}
-            className="px-3 py-1.5 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors"
+            className="px-3 py-1.5 text-xs bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors"
           >
             휴지통
           </button>
@@ -275,7 +275,7 @@ export default function ExecDocList({
                 onDocSelect(data.doc.id);
               }
             }}
-            className="px-4 py-2 bg-cyan-500 text-white rounded text-sm font-medium hover:bg-cyan-600 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 transition-colors"
           >
             + 새 문서
           </button>
@@ -285,7 +285,7 @@ export default function ExecDocList({
       {/* 문서 리스트 */}
       {docs.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-slate-400 mb-4">문서가 없습니다.</p>
+          <p className="text-slate-600 mb-4">문서가 없습니다.</p>
           <button
             onClick={async () => {
               const { data: { session } } = await supabase.auth.getSession();
@@ -308,7 +308,7 @@ export default function ExecDocList({
                 onDocSelect(data.doc.id);
               }
             }}
-            className="text-cyan-500 hover:text-cyan-400"
+            className="text-blue-600 hover:text-blue-700"
           >
             첫 문서 작성하기
           </button>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USLab.ai - Trust & Logic Developed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0',
+                            300: '#CBD5E1', 400: '#94A3B8', 500: '#64748B',
+                            600: '#475569', 700: '#334155', 800: '#1E293B',
+                            900: '#0F172A',
+                        },
+                        // 브랜드 블루를 조금 더 다채롭게 활용
+                        blue: {
+                            500: '#3B82F6', 600: '#2563EB', 700: '#1D4ED8',
+                        },
+                        indigo: {
+                            600: '#4F46E5',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        // 카드 호버시 사용할 부드럽고 파란 빛이 도는 그림자
+                        'blue-glow': '0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(59, 130, 246, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+        body { font-family: 'Pretendard', sans-serif; }
+        
+        /* 부드러운 전환 효과를 위한 유틸리티 */
+        .transition-smooth { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700 antialiased overflow-x-hidden">
+
+    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50 transition-smooth">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-slate-900 tracking-tight">USLab<span class="text-blue-600">.ai</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#" class="px-4 py-2 text-slate-600 hover:text-blue-600 font-medium rounded-lg hover:bg-slate-50 transition-smooth">Service</a>
+                    <a href="#" class="px-4 py-2 text-slate-600 hover:text-blue-600 font-medium rounded-lg hover:bg-slate-50 transition-smooth">Blog</a>
+                    <a href="#" class="px-4 py-2 text-slate-600 hover:text-blue-600 font-medium rounded-lg hover:bg-slate-50 transition-smooth">Case Study</a>
+                    <div class="pl-4">
+                        <a href="#" class="bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-600 transition-smooth shadow-sm hover:shadow-md">문의하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-24 lg:py-32 relative z-10">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div class="absolute top-[-10%] left-[10%] w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[100px] mix-blend-multiply"></div>
+            <div class="absolute bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-indigo-100/30 rounded-full blur-[120px] mix-blend-multiply"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-4 text-center relative">
+            <span class="inline-flex items-center py-1 px-3 rounded-full bg-blue-50/80 text-blue-700 text-sm font-bold mb-8 border border-blue-100/50 backdrop-blur-sm">
+                <span class="flex w-2 h-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span> AI Transformation Partner
+            </span>
+            <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 mb-8 leading-tight tracking-tight">
+                AI가 만드는 능력의 비용을<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700">
+                    완벽하게 '0'으로.
+                </span>
+            </h1>
+            <p class="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+                비즈니스의 성패는 '판단력'과 '속도'에 달려 있습니다.<br>
+                USLab.ai의 <span class="text-slate-900 font-semibold underline decoration-blue-300/50 decoration-2 underline-offset-4">바이브코딩(Vibe Coding)</span>으로 압도적 경쟁 우위를 확보하세요.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-bold hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-smooth flex items-center justify-center gap-2 shadow-lg shadow-blue-900/5">
+                    솔루션 상담 시작하기 →
+                </button>
+                <button class="bg-white text-slate-700 border-2 border-slate-200 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-smooth flex items-center justify-center gap-2">
+                    성공 사례집 다운로드 <span class="text-slate-400">↓</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white/60 border-y border-slate-200/60 py-10 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-slate-500 font-bold mb-8 uppercase tracking-widest">Trusted by Industry Leaders</p>
+            <div class="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-smooth duration-500">
+                <div class="font-bold text-2xl text-slate-800 flex items-center gap-2"><div class="w-7 h-7 bg-[#00A4EF]"></div> Microsoft</div>
+                <div class="font-bold text-2xl text-slate-800 flex items-center gap-2"><div class="w-7 h-7 bg-[#A50034]"></div> LG CNS</div>
+                <div class="font-bold text-2xl text-slate-800 flex items-center gap-2"><div class="w-7 h-7 bg-[#0057B8]"></div> 인사혁신처</div>
+                <div class="font-bold text-2xl text-slate-800 flex items-center gap-2"><div class="w-7 h-7 bg-[#1A3764]"></div> KDI School</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-3">USLab Insights</h2>
+                    <p class="text-lg text-slate-500">AI 기술 트렌드와 비즈니스 적용에 대한 깊이 있는 시선</p>
+                </div>
+                <a href="#" class="hidden md:inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-800 transition-smooth group">
+                    전체 아티클 보기 
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <article class="bg-white rounded-2xl p-7 border border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-blue-glow hover:border-blue-300/50 transition-smooth group cursor-pointer h-full flex flex-col relative overflow-hidden">
+                    <div class="mb-5 flex items-center justify-between relative z-10">
+                        <span class="inline-flex items-center bg-blue-50 text-blue-600 text-xs px-3 py-1.5 rounded-full font-bold group-hover:bg-blue-100 transition-smooth">
+                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                            Tech Column
+                        </span>
+                        <span class="text-slate-400 text-sm font-medium">Dec 18</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4 leading-snug group-hover:text-blue-700 transition-smooth relative z-10">
+                        생성형 AI 시대, 개발자는 어떻게 '바이브코딩' 해야 하는가?
+                    </h3>
+                    <p class="text-slate-600 mb-8 leading-relaxed line-clamp-3 flex-grow relative z-10">
+                        완벽함보다는 실행 속도가 비즈니스의 경쟁력이 되는 이유. AI와 리듬을 맞추며 전체를 설계하는 '바이브코딩' 방법론을 심층 분석합니다.
+                    </p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-slate-100 relative z-10">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 ring-2 ring-white flex items-center justify-center text-slate-500 text-sm font-bold">YS</div>
+                        <div>
+                            <span class="text-sm font-bold text-slate-900 block">양승철 CEO</span>
+                            <span class="text-xs text-slate-500">5 min read</span>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0 translate-x-1/2 -translate-y-1/2"></div>
+                </article>
+
+                <article class="bg-white rounded-2xl p-7 border border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-blue-glow hover:border-blue-300/50 transition-smooth group cursor-pointer h-full flex flex-col relative overflow-hidden">
+                    <div class="mb-5 flex items-center justify-between relative z-10">
+                        <span class="inline-flex items-center bg-blue-50 text-blue-600 text-xs px-3 py-1.5 rounded-full font-bold group-hover:bg-blue-100 transition-smooth">
+                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                            Success Story
+                        </span>
+                        <span class="text-slate-400 text-sm font-medium">Dec 15</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4 leading-snug group-hover:text-blue-700 transition-smooth relative z-10">
+                        인사혁신처 플랫폼: 공무원 AI 역량 강화 프로젝트 후기
+                    </h3>
+                    <p class="text-slate-600 mb-8 leading-relaxed line-clamp-3 flex-grow relative z-10">
+                        공공 분야에서의 AI 도입은 무엇이 다른가? 마이크로소프트, 인사혁신처와 함께 진행한 대규모 AI 교육 플랫폼 구축 과정을 공유합니다.
+                    </p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-slate-100 relative z-10">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 ring-2 ring-white flex items-center justify-center text-slate-500 text-sm font-bold">US</div>
+                        <div>
+                            <span class="text-sm font-bold text-slate-900 block">USLab Team</span>
+                            <span class="text-xs text-slate-500">Case Study</span>
+                        </div>
+                    </div>
+                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0 translate-x-1/2 -translate-y-1/2"></div>
+                </article>
+
+                <article class="bg-white rounded-2xl p-7 border border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-blue-glow hover:border-blue-300/50 transition-smooth group cursor-pointer h-full flex flex-col relative overflow-hidden">
+                    <div class="mb-5 flex items-center justify-between relative z-10">
+                        <span class="inline-flex items-center bg-blue-50 text-blue-600 text-xs px-3 py-1.5 rounded-full font-bold group-hover:bg-blue-100 transition-smooth">
+                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                            Trend Report
+                        </span>
+                        <span class="text-slate-400 text-sm font-medium">Dec 10</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4 leading-snug group-hover:text-blue-700 transition-smooth relative z-10">
+                        B2B2C 전략: 기업형 AI 에이전트의 새로운 기회
+                    </h3>
+                    <p class="text-slate-600 mb-8 leading-relaxed line-clamp-3 flex-grow relative z-10">
+                        단순 B2C를 넘어, B2C 기업에게 맞는 커스텀 에이전트를 제공하는 B2B2C 모델이 왜 2026년의 핵심 비즈니스 모델이 될 것인가?
+                    </p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-slate-100 relative z-10">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 ring-2 ring-white flex items-center justify-center text-slate-500 text-sm font-bold">YS</div>
+                        <div>
+                            <span class="text-sm font-bold text-slate-900 block">양승철 CEO</span>
+                            <span class="text-xs text-slate-500">Insight</span>
+                        </div>
+                    </div>
+                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0 translate-x-1/2 -translate-y-1/2"></div>
+                </article>
+
+            </div>
+            
+            <div class="mt-10 text-center md:hidden">
+                 <a href="#" class="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-800 transition-smooth">
+                    전체 아티클 보기 →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-slate-900 py-24 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                당신의 비즈니스에<br>
+                <span class="text-blue-400">가장 빠른 지능</span>을 더하세요.
+            </h2>
+            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
+                USLab.ai는 전략 수립부터 개발, 교육까지 AX의 전 과정을 함께합니다.<br>
+                지금 바로 전문가와 상담하고 실행 가능한 로드맵을 받아보세요.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-smooth flex items-center justify-center gap-2">
+                    프로젝트 문의하기
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center md:text-left md:flex justify-between items-center text-slate-400 text-sm">
+            <div class="mb-4 md:mb-0">
+                <span class="text-xl font-bold text-white tracking-tight mr-4">USLab<span class="text-blue-500">.ai</span></span>
+                <span>© 2025 All rights reserved.</span>
+            </div>
+            <div class="flex justify-center gap-8">
+                <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
+                <a href="#" class="hover:text-white transition-colors">이용약관</a>
+                <a href="#" class="hover:text-white transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

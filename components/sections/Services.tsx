@@ -35,60 +35,52 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="py-12 sm:py-16 lg:py-24 dark:bg-slate-900 bg-slate-50 border-t dark:border-slate-800 border-slate-300"
+      className="py-12 sm:py-16 lg:py-24 dark:bg-slate-900 bg-white border-t dark:border-slate-800 border-slate-200/60"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-1160 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16">
-          <h2 className="text-xs font-mono text-cyan-500 mb-2">
+          <h2 className="text-[10px] font-mono text-blue-600 mb-1 uppercase tracking-wider">
             {t('services.badge')}
           </h2>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-900 leading-tight">
             {t('services.title')}
             <br className="md:hidden" />
-            <span className="md:ml-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
+            <span className="md:ml-2 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
               {t('services.titleHighlight')}
             </span>
           </h3>
         </div>
 
-        <div className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group relative dark:bg-slate-950 bg-white rounded-lg p-1 border dark:border-slate-800 border-slate-300 dark:hover:border-slate-600 hover:border-slate-500 transition-all shadow-sm hover:shadow-md"
+              className="group relative dark:bg-slate-950 bg-white rounded-2xl p-7 border dark:border-slate-800 border-slate-200/60 dark:hover:border-slate-600 hover:border-blue-300/50 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-blue-glow h-full flex flex-col relative overflow-hidden"
             >
-              <div
-                className={`absolute inset-0 bg-gradient-to-r ${service.gradient} to-transparent opacity-50 group-hover:opacity-75 transition-opacity rounded-lg`}
-              />
-              <div className="relative p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-start gap-4 sm:gap-6 md:gap-8">
+              <div className="relative z-10 flex flex-col items-start gap-4">
                 <div
-                  className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 dark:bg-slate-900 bg-slate-200 rounded border flex items-center justify-center text-2xl sm:text-3xl transition-all group-hover:scale-105 ${
-                    service.hoverColor === 'cyan'
-                      ? 'text-cyan-400 border-cyan-500/30 group-hover:border-cyan-500/60'
-                      : service.hoverColor === 'indigo'
-                      ? 'text-indigo-400 border-indigo-500/30 group-hover:border-indigo-500/60'
-                      : 'text-emerald-400 border-emerald-500/30 group-hover:border-emerald-500/60'
-                  }`}
+                  className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 dark:bg-slate-900 bg-blue-50 rounded-lg flex items-center justify-center text-2xl sm:text-3xl transition-all group-hover:scale-105 text-blue-600`}
                 >
                   <i className={service.icon} />
                 </div>
                 <div className="flex-grow min-w-0">
-                  <h4 className="text-xl sm:text-2xl font-bold dark:text-white text-slate-900 mb-2 leading-tight">
-                    {t(service.titleKey)}
-                  </h4>
-                  <p className="text-sm sm:text-base dark:text-slate-400 text-slate-700 mb-3 sm:mb-4 leading-relaxed">{t(service.descriptionKey)}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 mb-2">
                     {getArray(service.tagsKey).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
-                        className="px-2 py-1 text-xs font-mono dark:text-slate-300 text-slate-800 dark:bg-slate-800 bg-slate-300 rounded"
+                        className="px-1.5 py-0.5 text-[10px] font-mono dark:text-slate-300 text-slate-700 dark:bg-slate-800 bg-slate-100 rounded"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
+                  <h4 className="text-lg sm:text-xl font-bold dark:text-white text-slate-900 mb-2 leading-tight line-clamp-1">
+                    {t(service.titleKey)}
+                  </h4>
+                  <p className="text-sm sm:text-base dark:text-slate-400 text-slate-700 mb-3 sm:mb-4 leading-relaxed">{t(service.descriptionKey)}</p>
                 </div>
               </div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0 translate-x-1/2 -translate-y-1/2" />
             </div>
           ))}
         </div>

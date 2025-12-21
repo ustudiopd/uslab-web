@@ -335,9 +335,9 @@ export default function EditPostPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-20">
+      <div className="min-h-screen bg-slate-50 pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-slate-400">로딩 중...</p>
+          <p className="text-slate-600">로딩 중...</p>
         </div>
       </div>
     );
@@ -352,12 +352,12 @@ export default function EditPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-16 sm:pt-20">
       <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-12">
         {/* 헤더 */}
         <div className="mb-4 sm:mb-6 lg:mb-8">
           <div className="flex flex-col gap-3 sm:gap-4 mb-3 sm:mb-4 lg:mb-6">
-            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-white leading-tight">포스트 편집</h1>
+            <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-slate-900 leading-tight">포스트 편집</h1>
             {/* 모바일: 버튼들을 세로로 배치 */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
               {/* Markdown Import/Export 버튼 - 모바일에서 가로 스크롤 */}
@@ -389,13 +389,13 @@ export default function EditPostPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => router.push('/admin/posts')}
-                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                 >
                   목록
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-2.5 sm:px-3 py-1.5 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-red-500/20 border border-red-500/50 text-red-600 rounded hover:bg-red-500/30 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                 >
                   삭제
                 </button>
@@ -430,7 +430,7 @@ export default function EditPostPage() {
 
           {/* 제목 입력 */}
           <div className="mb-3 sm:mb-4">
-            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
               제목
             </label>
             <input
@@ -438,13 +438,13 @@ export default function EditPostPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="포스트 제목을 입력하세요"
-              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-white border border-slate-300 rounded text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
             />
           </div>
 
           {/* Slug 입력 */}
           <div className="mb-3 sm:mb-4">
-            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
               Slug (URL 경로)
             </label>
             <input
@@ -452,16 +452,16 @@ export default function EditPostPage() {
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="ai-trend-2025"
-              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-slate-900 border border-slate-800 rounded text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 bg-white border border-slate-300 rounded text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 font-mono"
             />
           </div>
 
           {/* 언어 표시 (읽기 전용, 탭으로 관리) */}
           <div className="mb-4 sm:mb-6">
-            <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-1.5 sm:mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
               언어
             </label>
-            <div className="px-3 py-2 bg-slate-800 border border-slate-700 rounded text-xs sm:text-sm text-slate-300">
+            <div className="px-3 py-2 bg-slate-100 border border-slate-300 rounded text-xs sm:text-sm text-slate-700">
               {locale === 'ko' ? '한국어' : 'English'}
             </div>
             <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs text-slate-500">
@@ -471,7 +471,7 @@ export default function EditPostPage() {
         </div>
 
         {/* 에디터 */}
-        <div className="mb-4 sm:mb-6 lg:mb-8 bg-slate-900 border border-slate-800 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px]">
+        <div className="mb-4 sm:mb-6 lg:mb-8 bg-white border border-slate-200 rounded-lg p-2 sm:p-3 lg:p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-[600px] shadow-sm">
           <BlogEditor
             key={editorKey}
             editorKey={editorKey}
@@ -505,21 +505,21 @@ export default function EditPostPage() {
                 <button
                   onClick={handleUnpublish}
                   disabled={isSaving || isPublishing}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 rounded font-medium hover:bg-yellow-500/30 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-500/20 border border-yellow-500/50 text-yellow-600 rounded font-medium hover:bg-yellow-500/30 transition-colors disabled:opacity-50 text-sm sm:text-base"
                 >
                   {isPublishing ? '처리 중...' : '발행 취소'}
                 </button>
                 <button
                   onClick={() => handleUpdate(false)}
                   disabled={isSaving || isPublishing}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border border-slate-300 text-slate-900 rounded font-medium hover:border-slate-400 transition-colors disabled:opacity-50 text-sm sm:text-base"
                 >
                   {isSaving ? '저장 중...' : '초안 저장'}
                 </button>
                 <button
                   onClick={() => handleUpdate(true)}
                   disabled={isSaving || isPublishing}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
                 >
                   {isPublishing ? '발행 중...' : '업데이트 발행'}
                 </button>
@@ -529,14 +529,14 @@ export default function EditPostPage() {
                 <button
                   onClick={() => handleUpdate(false)}
                   disabled={isSaving || isPublishing}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-white rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border border-slate-300 text-slate-900 rounded font-medium hover:border-slate-400 transition-colors disabled:opacity-50 text-sm sm:text-base"
                 >
                   {isSaving ? '저장 중...' : '초안 저장'}
                 </button>
                 <button
                   onClick={() => handleUpdate(true)}
                   disabled={isSaving || isPublishing}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-cyan-500 text-white rounded font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
                 >
                   {isPublishing ? '발행 중...' : '발행하기'}
                 </button>

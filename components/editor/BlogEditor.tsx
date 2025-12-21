@@ -117,7 +117,7 @@ export default function BlogEditor({
       addProseMirrorPlugins() {
         return [
           UploadImagesPlugin({
-            imageClass: 'opacity-40 rounded-lg border border-slate-600',
+            imageClass: 'opacity-40 rounded-lg border border-slate-300',
           }),
           // ImageResizePlugin은 ImageResizeExtension으로 별도 등록
         ];
@@ -125,7 +125,7 @@ export default function BlogEditor({
     }).configure({
       allowBase64: false,
       HTMLAttributes: {
-        class: 'rounded-lg border border-slate-700 resizable-image',
+        class: 'rounded-lg border border-slate-300 resizable-image',
         style: 'max-width: 100%; height: auto; max-height: 600px; object-fit: contain; cursor: pointer;',
       },
       inline: false,
@@ -140,7 +140,7 @@ export default function BlogEditor({
       width: 640,
       height: 360, // 16:9 비율
       HTMLAttributes: {
-        class: 'rounded-lg border border-slate-700 w-full',
+        class: 'rounded-lg border border-slate-300 w-full',
         style: 'aspect-ratio: 16/9;',
       },
     });
@@ -181,7 +181,7 @@ export default function BlogEditor({
             keydown: (_view, event) => handleCommandNavigation(event),
           },
           attributes: {
-            class: 'prose prose-invert max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base [&_img]:max-w-full [&_img]:h-auto [&_img]:max-h-[600px] [&_img]:object-contain',
+            class: 'prose max-w-none focus:outline-none min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] prose-sm sm:prose-base [&_img]:max-w-full [&_img]:h-auto [&_img]:max-h-[600px] [&_img]:object-contain prose-slate',
           },
           handlePaste: (view, event) => {
             // 이미지 붙여넣기 처리
@@ -228,21 +228,21 @@ export default function BlogEditor({
           },
         }}>
         <BubbleMenu />
-        <EditorCommand className="z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border border-slate-700 bg-slate-900 px-1 py-2 shadow-md">
-          <EditorCommandEmpty className="px-2 text-sm text-slate-400">No results</EditorCommandEmpty>
+        <EditorCommand className="z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border border-slate-200 bg-white px-1 py-2 shadow-lg">
+          <EditorCommandEmpty className="px-2 text-sm text-slate-600">No results</EditorCommandEmpty>
           <EditorCommandList>
             {suggestionItems.map((item) => (
               <EditorCommandItem
                 value={item.title}
                 onCommand={(val) => item.command?.(val)}
-                className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-slate-800 aria-selected:bg-slate-800"
+                className="flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-slate-100 aria-selected:bg-slate-100"
                 key={item.title}>
-                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-700 bg-slate-800">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
                   {item.icon}
                 </div>
                 <div>
-                  <p className="font-medium text-slate-200">{item.title}</p>
-                  <p className="text-xs text-slate-400">{item.description}</p>
+                  <p className="font-medium text-slate-900">{item.title}</p>
+                  <p className="text-xs text-slate-600">{item.description}</p>
                 </div>
               </EditorCommandItem>
             ))}
