@@ -562,7 +562,7 @@
   - `app/globals.css`: `.ProseMirror` placeholder 색상 조정 (`#64748b` → `#94a3b8`)
 - ✅ **포스트 작성/편집 페이지 라이트 테마 전환**
   - `app/admin/posts/write/page.tsx`: 전체 UI 라이트 테마로 변경
-    - 배경: `bg-slate-950` → `bg-slate-50`
+    - 배경: `bg-slate-950` → `bg-slate-50` (메인 컨테이너 배경 수정)
     - 제목: `text-white` → `text-slate-900`
     - 입력 필드: `bg-slate-900 text-white` → `bg-white text-slate-900`
     - 에디터 컨테이너: `bg-slate-900` → `bg-white`

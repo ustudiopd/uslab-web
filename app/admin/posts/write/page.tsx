@@ -306,7 +306,7 @@ export default function WritePostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20">
+    <div className="min-h-screen bg-slate-50 pt-16 sm:pt-20">
       <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-12">
         {/* 헤더 */}
         <div className="mb-4 sm:mb-6 lg:mb-8">
