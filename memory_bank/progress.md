@@ -535,8 +535,10 @@
     - 상태 색상: `-400` → `-600` (green, yellow, red)
 - ✅ **포스트 관리 페이지 라이트 테마 전환**
   - `app/admin/posts/page.tsx`: 목록, 버튼, 모달 모두 라이트 테마로 변경
+    - 메인 컨테이너: `min-h-screen bg-slate-50` 배경 추가
     - 포스트 아이템: `bg-slate-900` → `bg-white`
     - 텍스트: `text-white` → `text-slate-900`
+    - 로딩 상태에도 동일한 라이트 테마 배경 적용
     - 버튼: `bg-slate-800` → `bg-slate-100`
     - 휴지통 모달: 전체 라이트 테마로 변경
 - ✅ **소개 페이지 관리 라이트 테마 전환**
