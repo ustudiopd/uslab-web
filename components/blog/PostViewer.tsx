@@ -207,40 +207,36 @@ export default function PostViewer({ post }: PostViewerProps) {
     };
   }, [htmlContent]);
 
-  // 이미지 클릭 시 라이트박스 모달 열기
+  // 이미지 클릭 시 라이트박스 모달 열기 (이벤트 위임 사용)
   useEffect(() => {
     if (!contentRef.current) return;
 
+    // 모든 이미지에 커서 스타일 추가
     const images = contentRef.current.querySelectorAll('img');
-    const handlers: Array<{ element: HTMLImageElement; handler: (e: MouseEvent) => void }> = [];
-    
     images.forEach((img) => {
-      const image = img as HTMLImageElement;
+      (img as HTMLImageElement).style.cursor = 'pointer';
+    });
+
+    // 이벤트 위임: contentRef에 클릭 이벤트를 등록하고, 클릭된 요소가 이미지인지 확인
+    const handleContentClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
       
-      // 클릭 가능한 커서 스타일 추가
-      image.style.cursor = 'pointer';
-      
-      // 클릭 이벤트 핸들러 생성
-      const handleImageClick = (e: MouseEvent) => {
+      // 클릭된 요소가 이미지이거나 이미지의 자식인 경우
+      const image = target.closest('img');
+      if (image && image.src) {
         e.preventDefault();
         e.stopPropagation();
-        
-        // 라이트박스 모달 열기
-        if (image.src) {
-          setLightboxImage(image.src);
-        }
-      };
-      
-      // 이벤트 리스너 추가
-      image.addEventListener('click', handleImageClick);
-      handlers.push({ element: image, handler: handleImageClick });
-    });
+        setLightboxImage(image.src);
+      }
+    };
+
+    contentRef.current.addEventListener('click', handleContentClick);
 
     // 클린업: 이벤트 리스너 제거
     return () => {
-      handlers.forEach(({ element, handler }) => {
-        element.removeEventListener('click', handler);
-      });
+      if (contentRef.current) {
+        contentRef.current.removeEventListener('click', handleContentClick);
+      }
     };
   }, [htmlContent]);
 
