@@ -6,11 +6,13 @@ import { handleCommandNavigation } from 'novel';
 import type { JSONContent } from 'novel';
 import { Markdown } from '@tiptap/markdown';
 import { Youtube } from '@tiptap/extension-youtube';
+import { Link } from '@tiptap/extension-link';
 import { supabase } from '@/lib/supabase/client';
 import { suggestionItems, slashCommand } from './extensions';
 import { BubbleMenu } from './BubbleMenu';
 import { Small } from './extensions/Small';
 import { ImageResizeExtension } from './extensions/ImageResizeExtension';
+import { AutoLink } from './extensions/AutoLink';
 
 interface BlogEditorProps {
   initialContent?: JSONContent | null;
@@ -146,6 +148,18 @@ export default function BlogEditor({
     });
   }, []);
 
+  // Link 확장 설정
+  const linkExtension = useMemo(() => {
+    return Link.configure({
+      openOnClick: false,
+      HTMLAttributes: {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        class: 'text-blue-600 hover:text-blue-700 underline',
+      },
+    });
+  }, []);
+
   // 확장 설정을 메모이제이션
   const extensions = useMemo(() => [
     StarterKit.configure({
@@ -155,6 +169,8 @@ export default function BlogEditor({
     Markdown as any,
     imageExtension,
     youtubeExtension,
+    linkExtension,
+    AutoLink, // URL 자동 링크 변환
     TaskList,
     TaskItem,
     Horizontal, // Novel의 HorizontalRule 사용
@@ -162,7 +178,7 @@ export default function BlogEditor({
     Small, // Small 태그 지원
     slashCommand, // 슬래시 명령어 확장
     ImageResizeExtension, // 이미지 리사이즈 Extension (명세서 해결책 A)
-  ], [imageExtension, youtubeExtension]);
+  ], [imageExtension, youtubeExtension, linkExtension]);
 
   return (
     <EditorRoot>
