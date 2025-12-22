@@ -84,7 +84,7 @@ export default function Navbar() {
             <a
               href="#contact"
               onClick={handleContactClick}
-              className="bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-600 transition-all duration-300 text-sm cursor-pointer shadow-sm hover:shadow-md"
+              className="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 text-sm cursor-pointer shadow-sm hover:shadow-md"
             >
               {t('nav.contact')}
             </a>
