@@ -103,6 +103,79 @@ export function BubbleMenu() {
 
   return (
     <>
+      {/* 링크 입력 UI - 버블 메뉴 위에 표시 */}
+      {showLinkInput && (
+        <EditorBubble
+          tippyOptions={{
+            placement: 'top',
+            offset: [0, 8], // 버블 메뉴 위에 8px 간격
+          }}
+          className="flex flex-col w-80 max-w-[90vw] rounded border border-slate-200 bg-white shadow-xl p-3 gap-2">
+          {!editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ') && (
+            <div>
+              <label className="block text-xs font-medium text-slate-700 mb-1">
+                링크 텍스트
+              </label>
+              <input
+                type="text"
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                placeholder="링크에 표시될 텍스트"
+                className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    setShowLinkInput(false);
+                    setLinkUrl('');
+                    setLinkText('');
+                  }
+                }}
+              />
+            </div>
+          )}
+          <div>
+            <label className="block text-xs font-medium text-slate-700 mb-1">
+              URL
+            </label>
+            <input
+              type="url"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              placeholder="https://example.com"
+              className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleLinkSubmit();
+                } else if (e.key === 'Escape') {
+                  setShowLinkInput(false);
+                  setLinkUrl('');
+                  setLinkText('');
+                }
+              }}
+              autoFocus={!!editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ')}
+            />
+          </div>
+          <div className="flex gap-2 justify-end pt-1">
+            <button
+              onClick={() => {
+                setShowLinkInput(false);
+                setLinkUrl('');
+                setLinkText('');
+              }}
+              className="px-3 py-1.5 text-xs bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-slate-400 transition-colors">
+              취소
+            </button>
+            <button
+              onClick={handleLinkSubmit}
+              className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              추가
+            </button>
+          </div>
+        </EditorBubble>
+      )}
+
+      {/* 포맷팅 도구 버블 메뉴 */}
       <EditorBubble
         tippyOptions={{
           placement: 'top',
@@ -162,71 +235,6 @@ export function BubbleMenu() {
           </EditorBubbleItem>
         )}
       </EditorBubble>
-
-      {/* 링크 입력 모달 */}
-      {showLinkInput && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 border border-slate-200 shadow-xl">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">링크 추가</h3>
-            <div className="space-y-4">
-              {!editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ') && (
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
-                    링크 텍스트
-                  </label>
-                  <input
-                    type="text"
-                    value={linkText}
-                    onChange={(e) => setLinkText(e.target.value)}
-                    placeholder="링크에 표시될 텍스트"
-                    className="w-full px-3 py-2 border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
-                    autoFocus
-                  />
-                </div>
-              )}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  URL
-                </label>
-                <input
-                  type="url"
-                  value={linkUrl}
-                  onChange={(e) => setLinkUrl(e.target.value)}
-                  placeholder="https://example.com"
-                  className="w-full px-3 py-2 border border-slate-300 rounded text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleLinkSubmit();
-                    } else if (e.key === 'Escape') {
-                      setShowLinkInput(false);
-                      setLinkUrl('');
-                      setLinkText('');
-                    }
-                  }}
-                  autoFocus={!!editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ')}
-                />
-              </div>
-              <div className="flex gap-2 justify-end">
-                <button
-                  onClick={() => {
-                    setShowLinkInput(false);
-                    setLinkUrl('');
-                    setLinkText('');
-                  }}
-                  className="px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-slate-400 transition-colors text-sm">
-                  취소
-                </button>
-                <button
-                  onClick={handleLinkSubmit}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm">
-                  추가
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
