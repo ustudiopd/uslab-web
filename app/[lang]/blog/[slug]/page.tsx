@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 import type { Metadata } from 'next';
-import { extractTextFromContent } from '@/lib/utils/blog';
+import { extractTextFromContent, getPostThumbnail } from '@/lib/utils/blog';
 
 interface BlogPostPageProps {
   params: Promise<{ lang: Locale; slug: string }>;
@@ -43,7 +43,17 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const extractedDescription = extractTextFromContent(post.content, 150);
   const description = post.seo_description || extractedDescription || (lang === 'ko' ? 'USLab.ai 블로그 포스트' : 'USLab.ai blog post');
   const title = post.seo_title || post.title;
-  const ogImage = post.thumbnail_url ? [post.thumbnail_url] : undefined;
+  
+  // Open Graph 이미지 설정 (썸네일이 없으면 본문 첫 번째 이미지 사용)
+  const thumbnailUrl = getPostThumbnail(post);
+  let ogImage: string[] | undefined;
+  if (thumbnailUrl) {
+    // 이미 절대 URL인지 확인하고 절대 URL로 변환
+    const imageUrl = thumbnailUrl.startsWith('http') 
+      ? thumbnailUrl 
+      : `${baseUrl}${thumbnailUrl.startsWith('/') ? '' : '/'}${thumbnailUrl}`;
+    ogImage = [imageUrl];
+  }
 
   // 메타데이터가 항상 생성되도록 보장
   return {
@@ -57,10 +67,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     openGraph: {
       title: title,
       description: description,
-      images: ogImage,
+      images: ogImage ? ogImage.map(img => ({
+        url: img,
+        width: 1200,
+        height: 630,
+        alt: title,
+      })) : undefined,
       url: canonicalUrl,
       type: 'article',
       siteName: 'USLab.ai',
+      locale: lang === 'ko' ? 'ko_KR' : 'en_US',
     },
     twitter: {
       card: 'summary_large_image',
