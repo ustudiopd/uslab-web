@@ -212,17 +212,15 @@ export default function PostViewer({ post }: PostViewerProps) {
     if (!contentRef.current) return;
 
     const images = contentRef.current.querySelectorAll('img');
+    const handlers: Array<{ element: HTMLImageElement; handler: (e: MouseEvent) => void }> = [];
     
     images.forEach((img) => {
       const image = img as HTMLImageElement;
       
-      // 이미 클릭 이벤트가 있으면 스킵
-      if (image.dataset.clickHandlerAdded === 'true') return;
-      
       // 클릭 가능한 커서 스타일 추가
       image.style.cursor = 'pointer';
       
-      // 클릭 이벤트 추가
+      // 클릭 이벤트 핸들러 생성
       const handleImageClick = (e: MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -233,9 +231,17 @@ export default function PostViewer({ post }: PostViewerProps) {
         }
       };
       
+      // 이벤트 리스너 추가
       image.addEventListener('click', handleImageClick);
-      image.dataset.clickHandlerAdded = 'true';
+      handlers.push({ element: image, handler: handleImageClick });
     });
+
+    // 클린업: 이벤트 리스너 제거
+    return () => {
+      handlers.forEach(({ element, handler }) => {
+        element.removeEventListener('click', handler);
+      });
+    };
   }, [htmlContent]);
 
   // ESC 키로 라이트박스 닫기
