@@ -146,3 +146,4 @@ export default async function Insights({ lang }: InsightsProps) {
   );
 }
 
+

@@ -372,16 +372,16 @@ export default function PostViewer({ post }: PostViewerProps) {
           {post.title}
         </h1>
         {post.published_at && (
-          <div className="flex items-center gap-4 text-slate-400 dark:text-slate-400 text-slate-600 dark:text-slate-600 text-sm">
-            <time dateTime={post.published_at}>
+          <div className="flex items-center gap-4 text-slate-600 text-sm flex-wrap">
+            <time dateTime={post.published_at} className="whitespace-nowrap">
               {new Date(post.published_at).toLocaleDateString('ko-KR', {
                 year: 'numeric',
-                month: 'long',
+                month: 'short',
                 day: 'numeric',
               })}
             </time>
             {post.view_count !== undefined && (
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1 whitespace-nowrap">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -401,11 +401,11 @@ export default function PostViewer({ post }: PostViewerProps) {
               </span>
             )}
             {post.seo_keywords && post.seo_keywords.length > 0 && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 {post.seo_keywords.map((keyword, index) => (
                   <span
                     key={index}
-                    className="px-2 py-1 bg-slate-800 dark:bg-slate-800 bg-slate-100 rounded text-cyan-500 text-xs"
+                    className="px-1.5 py-0.5 bg-slate-100 rounded text-blue-600 text-[10px] font-medium"
                   >
                     {keyword}
                   </span>
