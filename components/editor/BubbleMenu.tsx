@@ -102,15 +102,17 @@ export function BubbleMenu() {
   };
 
   return (
-    <>
-      {/* 링크 입력 UI - 버블 메뉴 위에 표시 */}
-      {showLinkInput && (
-        <EditorBubble
-          tippyOptions={{
-            placement: 'top',
-            offset: [0, 8], // 버블 메뉴 위에 8px 간격
-          }}
-          className="flex flex-col w-80 max-w-[90vw] rounded border border-slate-200 bg-white shadow-xl p-3 gap-2">
+    <EditorBubble
+      tippyOptions={{
+        placement: 'top',
+      }}
+      className={showLinkInput 
+        ? "flex flex-col w-80 max-w-[90vw] rounded border border-slate-200 bg-white shadow-xl p-3 gap-2"
+        : "flex w-fit max-w-[90vw] overflow-hidden rounded border border-slate-200 bg-white shadow-xl"
+      }>
+      {showLinkInput ? (
+        // 링크 입력 UI
+        <>
           {!editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, ' ') && (
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">
@@ -172,69 +174,65 @@ export function BubbleMenu() {
               추가
             </button>
           </div>
-        </EditorBubble>
+        </>
+      ) : (
+        // 포맷팅 도구 버블 메뉴
+        <>
+          <EditorBubbleItem
+            onSelect={() => editor.chain().focus().toggleBold().run()}
+            className={`p-2 ${editor.isActive('bold') ? 'bg-slate-100' : ''}`}>
+            <Bold className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          <EditorBubbleItem
+            onSelect={() => editor.chain().focus().toggleItalic().run()}
+            className={`p-2 ${editor.isActive('italic') ? 'bg-slate-100' : ''}`}>
+            <Italic className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          <EditorBubbleItem
+            onSelect={() => editor.chain().focus().toggleUnderline().run()}
+            className={`p-2 ${editor.isActive('underline') ? 'bg-slate-100' : ''}`}>
+            <Underline className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          <EditorBubbleItem
+            onSelect={() => editor.chain().focus().toggleStrike().run()}
+            className={`p-2 ${editor.isActive('strike') ? 'bg-slate-100' : ''}`}>
+            <Strikethrough className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          <EditorBubbleItem
+            onSelect={() => editor.chain().focus().toggleCode().run()}
+            className={`p-2 ${editor.isActive('code') ? 'bg-slate-100' : ''}`}>
+            <Code className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          <EditorBubbleItem
+            onSelect={() => {
+              const chain = editor.chain().focus();
+              if (editor.isActive('small')) {
+                (chain as any).unsetSmall().run();
+              } else {
+                (chain as any).setSmall().run();
+              }
+            }}
+            className={`p-2 ${editor.isActive('small') ? 'bg-slate-100' : ''}`}
+            title="작은 글씨">
+            <Type className="h-4 w-4 text-slate-700" />
+          </EditorBubbleItem>
+          {editor.isActive('link') ? (
+            <EditorBubbleItem
+              onSelect={handleUnlink}
+              className="p-2"
+              title="링크 제거">
+              <Unlink className="h-4 w-4 text-slate-700" />
+            </EditorBubbleItem>
+          ) : (
+            <EditorBubbleItem
+              onSelect={handleLinkToggle}
+              className="p-2"
+              title="링크 추가">
+              <LinkIcon className="h-4 w-4 text-slate-700" />
+            </EditorBubbleItem>
+          )}
+        </>
       )}
-
-      {/* 포맷팅 도구 버블 메뉴 */}
-      <EditorBubble
-        tippyOptions={{
-          placement: 'top',
-        }}
-        className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-slate-200 bg-white shadow-xl">
-        <EditorBubbleItem
-          onSelect={() => editor.chain().focus().toggleBold().run()}
-          className={`p-2 ${editor.isActive('bold') ? 'bg-slate-100' : ''}`}>
-          <Bold className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        <EditorBubbleItem
-          onSelect={() => editor.chain().focus().toggleItalic().run()}
-          className={`p-2 ${editor.isActive('italic') ? 'bg-slate-100' : ''}`}>
-          <Italic className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        <EditorBubbleItem
-          onSelect={() => editor.chain().focus().toggleUnderline().run()}
-          className={`p-2 ${editor.isActive('underline') ? 'bg-slate-100' : ''}`}>
-          <Underline className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        <EditorBubbleItem
-          onSelect={() => editor.chain().focus().toggleStrike().run()}
-          className={`p-2 ${editor.isActive('strike') ? 'bg-slate-100' : ''}`}>
-          <Strikethrough className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        <EditorBubbleItem
-          onSelect={() => editor.chain().focus().toggleCode().run()}
-          className={`p-2 ${editor.isActive('code') ? 'bg-slate-100' : ''}`}>
-          <Code className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        <EditorBubbleItem
-          onSelect={() => {
-            const chain = editor.chain().focus();
-            if (editor.isActive('small')) {
-              (chain as any).unsetSmall().run();
-            } else {
-              (chain as any).setSmall().run();
-            }
-          }}
-          className={`p-2 ${editor.isActive('small') ? 'bg-slate-100' : ''}`}
-          title="작은 글씨">
-          <Type className="h-4 w-4 text-slate-700" />
-        </EditorBubbleItem>
-        {editor.isActive('link') ? (
-          <EditorBubbleItem
-            onSelect={handleUnlink}
-            className="p-2"
-            title="링크 제거">
-            <Unlink className="h-4 w-4 text-slate-700" />
-          </EditorBubbleItem>
-        ) : (
-          <EditorBubbleItem
-            onSelect={handleLinkToggle}
-            className="p-2"
-            title="링크 추가">
-            <LinkIcon className="h-4 w-4 text-slate-700" />
-          </EditorBubbleItem>
-        )}
-      </EditorBubble>
-    </>
+    </EditorBubble>
   );
 }
