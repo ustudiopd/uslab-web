@@ -6,6 +6,10 @@ const nextConfig = {
   experimental: {
     // 개발 모드에서 빠른 리프레시
     optimizePackageImports: ['lucide-react', '@tiptap/react', '@tiptap/starter-kit'],
+    // 서버 액션 및 API route body size limit 증가 (50MB)
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
   },
   
   // SEO: Streaming metadata 비활성화하여 모든 봇에서 metadata가 head에 포함되도록 설정

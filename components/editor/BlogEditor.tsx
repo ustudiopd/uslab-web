@@ -35,8 +35,8 @@ export default function BlogEditor({
           alert('이미지 파일만 업로드할 수 있습니다.');
           return false;
         }
-        if (file.size > 10 * 1024 * 1024) {
-          alert('파일 크기는 10MB를 초과할 수 없습니다.');
+        if (file.size > 50 * 1024 * 1024) {
+          alert('파일 크기는 50MB를 초과할 수 없습니다.');
           return false;
         }
         return true;
@@ -63,11 +63,47 @@ export default function BlogEditor({
           });
 
           if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || '이미지 업로드 실패');
+            // 에러 응답 처리 (JSON이 아닐 수 있음)
+            let errorMessage = '이미지 업로드 실패';
+            try {
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                const error = await response.json();
+                errorMessage = error.error || errorMessage;
+              } else {
+                const text = await response.text();
+                // HTML 에러 페이지인 경우 상태 코드로 메시지 생성
+                if (response.status === 413) {
+                  errorMessage = '파일 크기가 너무 큽니다. (최대 50MB)';
+                } else if (response.status === 401) {
+                  errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
+                } else {
+                  errorMessage = `이미지 업로드 실패 (${response.status})`;
+                }
+              }
+            } catch (parseError) {
+              // JSON 파싱 실패 시 상태 코드로 메시지 생성
+              if (response.status === 413) {
+                errorMessage = '파일 크기가 너무 큽니다. (최대 50MB)';
+              } else if (response.status === 401) {
+                errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
+              } else {
+                errorMessage = `이미지 업로드 실패 (${response.status})`;
+              }
+            }
+            throw new Error(errorMessage);
+          }
+
+          // 성공 응답 처리
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('서버 응답 형식이 올바르지 않습니다.');
           }
 
           const data = await response.json();
+          if (!data.url) {
+            throw new Error('이미지 URL을 받지 못했습니다.');
+          }
           return data.url;
         } catch (error: any) {
           console.error('이미지 업로드 오류:', error);
