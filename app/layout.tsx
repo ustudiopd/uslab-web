@@ -3,6 +3,7 @@ import { Noto_Sans_KR, JetBrains_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
 import Tracker from '@/components/analytics/Tracker';
+import WebVitals from '@/components/analytics/WebVitals';
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -59,6 +60,7 @@ export default function RootLayout({
         {children}
         <Suspense fallback={null}>
           <Tracker />
+          <WebVitals />
         </Suspense>
       </body>
     </html>

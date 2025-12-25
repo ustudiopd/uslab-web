@@ -3,17 +3,23 @@
 import { useEffect, useRef } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { parseUTM, parseLocaleFromPath } from '@/lib/utils/tracking';
+import {
+  getSessionStorageKey,
+  getLastSeenStorageKey,
+  ANALYTICS_ENABLED,
+  ANALYTICS_EXCLUDE_PATH_PREFIXES,
+  ANALYTICS_RESPECT_DNT,
+} from '@/lib/config/analytics';
+import {
+  eventQueue,
+  scrollTracker,
+  trackClick,
+} from '@/lib/utils/eventTracker';
 
 /**
  * 세션 만료 시간 (30분)
  */
 const SESSION_EXPIRY_MS = 30 * 60 * 1000;
-
-/**
- * localStorage 키
- */
-const STORAGE_KEY_SESSION = 'uslab_sid';
-const STORAGE_KEY_LAST_SEEN = 'uslab_sid_last';
 
 /**
  * Tracker 컴포넌트
@@ -28,6 +34,7 @@ export default function Tracker() {
   const searchParams = useSearchParams();
   const sessionKeyRef = useRef<string | null>(null);
   const isInitializedRef = useRef(false);
+  const currentPageViewIdRef = useRef<string | null>(null);
 
   /**
    * 세션 키 생성 또는 갱신
@@ -39,6 +46,8 @@ export default function Tracker() {
     }
 
     // localStorage에서 확인
+    const STORAGE_KEY_SESSION = getSessionStorageKey();
+    const STORAGE_KEY_LAST_SEEN = getLastSeenStorageKey();
     const storedKey = localStorage.getItem(STORAGE_KEY_SESSION);
     const lastSeen = localStorage.getItem(STORAGE_KEY_LAST_SEEN);
 
@@ -65,12 +74,25 @@ export default function Tracker() {
    * 페이지뷰 트래킹 전송
    */
   const trackPageView = () => {
-    // Admin, API, _next 경로는 제외
+    // Analytics 비활성화 시 제외
+    if (!ANALYTICS_ENABLED) {
+      return;
+    }
+
+    // Do Not Track 존중
     if (
-      pathname.startsWith('/admin') ||
-      pathname.startsWith('/api') ||
-      pathname.startsWith('/_next')
+      ANALYTICS_RESPECT_DNT &&
+      typeof navigator !== 'undefined' &&
+      navigator.doNotTrack === '1'
     ) {
+      return;
+    }
+
+    // 제외 경로 확인
+    const isExcluded = ANALYTICS_EXCLUDE_PATH_PREFIXES.some((prefix) =>
+      pathname.startsWith(prefix)
+    );
+    if (isExcluded) {
       return;
     }
 
@@ -80,9 +102,21 @@ export default function Tracker() {
       const referrer = typeof document !== 'undefined' ? document.referrer : null;
 
       // UTM 파라미터 파싱
-      const search = searchParams.toString();
       const fullUrl = typeof window !== 'undefined' ? window.location.href : '';
       const utm = parseUTM(fullUrl);
+
+      // page_view_id 클라이언트에서 생성 (v2)
+      const pageViewId = crypto.randomUUID();
+      currentPageViewIdRef.current = pageViewId;
+
+      // page_path 정규화: pathname만 저장 (query 제외)
+      const canonicalPath = pathname;
+
+      // 이벤트 큐에 페이지뷰 설정
+      eventQueue.setPageView(pageViewId, canonicalPath);
+      
+      // 스크롤 추적 시작
+      scrollTracker.start(pageViewId, canonicalPath);
 
       // post_id 추출 (page_path에서 slug 파싱 후 조회는 서버에서)
       // 클라이언트에서는 post_id를 직접 알 수 없으므로 null로 전송
@@ -90,12 +124,16 @@ export default function Tracker() {
 
       const payload = {
         session_key: sessionKey,
-        page_path: pathname + (search ? `?${search}` : ''),
+        page_view: {
+          id: pageViewId,
+          page_path: canonicalPath,
+          locale: locale,
+          referrer: referrer,
+          utm: utm,
+        },
         post_id: null, // 서버에서 매핑 가능하면 추가
         about_id: null, // 서버에서 매핑 가능하면 추가
-        locale: locale,
-        referrer: referrer,
-        utm: utm,
+        events: [], // Phase 1에서 사용
       };
 
       // sendBeacon 우선 사용 (fire-and-forget)
@@ -125,16 +163,51 @@ export default function Tracker() {
   };
 
   /**
+   * 클릭 이벤트 리스너
+   */
+  useEffect(() => {
+    if (!ANALYTICS_ENABLED) {
+      return;
+    }
+
+    const handleClick = (event: MouseEvent) => {
+      trackClick(
+        event,
+        currentPageViewIdRef.current,
+        pathname
+      );
+    };
+
+    // Capture phase로 리스너 등록 (모든 클릭 캡처)
+    window.addEventListener('click', handleClick, true);
+
+    return () => {
+      window.removeEventListener('click', handleClick, true);
+    };
+  }, [pathname]);
+
+  /**
    * 라우팅 변화 감지 및 트래킹
    */
   useEffect(() => {
+    // 이전 페이지 종료 처리
+    if (isInitializedRef.current && currentPageViewIdRef.current) {
+      scrollTracker.end();
+    }
+
     // 초기 로드 시 약간의 지연 후 트래킹 (페이지 로드 완료 대기)
     if (!isInitializedRef.current) {
       isInitializedRef.current = true;
       const timer = setTimeout(() => {
         trackPageView();
       }, 100);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        // 컴포넌트 언마운트 시 스크롤 추적 종료
+        if (currentPageViewIdRef.current) {
+          scrollTracker.end();
+        }
+      };
     } else {
       // 라우팅 변화 시 즉시 트래킹
       trackPageView();
@@ -146,6 +219,14 @@ export default function Tracker() {
    */
   useEffect(() => {
     const handleBeforeUnload = () => {
+      // 스크롤 추적 종료
+      if (currentPageViewIdRef.current) {
+        scrollTracker.end();
+      }
+
+      // 이벤트 큐 flush
+      eventQueue.flush();
+
       // 마지막 페이지뷰 전송 (가능하면)
       if (navigator.sendBeacon) {
         const sessionKey = getOrCreateSessionKey();
@@ -153,14 +234,19 @@ export default function Tracker() {
         const referrer = document.referrer;
         const utm = parseUTM(window.location.href);
 
+        const pageViewId = crypto.randomUUID();
         const payload = {
           session_key: sessionKey,
-          page_path: pathname,
+          page_view: {
+            id: pageViewId,
+            page_path: pathname, // 정규화된 pathname만
+            locale: locale,
+            referrer: referrer,
+            utm: utm,
+          },
           post_id: null,
           about_id: null,
-          locale: locale,
-          referrer: referrer,
-          utm: utm,
+          events: [],
         };
 
         const blob = new Blob([JSON.stringify(payload)], {
@@ -170,8 +256,23 @@ export default function Tracker() {
       }
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // 탭 숨김 시 flush
+        if (currentPageViewIdRef.current) {
+          scrollTracker.end();
+        }
+        eventQueue.flush();
+      }
+    };
+
     window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [pathname]);
 
   // 이 컴포넌트는 UI를 렌더링하지 않음

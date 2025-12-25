@@ -112,3 +112,26 @@
   - 환경 변수: `GOOGLE_API_KEY` (자동으로 `GOOGLE_GENERATIVE_AI_API_KEY`로 매핑)
 - **상태**: Phase 1-2 완료 (에디터 통합, CRUD), Phase 3 일부 완료 (AI Slug 생성), Phase 3 진행 중 (AI 이어쓰기, 교정, SEO)
 
+## 5. 통계 시스템 (Analytics)
+- **트래킹 시스템**: 
+  - Phase 0 완료: 이식성 확보 (ANALYTICS_PREFIX 환경변수, page_path 정규화, page_view_id 클라이언트 생성)
+  - Step1 완료: 기본 트래킹 (세션 관리, Bot 필터링, 페이지뷰 추적)
+  - Phase 1 완료: Events + 히트맵 (Events 테이블, 이벤트 수집, 히트맵 UI)
+  - 단기 개선 완료: Retention 스케줄러, post_id/about_id 자동 매핑
+- **데이터베이스 테이블**:
+  - `uslab_sessions`: 세션 추적 (session_key, landing_path, referrer, UTM, device_type)
+  - `uslab_page_views`: 페이지뷰 추적 (session_id, post_id, about_id, page_path, locale)
+  - `uslab_events`: 이벤트 추적 (session_id, page_view_id, name, page_path, props JSONB)
+- **Rollup 테이블 (옵션, 미구현)**:
+  - 목적: 대시보드 조회 성능 최적화
+  - 개념: 원본(raw) 데이터를 미리 집계하여 저장하는 테이블
+  - 필요 시점: 트래픽이 많아져서 대시보드가 느려질 때 고려
+  - 예정 테이블:
+    - `uslab_daily_stats`: 일별 통계 집계 (pageviews, uniques)
+    - `uslab_daily_page_stats`: 페이지별 일별 통계 집계
+    - `uslab_heatmap_element_daily`: 히트맵 요소별 일별 집계
+  - 생성 방식: 매일 자정에 Vercel Cron으로 전날 데이터 집계
+  - 조회 전략: rollup 우선 조회, 없으면 raw 데이터로 fallback
+  - 현재 상태: 미구현 (트래픽 증가 시 옵션으로 고려 가능)
+  - 참고 문서: `docs/대시보드_통계_기능_구현_검토보고서.md`, `통계시스템.md`
+

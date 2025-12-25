@@ -7,6 +7,10 @@ import {
   getTopPosts,
   getTopReferrers,
   getDailyStats,
+  getDailyStatsByRange,
+  getTopClickedElements,
+  getPageClickStats,
+  getWebVitalsStats,
 } from '@/lib/queries/analytics';
 import { getAllBoards } from '@/lib/queries/execBoards';
 import { getTopDocByBoardId } from '@/lib/queries/execDocs';
@@ -23,6 +27,39 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // 날짜 범위 파라미터 파싱
+    const { searchParams } = new URL(request.url);
+    const startDateParam = searchParams.get('startDate');
+    const endDateParam = searchParams.get('endDate');
+    const daysParam = searchParams.get('days');
+
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
+    let days: number = 30;
+
+    if (startDateParam && endDateParam) {
+      // 날짜 범위 지정
+      startDate = new Date(startDateParam);
+      endDate = new Date(endDateParam);
+      // endDate는 하루 끝까지 포함
+      endDate.setHours(23, 59, 59, 999);
+    } else if (daysParam) {
+      // 일수 지정
+      days = parseInt(daysParam, 10) || 30;
+      endDate = new Date();
+      endDate.setHours(23, 59, 59, 999);
+      startDate = new Date(endDate);
+      startDate.setDate(startDate.getDate() - days);
+      startDate.setHours(0, 0, 0, 0);
+    } else {
+      // 기본값: 최근 30일
+      endDate = new Date();
+      endDate.setHours(23, 59, 59, 999);
+      startDate = new Date(endDate);
+      startDate.setDate(startDate.getDate() - 30);
+      startDate.setHours(0, 0, 0, 0);
     }
 
     const supabase = createServerClient();
@@ -62,12 +99,18 @@ export async function GET(request: NextRequest) {
     const todayStats = await getTodayStats();
     const periodStats = await getPeriodStats();
 
-    // 4. Top 데이터
-    const topPages = await getTopPages(30, 10);
-    const topPosts = await getTopPosts(30, 10);
-    const topReferrers = await getTopReferrers(30, 10);
+    // 날짜 범위 기반 일수 계산
+    const calculatedDays = startDate && endDate
+      ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+      : days;
+
+    // 4. Top 데이터 (날짜 범위 적용)
+    const topPages = await getTopPages(calculatedDays, 10);
+    const topPosts = await getTopPosts(calculatedDays, 10);
+    const topReferrers = await getTopReferrers(calculatedDays, 10);
 
     // 5. 일별 통계 (차트용)
+    // 항상 최근 7일/30일 데이터를 가져옴 (차트 전환용)
     const dailyStats7 = await getDailyStats(7);
     const dailyStats30 = await getDailyStats(30);
 
@@ -152,6 +195,29 @@ export async function GET(request: NextRequest) {
       // 에러가 나도 대시보드는 정상 작동하도록
     }
 
+    // 7. 히트맵 데이터 (날짜 범위 적용)
+    let heatmapData = null;
+    try {
+      const topClickedElements = await getTopClickedElements(calculatedDays, 10);
+      const pageClickStats = await getPageClickStats(calculatedDays, 10);
+      heatmapData = {
+        topClickedElements,
+        pageClickStats,
+      };
+    } catch (error) {
+      console.error('Error fetching heatmap data:', error);
+      // 에러가 나도 대시보드는 정상 작동하도록
+    }
+
+    // 8. Web Vitals 데이터 (날짜 범위 적용)
+    let webVitalsData = null;
+    try {
+      webVitalsData = await getWebVitalsStats(calculatedDays);
+    } catch (error) {
+      console.error('Error fetching web vitals data:', error);
+      // 에러가 나도 대시보드는 정상 작동하도록
+    }
+
     return NextResponse.json({
       stats: {
         totalPosts: totalPosts || 0,
@@ -180,6 +246,13 @@ export async function GET(request: NextRequest) {
         quality: seoQuality,
       },
       topExecDoc,
+      heatmapData,
+      webVitalsData,
+      dateRange: {
+        startDate: startDate?.toISOString() || null,
+        endDate: endDate?.toISOString() || null,
+        days: calculatedDays,
+      },
     });
   } catch (error) {
     console.error('Dashboard API error:', error);

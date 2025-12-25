@@ -24,7 +24,20 @@ export default function AdminLoginPage() {
 
       if (signInError) {
         console.error('Login error details:', signInError);
-        setError(signInError.message || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
+        console.error('Error code:', signInError.status);
+        console.error('Error message:', signInError.message);
+        
+        // 더 자세한 에러 메시지
+        let errorMessage = '로그인에 실패했습니다.';
+        if (signInError.message.includes('Invalid login credentials')) {
+          errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.';
+        } else if (signInError.message.includes('Email not confirmed')) {
+          errorMessage = '이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.';
+        } else {
+          errorMessage = signInError.message || '로그인에 실패했습니다.';
+        }
+        
+        setError(errorMessage);
         setLoading(false);
         return;
       }
