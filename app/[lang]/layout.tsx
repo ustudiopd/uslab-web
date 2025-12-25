@@ -13,8 +13,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(lang as Locale);
 
   return {
-    title: dict.meta?.title || 'USLab.ai | AI 역량 강화',
+    title: 'USLab AI',
     description: dict.meta?.description || 'AI 대전환(AX), 이제 모두를 위한 기술이 됩니다.',
+    icons: {
+      icon: '/favicon.ico',
+      apple: '/apple-touch-icon.png',
+    },
     alternates: {
       languages: {
         ko: '/ko',
