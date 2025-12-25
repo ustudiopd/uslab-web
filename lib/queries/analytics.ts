@@ -779,6 +779,7 @@ export async function getTopClickedElements(
         clicks,
       };
     })
+    .filter((item) => !item.page_path.startsWith('/admin')) // /admin 경로 제외
     .sort((a, b) => b.clicks - a.clicks)
     .slice(0, limit);
 }
@@ -841,6 +842,7 @@ export async function getPageClickStats(
       clicks: stats.clicks,
       unique_elements: stats.elements.size,
     }))
+    .filter((item) => !item.page_path.startsWith('/admin')) // /admin 경로 제외
     .sort((a, b) => b.clicks - a.clicks)
     .slice(0, limit);
 }
