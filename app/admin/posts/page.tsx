@@ -244,7 +244,14 @@ export default function AdminPostsPage() {
           </div>
         ) : (
           <div className="space-y-3 sm:space-y-4">
-            {posts.map((post) => (
+            {posts.map((post) => {
+              // 한국어 포스트인 경우 영문 버전이 있는지 확인
+              const canonicalId = post.canonical_id || post.id;
+              const hasEnVersion = post.locale === 'ko' && posts.some(
+                (p) => (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
+              );
+
+              return (
               <div
                 key={post.id}
                 className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 hover:border-slate-300 transition-colors shadow-sm"
@@ -256,8 +263,8 @@ export default function AdminPostsPage() {
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
                           post.is_published
-                            ? 'bg-green-500/20 text-green-400'
-                            : 'bg-yellow-500/20 text-yellow-400'
+                            ? 'bg-green-500/20 text-green-600'
+                            : 'bg-yellow-500/20 text-yellow-600'
                         }`}
                       >
                         {post.is_published ? '발행됨' : '초안'}
@@ -265,6 +272,11 @@ export default function AdminPostsPage() {
                       <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-700 whitespace-nowrap">
                         {post.locale === 'ko' ? '한국어' : 'English'}
                       </span>
+                      {hasEnVersion && (
+                        <span className="px-2 py-1 bg-blue-100 rounded text-xs text-blue-700 whitespace-nowrap">
+                          English
+                        </span>
+                      )}
                     </div>
                     <p className="text-slate-600 text-xs sm:text-sm mb-2 break-all">
                       Slug: <code className="text-blue-600">{post.slug}</code>
@@ -286,14 +298,15 @@ export default function AdminPostsPage() {
                     </Link>
                     <button
                       onClick={() => handleDelete(post.id)}
-                      className="px-3 sm:px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-400 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                      className="px-3 sm:px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-600 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
                     >
                       삭제
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         )}
 
