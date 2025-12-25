@@ -1,12 +1,49 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: 성능 최적화 및 UX 개선
-- **목표**: CLS 개선, 히트맵 기능 구현, 블로그 포스트 가독성 개선
+- **작업명**: 히트맵 v2 구현 완료
+- **목표**: Beusable급 Blob 히트맵으로 업그레이드 완료
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ 히트맵 구현 완료, ✅ 코드 블록 라이트 테마 개선 완료, ✅ CLS 개선 방안 P0 적용 완료
+- **상태**: ✅ 히트맵 v2 모든 Phase 완료, ✅ 추가 개선 사항 적용 완료, ✅ 스크롤 즉시 반응 최적화 완료
 
 ## 2. 최근 완료된 작업
+### [2025-01-25] 히트맵 v2 구현 완료 (Beusable급 Blob 히트맵)
+- ✅ **Phase 1: 좌표 시스템 확장**
+  - `lib/utils/eventTracker.ts`: 문서 기준 좌표 추가 (`page_x`, `page_y`, `doc_w`, `doc_h`, `scroll_x`, `scroll_y`, `device_bucket`)
+  - 스크롤 위치 포함한 정확한 좌표 저장
+  - 히트맵 모드(`?heatmap=true`)에서 클릭 수집 제외 (오염 방지)
+- ✅ **Phase 2: 서버 집계 고해상도화**
+  - `app/api/admin/heatmap/[pagePath]/route.ts`: 기본 gridSize 20 → 200 (40,000셀)
+  - Query param 추가: `grid` (50~400), `device` (all/mobile/desktop), `days`
+  - 좌표 우선순위: `page_x/page_y` → `x/y` (레거시 호환)
+  - 페이지네이션으로 모든 데이터 가져오기 (Supabase 1000행 제한 해결)
+  - 샘플링 전략: bin이 20,000개 초과 시 상위 N개만 반환
+- ✅ **Phase 3: 뷰포트 고정 캔버스**
+  - `components/admin/HeatmapOverlay.tsx`: 캔버스 크기를 `100vw × 100vh`로 고정
+  - 좌표 변환: 문서 좌표 → 화면 좌표 (스크롤 보정)
+  - 메모리 절약 및 성능 향상
+- ✅ **Phase 4: Blob 렌더링 알고리즘**
+  - Offscreen(shadow) canvas에 blur로 누적
+  - Stamp canvas(원형 그라데이션) 미리 생성
+  - 알파 값 읽기 및 팔레트 매핑 (blue→cyan→green→yellow→red)
+  - 메인 캔버스에 최종 렌더링
+- ✅ **추가 개선 1: Canvas filter 사용**
+  - `ctx.filter = 'blur(25px)'` 사용 (GPU 가속)
+  - 수동 Gaussian blur 대신 Canvas API 활용
+- ✅ **추가 개선 2: 샘플링 전략**
+  - 서버에서 bin이 20,000개 초과 시 상위 N개만 반환
+  - 경고 메시지 표시
+- ✅ **추가 개선 3: 디바이스 필터 기본값 자동 설정**
+  - 현재 뷰포트 크기에 따라 기본값 설정 (모바일 <768px → 'mobile')
+- ✅ **스크롤 즉시 반응 최적화**
+  - 스크롤 이벤트 즉시 렌더링 (throttle 제거)
+  - 렌더링 시점에 최신 스크롤 위치 직접 읽기
+  - 리사이즈 이벤트만 throttle 적용 (성능 최적화)
+- ✅ **UI 개선**
+  - `components/admin/HeatmapViewer.tsx`: 필터 옵션 컨트롤 패널 추가
+  - 기간 선택, 디바이스 필터, 해상도 선택
+  - `components/admin/HeatmapOverlay.tsx`: 렌더링 설정 컨트롤 추가 (반경, 블러, 투명도)
+
 ### [2025-01-25] CLS 개선 방안 P0 적용 완료
 - ✅ **이미지 width/height 속성 동적 적용**
   - `components/blog/PostViewer.tsx`: 이미지 로드 완료 후 실제 크기 측정 및 width/height 속성 설정

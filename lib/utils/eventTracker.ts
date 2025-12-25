@@ -190,6 +190,11 @@ export function trackClick(
   pageViewId: string | null,
   pagePath: string
 ) {
+  // 히트맵 모드에서는 클릭 수집 제외 (오염 방지)
+  if (typeof window !== 'undefined' && window.location.search.includes('heatmap=true')) {
+    return;
+  }
+
   const target = event.target as HTMLElement;
   
   // 입력 요소 무시
@@ -206,11 +211,36 @@ export function trackClick(
     return;
   }
 
-  // 좌표 정규화 (0~1)
+  // 뷰포트 크기
   const viewportW = window.innerWidth;
   const viewportH = window.innerHeight;
+
+  // 문서 크기 계산 (동적 콘텐츠 대응)
+  const docW = Math.max(
+    document.documentElement.scrollWidth,
+    document.body.scrollWidth,
+    window.innerWidth
+  );
+  const docH = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight,
+    window.innerHeight
+  );
+
+  // 스크롤 위치
+  const scrollX = window.scrollX || window.pageXOffset || 0;
+  const scrollY = window.scrollY || window.pageYOffset || 0;
+
+  // 뷰포트 기준 좌표 정규화 (0~1) - 기존 호환성 유지
   const x = event.clientX / viewportW;
   const y = event.clientY / viewportH;
+
+  // 문서 기준 좌표 정규화 (0~1) - v2 신규
+  const page_x = (event.clientX + scrollX) / docW;
+  const page_y = (event.clientY + scrollY) / docH;
+
+  // 디바이스 버킷 (간단 분리)
+  const device_bucket = viewportW < 768 ? 'mobile' : 'desktop';
 
   // element_id 추출 (data-analytics-id 우선)
   const elementId = target.closest('[data-analytics-id]')?.getAttribute('data-analytics-id') || null;
@@ -220,10 +250,20 @@ export function trackClick(
     page_view_id: pageViewId,
     page_path: pagePath,
     props: {
+      // 기존 필드 (하위 호환성 유지)
       x,
       y,
       viewport_w: viewportW,
       viewport_h: viewportH,
+      // v2 신규 필드 (문서 기준 좌표)
+      page_x,
+      page_y,
+      doc_w: docW,
+      doc_h: docH,
+      scroll_x: scrollX,
+      scroll_y: scrollY,
+      device_bucket,
+      // 기존 필드
       element_id: elementId,
       element_tag: target.tagName.toLowerCase(),
       href_host: (target as HTMLAnchorElement).href 
