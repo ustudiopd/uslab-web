@@ -210,7 +210,7 @@ export default function PostVersionTabs({
         >
           <span>한국어</span>
           {koPost.is_published ? (
-            <span className="px-1.5 sm:px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-[10px] sm:text-xs whitespace-nowrap">
+            <span className="px-1.5 sm:px-2 py-0.5 bg-green-500/20 text-green-600 rounded text-[10px] sm:text-xs whitespace-nowrap">
               발행됨
             </span>
           ) : (
@@ -238,7 +238,7 @@ export default function PostVersionTabs({
           <span>English</span>
           {enPost ? (
             enPost.is_published ? (
-              <span className="px-1.5 sm:px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-[10px] sm:text-xs whitespace-nowrap">
+              <span className="px-1.5 sm:px-2 py-0.5 bg-green-500/20 text-green-600 rounded text-[10px] sm:text-xs whitespace-nowrap">
                 발행됨
               </span>
             ) : (

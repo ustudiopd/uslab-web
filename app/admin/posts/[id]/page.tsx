@@ -364,7 +364,7 @@ export default function EditPostPage() {
               <div className="flex gap-2 overflow-x-auto scrollbar-hide sm:overflow-visible">
                 <button
                   onClick={handleImportMarkdown}
-                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 파일 가져오기"
                 >
                   Import
@@ -372,7 +372,7 @@ export default function EditPostPage() {
                 <button
                   onClick={handleCopyMarkdown}
                   disabled={!content}
-                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운으로 복사"
                 >
                   Copy
@@ -380,7 +380,7 @@ export default function EditPostPage() {
                 <button
                   onClick={handleDownloadMarkdown}
                   disabled={!content}
-                  className="px-2.5 sm:px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded hover:border-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
+                  className="px-2.5 sm:px-3 py-1.5 bg-slate-100 border border-slate-300 text-slate-700 rounded hover:border-slate-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0"
                   title="마크다운 다운로드"
                 >
                   Download
@@ -420,8 +420,8 @@ export default function EditPostPage() {
             <span
               className={`px-2.5 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium ${
                 post.is_published
-                  ? 'bg-green-500/20 text-green-400'
-                  : 'bg-yellow-500/20 text-yellow-400'
+                  ? 'bg-green-500/20 text-green-600'
+                  : 'bg-yellow-500/20 text-yellow-600'
               }`}
             >
               {post.is_published ? '발행됨' : '초안'}
@@ -495,7 +495,7 @@ export default function EditPostPage() {
           <button
             onClick={handleCancel}
             disabled={isSaving || isPublishing}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-800 border border-slate-700 text-slate-300 rounded font-medium hover:border-slate-600 transition-colors disabled:opacity-50 text-sm sm:text-base"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border border-slate-300 text-slate-700 rounded font-medium hover:border-slate-400 transition-colors disabled:opacity-50 text-sm sm:text-base"
           >
             취소
           </button>

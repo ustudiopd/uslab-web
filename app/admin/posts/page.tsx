@@ -218,7 +218,7 @@ export default function AdminPostsPage() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
             <button
               onClick={handleOpenGarbageModal}
-              className="px-3 sm:px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 rounded font-medium hover:bg-yellow-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
+              className="px-3 sm:px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 text-yellow-600 rounded font-medium hover:bg-yellow-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
             >
               가비지 관리
             </button>
