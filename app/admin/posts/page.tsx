@@ -242,73 +242,129 @@ export default function AdminPostsPage() {
               첫 포스트 작성하기
             </Link>
           </div>
-        ) : (
-          <div className="space-y-3 sm:space-y-4">
-            {posts.map((post) => {
-              // 한국어 포스트인 경우 영문 버전이 있는지 확인
-              const canonicalId = post.canonical_id || post.id;
-              const hasEnVersion = post.locale === 'ko' && posts.some(
-                (p) => p.id !== post.id && (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
-              );
+        ) : (() => {
+          // 포스트를 canonical_id로 그룹화
+          const groupedPosts = new Map<string, { ko?: UslabPost; en?: UslabPost }>();
+          
+          posts.forEach((post) => {
+            const canonicalId = post.canonical_id || post.id;
+            if (!groupedPosts.has(canonicalId)) {
+              groupedPosts.set(canonicalId, {});
+            }
+            const group = groupedPosts.get(canonicalId)!;
+            if (post.locale === 'ko') {
+              group.ko = post;
+            } else if (post.locale === 'en') {
+              group.en = post;
+            }
+          });
 
-              return (
-              <div
-                key={post.id}
-                className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 hover:border-slate-300 transition-colors shadow-sm"
-              >
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-900 break-words">{post.title}</h3>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                          post.is_published
-                            ? 'bg-green-500/20 text-green-600'
-                            : 'bg-yellow-500/20 text-yellow-600'
-                        }`}
+          // 그룹화된 포스트를 배열로 변환 (한국어 포스트가 있으면 한국어 기준, 없으면 영문 기준)
+          const groupedArray = Array.from(groupedPosts.entries()).map(([canonicalId, group]) => ({
+            canonicalId,
+            ko: group.ko,
+            en: group.en,
+            primaryPost: group.ko || group.en!, // 한국어 우선, 없으면 영문
+          }));
+
+          // 최신순 정렬 (primaryPost의 created_at 기준)
+          groupedArray.sort((a, b) => {
+            const dateA = new Date(a.primaryPost.created_at).getTime();
+            const dateB = new Date(b.primaryPost.created_at).getTime();
+            return dateB - dateA;
+          });
+
+          return (
+            <div className="space-y-3 sm:space-y-4">
+              {groupedArray.map((group) => (
+                <div
+                  key={group.canonicalId}
+                  className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 hover:border-slate-300 transition-colors shadow-sm"
+                >
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                    <div className="flex-1 min-w-0">
+                      {/* 한국어 포스트 정보 */}
+                      {group.ko && (
+                        <div className="mb-4 last:mb-0">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                            <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-900 break-words">{group.ko.title}</h3>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                                group.ko.is_published
+                                  ? 'bg-green-500/20 text-green-600'
+                                  : 'bg-yellow-500/20 text-yellow-600'
+                              }`}
+                            >
+                              {group.ko.is_published ? '발행됨' : '초안'}
+                            </span>
+                            <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-700 whitespace-nowrap">
+                              한국어
+                            </span>
+                          </div>
+                          <p className="text-slate-600 text-xs sm:text-sm mb-2 break-all">
+                            Slug: <code className="text-blue-600">{group.ko.slug}</code>
+                          </p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-500">
+                            <span>생성: {formatDate(group.ko.created_at)}</span>
+                            {group.ko.published_at && (
+                              <span>발행: {formatDate(group.ko.published_at)}</span>
+                            )}
+                            <span className="font-medium text-slate-700">조회수: {group.ko.view_count || 0}</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 영문 포스트 정보 */}
+                      {group.en && (
+                        <div className={group.ko ? 'pt-4 border-t border-slate-200' : ''}>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                            <h3 className="text-base sm:text-lg lg:text-xl font-bold text-slate-900 break-words">{group.en.title}</h3>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
+                                group.en.is_published
+                                  ? 'bg-green-500/20 text-green-600'
+                                  : 'bg-yellow-500/20 text-yellow-600'
+                              }`}
+                            >
+                              {group.en.is_published ? 'Published' : 'Draft'}
+                            </span>
+                            <span className="px-2 py-1 bg-blue-100 rounded text-xs text-blue-700 whitespace-nowrap">
+                              English
+                            </span>
+                          </div>
+                          <p className="text-slate-600 text-xs sm:text-sm mb-2 break-all">
+                            Slug: <code className="text-blue-600">{group.en.slug}</code>
+                          </p>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-500">
+                            <span>Created: {formatDate(group.en.created_at)}</span>
+                            {group.en.published_at && (
+                              <span>Published: {formatDate(group.en.published_at)}</span>
+                            )}
+                            <span className="font-medium text-slate-700">Views: {group.en.view_count || 0}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 sm:ml-4 flex-shrink-0">
+                      <Link
+                        href={`/admin/posts/${group.primaryPost.id}`}
+                        className="px-3 sm:px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-blue-500 transition-colors text-xs sm:text-sm whitespace-nowrap"
                       >
-                        {post.is_published ? '발행됨' : '초안'}
-                      </span>
-                      <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-700 whitespace-nowrap">
-                        {post.locale === 'ko' ? '한국어' : 'English'}
-                      </span>
-                      {hasEnVersion && (
-                        <span className="px-2 py-1 bg-blue-100 rounded text-xs text-blue-700 whitespace-nowrap">
-                          English
-                        </span>
-                      )}
+                        수정
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(group.primaryPost.id)}
+                        className="px-3 sm:px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-600 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
+                      >
+                        삭제
+                      </button>
                     </div>
-                    <p className="text-slate-600 text-xs sm:text-sm mb-2 break-all">
-                      Slug: <code className="text-blue-600">{post.slug}</code>
-                    </p>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-slate-500">
-                      <span>생성: {formatDate(post.created_at)}</span>
-                      {post.published_at && (
-                        <span>발행: {formatDate(post.published_at)}</span>
-                      )}
-                      <span>조회수: {post.view_count || 0}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 sm:ml-4 flex-shrink-0">
-                    <Link
-                      href={`/admin/posts/${post.id}`}
-                      className="px-3 sm:px-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded hover:border-blue-500 transition-colors text-xs sm:text-sm whitespace-nowrap"
-                    >
-                      수정
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(post.id)}
-                      className="px-3 sm:px-4 py-2 bg-red-500/20 border border-red-500/50 text-red-600 rounded hover:bg-red-500/30 transition-colors text-xs sm:text-sm whitespace-nowrap"
-                    >
-                      삭제
-                    </button>
                   </div>
                 </div>
-              </div>
-            );
-            })}
-          </div>
-        )}
+              ))}
+            </div>
+          );
+        })()}
 
       {/* 가비지 관리 모달 */}
       {showGarbageModal && (

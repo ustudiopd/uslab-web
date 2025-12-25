@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 import type { Metadata } from 'next';
 import { extractTextFromContent, getPostThumbnail } from '@/lib/utils/blog';
+import { generateContentHTML } from '@/lib/utils/generate-html';
 
 interface BlogPostPageProps {
   params: Promise<{ lang: Locale; slug: string }>;
@@ -194,7 +195,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <ThemeToggle lang={lang} />
           </div> */}
         </div>
-        <PostViewer post={post} />
+        <PostViewer post={post} serverHtmlContent={generateContentHTML(post.content)} />
         <CommentSection postId={post.id} />
       </div>
       <Footer />

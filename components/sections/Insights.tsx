@@ -34,11 +34,15 @@ export default async function Insights({ lang }: InsightsProps) {
           </h2>
           <div className="flex justify-between items-end">
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-900 leading-tight">
-              {lang === 'ko' ? '최신 인사이트' : 'Latest Insights'}
-              <br className="md:hidden" />
-              <span className="md:ml-2 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">
-                {lang === 'ko' ? '를 확인하세요' : ''}
-              </span>
+              {lang === 'ko' ? (
+                <>
+                  <span className="text-blue-600">최신 인사이트를</span>
+                  <br className="md:hidden" />
+                  <span className="md:ml-2 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">확인하세요</span>
+                </>
+              ) : (
+                'Latest Insights'
+              )}
             </h3>
             <Link
               href={`/${lang}/blog`}
@@ -145,6 +149,7 @@ export default async function Insights({ lang }: InsightsProps) {
     </section>
   );
 }
+
 
 
 

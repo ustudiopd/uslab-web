@@ -15,9 +15,10 @@ import type { UslabPost } from '@/lib/types/blog';
 
 interface PostViewerProps {
   post: UslabPost;
+  serverHtmlContent?: string; // 서버에서 생성된 HTML (hydration mismatch 방지)
 }
 
-export default function PostViewer({ post }: PostViewerProps) {
+export default function PostViewer({ post, serverHtmlContent }: PostViewerProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const viewCountTracked = useRef(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
@@ -40,7 +41,14 @@ export default function PostViewer({ post }: PostViewerProps) {
   }, [post.id, post.is_published]);
 
   // Tiptap JSON을 HTML로 변환
+  // 서버에서 생성된 HTML이 있으면 사용하고, 없으면 클라이언트에서 생성
   const htmlContent = useMemo(() => {
+    // 서버에서 생성된 HTML이 있으면 사용 (hydration mismatch 방지)
+    if (serverHtmlContent) {
+      return serverHtmlContent;
+    }
+
+    // 클라이언트에서만 생성 (서버 HTML이 없는 경우)
     if (!post.content || typeof post.content !== 'object') {
       return '<p>콘텐츠를 불러올 수 없습니다.</p>';
     }
@@ -113,7 +121,7 @@ export default function PostViewer({ post }: PostViewerProps) {
       }
       return '<p>콘텐츠를 렌더링하는 중 오류가 발생했습니다.</p>';
     }
-  }, [post.content]);
+  }, [post.content, serverHtmlContent]);
 
   // 이미지에 width/height 속성 동적 적용 (CLS 개선)
   useEffect(() => {
@@ -513,7 +521,7 @@ export default function PostViewer({ post }: PostViewerProps) {
         ref={contentRef}
         className="prose dark:prose-invert prose-lg max-w-none
           prose-headings:dark:text-white prose-headings:text-slate-900 prose-headings:font-bold
-          prose-p:dark:text-slate-300 prose-p:text-slate-900 prose-p:leading-relaxed
+          prose-p:dark:text-slate-300 prose-p:text-slate-900 prose-p:leading-relaxed prose-p:my-6
           prose-a:text-cyan-500 prose-a:no-underline hover:prose-a:text-cyan-400 hover:prose-a:underline
           prose-strong:dark:text-white prose-strong:text-slate-900 prose-strong:font-semibold
           prose-code:dark:text-cyan-400 prose-code:text-cyan-600 prose-code:dark:bg-slate-800 prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm

@@ -161,6 +161,33 @@ body {
   @apply p-12 px-8 sm:px-12;
 }
 
+/* 블로그 포스트 paragraph 간격 증가 */
+.prose p {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose p:first-child {
+  margin-top: 0;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* 빈 paragraph도 공간 차지하도록 (여러 줄 띄우기 반영) */
+.prose p:empty {
+  min-height: 1.5rem;
+  display: block;
+}
+
+/* br만 있는 paragraph도 공간 차지 */
+.prose p:has(> br:only-child),
+.prose p:has(> br:first-child:last-child) {
+  min-height: 1.5rem;
+  display: block;
+}
+
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;

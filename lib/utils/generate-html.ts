@@ -24,7 +24,15 @@ export function generateContentHTML(content: any): string {
   // 기본 extension 배열
   const extensions = [
     StarterKit,
-    Image,
+    Image.configure({
+      HTMLAttributes: {
+        class: 'rounded-lg border border-slate-300',
+        style: 'max-width: 100%; height: auto; max-height: 600px; object-fit: contain; cursor: pointer;',
+        loading: 'lazy',
+        decoding: 'async',
+      },
+      inline: false,
+    }),
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
@@ -35,11 +43,11 @@ export function generateContentHTML(content: any): string {
     Youtube.configure({
       controls: true,
       nocookie: false,
-      width: 0, // CSS로 제어하므로 0으로 설정
-      height: 0, // CSS로 제어하므로 0으로 설정
+      width: 560, // 표준 YouTube iframe 너비 (초기 공간 확보)
+      height: 315, // 표준 YouTube iframe 높이 (16:9 비율)
       HTMLAttributes: {
         class: 'rounded-lg border border-slate-700',
-        style: 'width: 100%; aspect-ratio: 16/9;',
+        style: 'width: 100%; aspect-ratio: 16/9; min-height: 315px;',
       },
     }),
     TaskList,
