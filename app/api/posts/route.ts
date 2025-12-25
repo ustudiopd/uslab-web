@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const all = searchParams.get('all') === 'true'; // Admin용: 모든 포스트 조회
 
     if (all) {
-      // Admin용: 모든 포스트 (발행/초안 모두) - 서비스 롤 키 사용
+      // Admin용: 모든 포스트 (발행/초안 모두, 모든 언어) - 서비스 롤 키 사용
       const supabase = supabaseServiceRoleKey
         ? createClient(supabaseUrl, supabaseServiceRoleKey, {
             auth: {
@@ -28,16 +28,11 @@ export async function GET(request: Request) {
           })
         : createClient(supabaseUrl, supabaseAnonKey);
 
-      let query = supabase
+      // all=true일 때는 lang 필터 무시하고 모든 언어의 포스트 가져오기
+      const { data: posts, error: queryError } = await supabase
         .from('uslab_posts')
         .select('*')
         .order('created_at', { ascending: false });
-
-      if (lang) {
-        query = query.eq('locale', lang);
-      }
-
-      const { data: posts, error: queryError } = await query;
 
       if (queryError) {
         console.error('Error fetching all posts:', queryError);

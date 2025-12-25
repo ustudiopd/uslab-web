@@ -248,7 +248,7 @@ export default function AdminPostsPage() {
               // 한국어 포스트인 경우 영문 버전이 있는지 확인
               const canonicalId = post.canonical_id || post.id;
               const hasEnVersion = post.locale === 'ko' && posts.some(
-                (p) => (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
+                (p) => p.id !== post.id && (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
               );
 
               return (
