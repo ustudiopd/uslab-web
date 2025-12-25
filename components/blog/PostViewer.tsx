@@ -48,7 +48,15 @@ export default function PostViewer({ post }: PostViewerProps) {
     // 기본 extension 배열
     const extensions = [
       StarterKit,
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg border border-slate-300',
+          style: 'max-width: 100%; height: auto; max-height: 600px; object-fit: contain; cursor: pointer;',
+          loading: 'lazy',
+          decoding: 'async',
+        },
+        inline: false,
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -59,11 +67,11 @@ export default function PostViewer({ post }: PostViewerProps) {
       Youtube.configure({
         controls: true,
         nocookie: false,
-        width: 0, // CSS로 제어하므로 0으로 설정
-        height: 0, // CSS로 제어하므로 0으로 설정
+        width: 560, // 표준 YouTube iframe 너비 (초기 공간 확보)
+        height: 315, // 표준 YouTube iframe 높이 (16:9 비율)
         HTMLAttributes: {
           class: 'rounded-lg border border-slate-700',
-          style: 'width: 100%; aspect-ratio: 16/9;',
+          style: 'width: 100%; aspect-ratio: 16/9; min-height: 315px;',
         },
       }),
       TaskList,
@@ -106,6 +114,56 @@ export default function PostViewer({ post }: PostViewerProps) {
       return '<p>콘텐츠를 렌더링하는 중 오류가 발생했습니다.</p>';
     }
   }, [post.content]);
+
+  // 이미지에 width/height 속성 동적 적용 (CLS 개선)
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const setupImages = () => {
+      const images = contentRef.current?.querySelectorAll('img');
+      if (!images) return;
+
+      images.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        
+        // width/height 속성이 없으면 설정
+        if (!imageElement.hasAttribute('width') && !imageElement.hasAttribute('height')) {
+          // 이미지가 이미 로드된 경우
+          if (imageElement.complete && imageElement.naturalWidth > 0 && imageElement.naturalHeight > 0) {
+            imageElement.setAttribute('width', imageElement.naturalWidth.toString());
+            imageElement.setAttribute('height', imageElement.naturalHeight.toString());
+          } else {
+            // 이미지 로드 완료 후 크기 설정
+            const onLoad = () => {
+              if (imageElement.naturalWidth > 0 && imageElement.naturalHeight > 0) {
+                imageElement.setAttribute('width', imageElement.naturalWidth.toString());
+                imageElement.setAttribute('height', imageElement.naturalHeight.toString());
+              }
+              imageElement.removeEventListener('load', onLoad);
+            };
+            imageElement.addEventListener('load', onLoad);
+          }
+        }
+      });
+    };
+
+    // 초기 설정
+    setupImages();
+
+    // DOM 변경 감지를 위한 MutationObserver
+    const observer = new MutationObserver(() => {
+      setupImages();
+    });
+
+    observer.observe(contentRef.current, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [htmlContent]);
 
   // 링크를 새창으로 열리도록 설정 및 URL 텍스트를 링크로 변환
   useEffect(() => {
@@ -465,7 +523,7 @@ export default function PostViewer({ post }: PostViewerProps) {
           prose-blockquote:border-l-4 prose-blockquote:border-cyan-500 prose-blockquote:dark:text-slate-300 prose-blockquote:text-slate-800 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:pl-4 prose-blockquote:py-2 prose-blockquote:my-4
           prose-ul:dark:text-slate-300 prose-ul:text-slate-900 prose-ol:dark:text-slate-300 prose-ol:text-slate-900
           prose-li:dark:text-slate-300 prose-li:text-slate-900
-          prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-800 dark:prose-img:border-slate-800 prose-img:border-slate-300 prose-img:shadow-lg
+          prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-800 dark:prose-img:border-slate-800 prose-img:border-slate-300 prose-img:shadow-lg prose-img:aspect-auto
           prose-hr:border-slate-300 dark:prose-hr:border-slate-700
           prose-small:text-xs prose-small:dark:text-slate-400 prose-small:text-slate-600"
         dangerouslySetInnerHTML={{ __html: htmlContent }}

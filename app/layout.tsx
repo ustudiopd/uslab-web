@@ -9,14 +9,14 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700', '900'],
   variable: '--font-noto-sans',
-  display: 'swap',
+  display: 'optional', // CLS 개선: FOUT 방지
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-jetbrains-mono',
-  display: 'swap',
+  display: 'optional', // CLS 개선: FOUT 방지
 });
 
 export const metadata: Metadata = {

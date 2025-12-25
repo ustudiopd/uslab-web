@@ -1,12 +1,72 @@
 # 현재 작업 상황 (Active Context)
 
 ## 1. 현재 집중하고 있는 작업  
-- **작업명**: AI 분석 보고서 시스템 개선 및 댓글 기능 추가
-- **목표**: 보고서 생성, 저장, 비교 기능 최적화 및 사용자 경험 개선, 보고서별 댓글 기능 추가
+- **작업명**: 성능 최적화 및 UX 개선
+- **목표**: CLS 개선, 히트맵 기능 구현, 블로그 포스트 가독성 개선
 - **담당자**: AI Assistant + 사용자
-- **상태**: ✅ 기본 기능 완료, ✅ 이전 기간 비교 기능 개선 완료, ✅ 기본 기간 7일로 변경 완료, ✅ 검토의견 반영 완료 (P0, P1), ✅ 댓글 기능 추가 완료
+- **상태**: ✅ 히트맵 구현 완료, ✅ 코드 블록 라이트 테마 개선 완료, ✅ CLS 개선 방안 P0 적용 완료
 
 ## 2. 최근 완료된 작업
+### [2025-01-25] CLS 개선 방안 P0 적용 완료
+- ✅ **이미지 width/height 속성 동적 적용**
+  - `components/blog/PostViewer.tsx`: 이미지 로드 완료 후 실제 크기 측정 및 width/height 속성 설정
+  - `MutationObserver`로 동적 추가 이미지도 처리
+  - `loading: 'lazy'`, `decoding: 'async'` 속성 추가
+  - 예상 효과: CLS 50-70% 감소
+- ✅ **YouTube iframe 초기 크기 명시**
+  - `components/blog/PostViewer.tsx`: YouTube extension 설정 변경
+  - `width: 560, height: 315` (표준 YouTube iframe 크기)
+  - `min-height: 315px` CSS 속성 추가
+  - 예상 효과: CLS 5-10% 감소
+- ✅ **폰트 로딩 최적화**
+  - `app/layout.tsx`: `display: 'swap'` → `display: 'optional'` 변경
+  - Noto Sans KR, JetBrains Mono 모두 적용
+  - FOUT 방지로 텍스트 크기 변경 최소화
+  - 예상 효과: CLS 10-20% 감소
+- ✅ **CLS 개선 방안 문서 작성**
+  - `docs/CLS_개선_방안.md`: 문제 분석 및 개선 방안 정리
+  - 현재 CLS 값 분석 (P75: 0.437, Poor 비율 43.2%)
+  - 주요 원인 분석 (이미지, 폰트, YouTube iframe, 동적 콘텐츠)
+  - P0/P1 우선순위별 개선 방안 제시
+
+### [2025-01-25] 히트맵 기능 구현 완료
+- ✅ **히트맵 데이터 수집**
+  - `components/analytics/Tracker.tsx`: 클릭 이벤트 리스너 등록
+  - `lib/utils/eventTracker.ts`: 클릭 좌표 정규화 (0~1) 및 이벤트 큐에 추가
+  - `app/api/track/route.ts`: 클릭 이벤트를 `uslab_events` 테이블에 저장
+  - 좌표 정규화: `x = clientX / viewportW`, `y = clientY / viewportH`
+- ✅ **히트맵 API 엔드포인트**
+  - `app/api/admin/heatmap/[pagePath]/route.ts`: 히트맵 데이터 조회 API
+  - 클릭 이벤트를 20×20 그리드로 집계
+  - 관리자 인증 필수
+- ✅ **히트맵 시각화 컴포넌트**
+  - `components/admin/HeatmapOverlay.tsx`: Canvas 기반 히트맵 렌더링
+  - 전체 문서 크기 추적 및 스크롤 대응
+  - 색상 그라데이션 (파란색 → 녹색 → 노란색 → 빨간색)
+  - 복사 버튼 라이트 테마 최적화
+- ✅ **히트맵 뷰어 통합**
+  - `components/admin/HeatmapViewer.tsx`: 히트맵 모드 활성화 컴포넌트
+  - `app/[lang]/page.tsx`: `?heatmap=true` 쿼리 파라미터로 히트맵 표시
+  - `app/admin/dashboard/page.tsx`: "메인페이지 히트맵 보기" 버튼 추가
+- ✅ **히트맵 구현 방식 문서 작성**
+  - `docs/히트맵_구현_방식_보고서.md`: 전체 구현 방식 상세 설명
+  - `docs/히트맵_검토_분석_보고서.md`: 검토 문서 분석 및 개선 방안 제시
+  - 외부 라이브러리 없이 순수 Canvas API 사용
+  - 데이터 수집부터 시각화까지 전체 플로우 문서화
+
+### [2025-01-25] 블로그 포스트 코드 블록 가독성 개선
+- ✅ **코드 블록 라이트 테마 개선**
+  - `components/blog/PostViewer.tsx`: 코드 블록 배경색 및 텍스트 색상 개선
+  - 라이트 모드: `bg-slate-50` (밝은 배경), `text-slate-900` (어두운 텍스트)
+  - 다크 모드: 기존 스타일 유지 (`bg-slate-900`, `text-slate-100`)
+- ✅ **줄별 하이라이트 배경색 제거**
+  - 코드 블록 내부의 모든 하위 요소 배경색 제거
+  - JavaScript로 동적 제거 + CSS로 정적 제거 (`[&_pre_code_*]:bg-transparent`)
+  - 가독성 향상
+- ✅ **복사 버튼 라이트 테마 최적화**
+  - 라이트 모드: `bg-white/90` (흰색 배경), `text-slate-700` (어두운 텍스트)
+  - 다크 모드: 기존 스타일 유지
+
 ### [2025-01-25] AI 분석 보고서 댓글 기능 추가
 - ✅ **댓글 시스템 구현 완료**
   - `supabase/migrations/20250125_create_uslab_analytics_report_comments.sql`: 댓글 테이블 마이그레이션 생성 및 MCP로 적용 완료
