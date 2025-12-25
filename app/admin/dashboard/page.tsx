@@ -1226,65 +1226,92 @@ export default function AdminDashboard() {
         )}
 
         {/* 히트맵 데이터 */}
-        {heatmapData && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            {/* Top Clicked Elements */}
-            <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-4">
-                인기 클릭 요소 (30일)
+        <div className="mb-6 sm:mb-8">
+          <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                히트맵 분석
               </h2>
-              {heatmapData.topClickedElements.length === 0 ? (
-                <p className="text-sm text-slate-600">데이터가 없습니다.</p>
-              ) : (
-                <div className="space-y-2">
-                  {heatmapData.topClickedElements.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between gap-2 p-2 rounded hover:bg-slate-50 transition-colors"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-slate-900 truncate">
-                          {item.element_id || '(ID 없음)'}
-                        </div>
-                        <div className="text-xs text-slate-600 truncate">{item.page_path}</div>
-                      </div>
-                      <div className="text-sm text-slate-900 font-medium">{item.clicks}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <button
+                onClick={() => {
+                  // 메인페이지 히트맵 보기 (한국어/영어 모두 지원)
+                  const mainPagePath = '/ko'; // 기본값
+                  window.open(`${mainPagePath}?heatmap=true`, '_blank');
+                }}
+                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                메인페이지 히트맵 보기
+              </button>
             </div>
-
-            {/* 페이지별 클릭 통계 */}
-            <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-4">
-                페이지별 클릭 (30일)
-              </h2>
-              {heatmapData.pageClickStats.length === 0 ? (
-                <p className="text-sm text-slate-600">데이터가 없습니다.</p>
-              ) : (
-                <div className="space-y-2">
-                  {heatmapData.pageClickStats.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between gap-2 p-2 rounded hover:bg-slate-50 transition-colors"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-slate-900 truncate">
-                          {item.page_path}
-                        </div>
-                        <div className="text-xs text-slate-600">
-                          {item.unique_elements}개 요소
-                        </div>
-                      </div>
-                      <div className="text-sm text-slate-900 font-medium">{item.clicks}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <p className="text-xs sm:text-sm text-slate-600 mb-4">
+              메인페이지에서 사용자들이 어디를 많이 클릭하는지 시각적으로 확인할 수 있습니다.
+            </p>
           </div>
-        )}
+
+          {heatmapData ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {/* Top Clicked Elements */}
+              <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-4">
+                  인기 클릭 요소 ({dateRange?.days || 30}일)
+                </h3>
+                {heatmapData.topClickedElements.length === 0 ? (
+                  <p className="text-sm text-slate-600">데이터가 없습니다.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {heatmapData.topClickedElements.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between gap-2 p-2 rounded hover:bg-slate-50 transition-colors"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-slate-900 truncate">
+                            {item.element_id || '(ID 없음)'}
+                          </div>
+                          <div className="text-xs text-slate-600 truncate">{item.page_path}</div>
+                        </div>
+                        <div className="text-sm text-slate-900 font-medium">{item.clicks}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* 페이지별 클릭 통계 */}
+              <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-4">
+                  페이지별 클릭 ({dateRange?.days || 30}일)
+                </h3>
+                {heatmapData.pageClickStats.length === 0 ? (
+                  <p className="text-sm text-slate-600">데이터가 없습니다.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {heatmapData.pageClickStats.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between gap-2 p-2 rounded hover:bg-slate-50 transition-colors"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-slate-900 truncate">
+                            {item.page_path}
+                          </div>
+                          <div className="text-xs text-slate-600">
+                            {item.unique_elements}개 요소
+                          </div>
+                        </div>
+                        <div className="text-sm text-slate-900 font-medium">{item.clicks}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 shadow-sm">
+              <p className="text-sm text-slate-600">히트맵 데이터를 불러오는 중입니다...</p>
+            </div>
+          )}
+        </div>
 
         {/* Web Vitals 카드 */}
         {webVitalsData && webVitalsData.metrics.length > 0 && (

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SmoothScroll from '@/components/SmoothScroll';
@@ -7,6 +8,7 @@ import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
 import Insights from '@/components/sections/Insights';
 import Contact from '@/components/sections/Contact';
+import HeatmapViewer from '@/components/admin/HeatmapViewer';
 import type { Locale } from '@/lib/i18n/config';
 
 interface HomeProps {
@@ -16,6 +18,7 @@ interface HomeProps {
 export default async function Home({ params }: HomeProps) {
   const { lang } = await params;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://uslab.ai';
+  const pagePath = `/${lang}`;
 
   // Organization JSON-LD
   const organizationJsonLd = {
@@ -50,6 +53,11 @@ export default async function Home({ params }: HomeProps) {
       <Insights lang={lang} />
       <Contact />
       <Footer />
+      
+      {/* 히트맵 뷰어 (쿼리 파라미터 ?heatmap=true일 때만 표시) */}
+      <Suspense fallback={null}>
+        <HeatmapViewer pagePath={pagePath} />
+      </Suspense>
     </main>
   );
 }

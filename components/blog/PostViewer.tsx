@@ -254,7 +254,7 @@ export default function PostViewer({ post }: PostViewerProps) {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [lightboxImage]);
 
-  // 코드 블록에 복사 버튼 추가
+  // 코드 블록에 복사 버튼 추가 및 줄별 하이라이트 배경색 제거
   useEffect(() => {
     if (!contentRef.current) return;
 
@@ -269,9 +269,30 @@ export default function PostViewer({ post }: PostViewerProps) {
       // pre 요소를 relative로 만들기
       pre.style.position = 'relative';
 
+      // 코드 블록 내부의 모든 요소의 배경색 제거 (줄별 하이라이트 제거)
+      const codeElement = pre.querySelector('code');
+      if (codeElement) {
+        // code 요소 내부의 모든 자식 요소 찾기
+        const allChildren = codeElement.querySelectorAll('*');
+        allChildren.forEach((child) => {
+          const htmlChild = child as HTMLElement;
+          // 인라인 스타일의 배경색 제거
+          if (htmlChild.style.backgroundColor) {
+            htmlChild.style.backgroundColor = '';
+          }
+          // 클래스에서 배경색 관련 클래스 제거 (highlight 관련)
+          if (htmlChild.className) {
+            htmlChild.className = htmlChild.className
+              .split(' ')
+              .filter(cls => !cls.includes('bg-') && !cls.includes('highlight'))
+              .join(' ');
+          }
+        });
+      }
+
       // 복사 버튼 생성 (pre 요소 안에 직접 추가)
       const copyButton = document.createElement('button');
-      copyButton.className = 'copy-code-button absolute top-3 right-3 p-2 rounded-full border dark:border-slate-600 border-slate-400 dark:bg-slate-700/90 bg-slate-800/95 backdrop-blur-sm dark:text-slate-300 text-white hover:bg-slate-700 dark:hover:bg-slate-600 hover:bg-slate-900 transition-all z-20 shadow-lg';
+      copyButton.className = 'copy-code-button absolute top-3 right-3 p-2 rounded-full border border-slate-300 dark:border-slate-600 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 hover:text-slate-900 dark:hover:text-slate-100 transition-all z-20 shadow-lg';
       copyButton.setAttribute('aria-label', '코드 복사');
       
       const copyIcon = document.createElement('div');
@@ -438,7 +459,9 @@ export default function PostViewer({ post }: PostViewerProps) {
           prose-a:text-cyan-500 prose-a:no-underline hover:prose-a:text-cyan-400 hover:prose-a:underline
           prose-strong:dark:text-white prose-strong:text-slate-900 prose-strong:font-semibold
           prose-code:dark:text-cyan-400 prose-code:text-cyan-600 prose-code:dark:bg-slate-800 prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
-          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-900 prose-pre:bg-slate-100 prose-pre:border-2 prose-pre:border-slate-800 dark:prose-pre:border-slate-800 prose-pre:border-slate-300 prose-pre:rounded-lg prose-pre:relative
+          prose-pre:bg-slate-50 prose-pre:dark:bg-slate-900 prose-pre:border-2 prose-pre:border-slate-200 prose-pre:dark:border-slate-800 prose-pre:rounded-lg prose-pre:relative
+          prose-pre:code:text-slate-900 prose-pre:code:dark:text-slate-100 prose-pre:code:bg-transparent prose-pre:code:dark:bg-transparent prose-pre:code:px-0 prose-pre:code:py-0 prose-pre:code:rounded-none
+          [&_pre_code_*]:bg-transparent [&_pre_code_*]:dark:bg-transparent
           prose-blockquote:border-l-4 prose-blockquote:border-cyan-500 prose-blockquote:dark:text-slate-300 prose-blockquote:text-slate-800 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:pl-4 prose-blockquote:py-2 prose-blockquote:my-4
           prose-ul:dark:text-slate-300 prose-ul:text-slate-900 prose-ol:dark:text-slate-300 prose-ol:text-slate-900
           prose-li:dark:text-slate-300 prose-li:text-slate-900
