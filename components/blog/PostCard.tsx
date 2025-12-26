@@ -103,7 +103,7 @@ export default function PostCard({ post, lang, variant = 'card' }: PostCardProps
         <div className="flex items-center gap-3 pt-5 border-t border-slate-100">
           <div className="w-9 h-9 rounded-full bg-slate-200 ring-2 ring-white flex items-center justify-center text-slate-500 text-sm font-bold">US</div>
           <div>
-            <span className="text-sm font-bold text-slate-900 block">USLab Team</span>
+            <span className="text-sm font-bold text-slate-900 block">USLab AI</span>
             <span className="text-xs text-slate-500">Article</span>
           </div>
         </div>

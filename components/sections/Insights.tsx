@@ -36,9 +36,10 @@ export default async function Insights({ lang }: InsightsProps) {
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-900 leading-tight">
               {lang === 'ko' ? (
                 <>
-                  <span className="text-blue-600">최신 인사이트를</span>
+                  <span className="text-blue-600">최신 인사이트</span>
+                  <span className="text-slate-900 dark:text-white">를</span>
                   <br className="md:hidden" />
-                  <span className="md:ml-2 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 bg-clip-text text-transparent">확인하세요</span>
+                  <span className="md:ml-2 text-slate-900 dark:text-white">확인하세요</span>
                 </>
               ) : (
                 'Latest Insights'
@@ -122,7 +123,7 @@ export default async function Insights({ lang }: InsightsProps) {
                       </div>
                       <div>
                         <span className="text-sm font-bold text-slate-900 block">
-                          {lang === 'ko' ? 'USLab Team' : 'USLab Team'}
+                          {lang === 'ko' ? 'USLab AI' : 'USLab AI'}
                         </span>
                         <span className="text-xs text-slate-500">
                           {lang === 'ko' ? '아티클' : 'Article'}
