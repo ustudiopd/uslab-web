@@ -71,9 +71,11 @@ export function collectTranslatableTextNodes(
         const childPath = [...currentPath];
         
         // content 배열의 인덱스 추가
+        // Tiptap JSON 구조: { type: 'doc', content: [...] }
+        // 최상위 노드도 'content' 키를 통해 접근해야 함
         if (currentPath.length === 0) {
-          // 최상위 노드
-          childPath.push(index);
+          // 최상위 노드: 'content' 키 추가 후 인덱스
+          childPath.push('content', index);
         } else {
           // 중첩된 노드
           childPath.push('content', index);
@@ -139,33 +141,47 @@ export function applyTranslationsByPath(
     for (let i = 0; i < ref.path.length - 1; i++) {
       const key = ref.path[i];
       if (typeof key === 'number') {
-        if (Array.isArray(current)) {
-          current = current[key];
-        } else if (current.content && Array.isArray(current.content)) {
+        // 숫자 키는 content 배열의 인덱스
+        if (current.content && Array.isArray(current.content)) {
           current = current.content[key];
+        } else if (Array.isArray(current)) {
+          current = current[key];
         } else {
+          console.warn(`Invalid path at index ${i}: ${key}, current:`, current);
           return; // 경로가 유효하지 않음
         }
       } else {
+        // 문자열 키는 객체 속성
         current = current[key];
       }
-      if (!current) return;
+      if (!current) {
+        console.warn(`Path traversal failed at index ${i}: ${key}`);
+        return;
+      }
     }
 
     // 마지막 경로 요소가 텍스트 노드
     const lastKey = ref.path[ref.path.length - 1];
     if (typeof lastKey === 'number') {
-      if (Array.isArray(current)) {
-        if (current[lastKey] && typeof current[lastKey].text === 'string') {
-          current[lastKey].text = translation.text_en;
-        }
-      } else if (current.content && Array.isArray(current.content)) {
+      // 마지막 키가 숫자면 content 배열의 인덱스
+      if (current.content && Array.isArray(current.content)) {
         if (current.content[lastKey] && typeof current.content[lastKey].text === 'string') {
           current.content[lastKey].text = translation.text_en;
+        } else {
+          console.warn(`Text node not found at path:`, ref.path);
+        }
+      } else if (Array.isArray(current)) {
+        if (current[lastKey] && typeof current[lastKey].text === 'string') {
+          current[lastKey].text = translation.text_en;
+        } else {
+          console.warn(`Text node not found at path:`, ref.path);
         }
       }
     } else if (lastKey === 'text' && typeof current.text === 'string') {
+      // 마지막 키가 'text'면 직접 텍스트 속성
       current.text = translation.text_en;
+    } else {
+      console.warn(`Invalid last key in path:`, ref.path, 'lastKey:', lastKey, 'current:', current);
     }
   });
 
