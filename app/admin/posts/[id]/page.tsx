@@ -10,6 +10,7 @@ import BlogEditor from '@/components/editor/BlogEditor';
 import { readMarkdownFile, jsonToMarkdown, copyMarkdownToClipboard, downloadMarkdownFile } from '@/lib/utils/markdown';
 import PostVersionTabs from '@/components/admin/PostVersionTabs';
 import { generateContentHTML } from '@/lib/utils/generate-html';
+import { cleanContent, isValidContent } from '@/lib/utils/cleanContent';
 
 export default function EditPostPage() {
   const { user, loading: authLoading } = useAuth();
@@ -62,9 +63,54 @@ export default function EditPostPage() {
         setTitle(postData.title);
         setSlug(postData.slug);
         setLocale(postData.locale);
-        setContent(postData.content);
+        
+        // content 처리: null이거나 빈 객체인 경우 기본 구조 생성
+        // content가 유효한 JSONContent인지 확인
+        if (!postData.content || 
+            (typeof postData.content === 'object' && 
+             (!postData.content.type || !postData.content.content))) {
+          console.warn('Post content is invalid, creating default structure:', postData.content);
+          setContent({
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                content: [],
+              },
+            ],
+          });
+        } else {
+          // content 정리: 빈 텍스트 노드 제거
+          const cleanedContent = cleanContent(postData.content);
+          
+          if (!cleanedContent || !isValidContent(cleanedContent)) {
+            console.warn('Cleaned content is invalid, creating default structure');
+            setContent({
+              type: 'doc',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [],
+                },
+              ],
+            });
+          } else {
+            // 정리된 content 사용
+            console.log('Setting cleaned post content:', {
+              type: cleanedContent.type,
+              contentLength: cleanedContent.content?.length || 0,
+              hasContent: !!cleanedContent.content
+            });
+            setContent(cleanedContent);
+          }
+        }
+        
         setThumbnailUrl(postData.thumbnail_url || '');
-        setCanonicalRootId(postData.canonical_id || postData.id);
+        
+        // canonical_id 설정: EN 포스트인 경우 canonical_id를 사용, 없으면 자신의 ID 사용
+        // KO 포스트인 경우 자신의 ID를 canonical_id로 사용
+        const canonicalId = postData.canonical_id || postData.id;
+        setCanonicalRootId(canonicalId);
       } else {
         const error = await response.json();
         alert(`포스트를 불러올 수 없습니다: ${error.error || '알 수 없는 오류'}`);
@@ -265,9 +311,45 @@ export default function EditPostPage() {
     setTitle(newPost.title);
     setSlug(newPost.slug);
     setLocale(newPost.locale);
-    setContent(newPost.content);
+    
+    // content가 null이거나 빈 객체인 경우 기본 구조 생성
+    if (!newPost.content || (typeof newPost.content === 'object' && Object.keys(newPost.content).length === 0)) {
+      setContent({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [],
+          },
+        ],
+      });
+    } else {
+      // content 정리: 빈 텍스트 노드 제거
+      const cleanedContent = cleanContent(newPost.content);
+      
+      if (!cleanedContent || !isValidContent(cleanedContent)) {
+        console.warn('Cleaned content is invalid, creating default structure');
+        setContent({
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [],
+            },
+          ],
+        });
+      } else {
+        setContent(cleanedContent);
+      }
+    }
+    
     setThumbnailUrl(newPost.thumbnail_url || '');
-    setCanonicalRootId(newPost.canonical_id || newPost.id);
+    
+    // canonical_id 설정: EN 포스트인 경우 canonical_id를 사용, 없으면 자신의 ID 사용
+    // KO 포스트인 경우 자신의 ID를 canonical_id로 사용
+    const canonicalId = newPost.canonical_id || newPost.id;
+    setCanonicalRootId(canonicalId);
+    
     // 에디터 재생성
     setEditorKey(prev => prev + 1);
     // URL 업데이트 (새 포스트 ID로)
@@ -408,7 +490,7 @@ export default function EditPostPage() {
             <div className="mb-4 sm:mb-6">
               <PostVersionTabs
                 canonicalRootId={canonicalRootId}
-                koPostId={canonicalRootId}
+                koPostId={locale === 'ko' ? postId : canonicalRootId}
                 initialTab={locale}
                 onPostChange={handlePostChange}
               />

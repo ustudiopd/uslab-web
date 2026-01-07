@@ -216,6 +216,20 @@ export default function BlogEditor({
     ImageResizeExtension, // 이미지 리사이즈 Extension (명세서 해결책 A)
   ], [imageExtension, youtubeExtension, linkExtension]);
 
+  // initialContent 검증 및 로깅
+  useEffect(() => {
+    if (initialContent) {
+      console.log('[BlogEditor] initialContent:', {
+        type: initialContent.type,
+        contentLength: initialContent.content?.length || 0,
+        hasContent: !!initialContent.content,
+        content: initialContent.content?.slice(0, 3) // 처음 3개만
+      });
+    } else {
+      console.warn('[BlogEditor] initialContent is null or undefined');
+    }
+  }, [initialContent, editorKey]);
+
   return (
     <EditorRoot>
       <EditorContent

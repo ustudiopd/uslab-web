@@ -57,31 +57,57 @@ export default function PostVersionTabs({
       // EN 포스트 로드 (canonical_id로 검색)
       const canonicalId = koPostData.canonical_id || koPostData.id;
       
-      // 모든 포스트 목록에서 EN 포스트 찾기 (API 사용)
-      const allPostsResponse = await fetch(`/api/posts?all=true&lang=en`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-      });
-
-      if (allPostsResponse.ok) {
-        const { posts } = await allPostsResponse.json();
-        const enPostData = posts.find((p: UslabPost) => 
-          (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
-        );
-        
-        if (enPostData) {
-          setEnPost(enPostData);
-          // EN 포스트가 로드되었고 현재 탭이 EN이면 편집 화면에 로드
-          if (activeTab === 'en' && onPostChange) {
-            onPostChange(enPostData);
+      // 현재 포스트가 EN인 경우, 이미 로드된 포스트를 사용
+      if (koPostData.locale === 'en') {
+        setEnPost(koPostData);
+        // 현재 탭이 EN이면 편집 화면에 로드
+        if (activeTab === 'en' && onPostChange) {
+          onPostChange(koPostData);
+        }
+        // KO 포스트 찾기 (canonical_id로)
+        if (canonicalId !== koPostData.id) {
+          // canonical_id가 다르면 KO 포스트를 찾아야 함
+          const koPostResponse = await fetch(`/api/posts/${canonicalId}`, {
+            headers: {
+              'Authorization': `Bearer ${session.access_token}`,
+            },
+          });
+          
+          if (koPostResponse.ok) {
+            const { post: koPostFromCanonical } = await koPostResponse.json();
+            if (koPostFromCanonical && koPostFromCanonical.locale === 'ko') {
+              setKoPost(koPostFromCanonical);
+            }
           }
-        } else {
-          setEnPost(null);
         }
       } else {
-        // API 실패 시 null로 설정 (EN이 없는 것으로 간주)
-        setEnPost(null);
+        // KO 포스트인 경우, EN 포스트 찾기
+        // 모든 포스트 목록에서 EN 포스트 찾기 (API 사용)
+        const allPostsResponse = await fetch(`/api/posts?all=true`, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+        });
+
+        if (allPostsResponse.ok) {
+          const { posts } = await allPostsResponse.json();
+          const enPostData = posts.find((p: UslabPost) => 
+            (p.canonical_id || p.id) === canonicalId && p.locale === 'en'
+          );
+          
+          if (enPostData) {
+            setEnPost(enPostData);
+            // EN 포스트가 로드되었고 현재 탭이 EN이면 편집 화면에 로드
+            if (activeTab === 'en' && onPostChange) {
+              onPostChange(enPostData);
+            }
+          } else {
+            setEnPost(null);
+          }
+        } else {
+          // API 실패 시 null로 설정 (EN이 없는 것으로 간주)
+          setEnPost(null);
+        }
       }
     } catch (err) {
       console.error('Error loading posts:', err);
