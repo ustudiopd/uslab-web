@@ -76,11 +76,11 @@ export default function AboutViewer({ about, htmlContent: serverHtmlContent }: A
       Youtube.configure({
         controls: true,
         nocookie: false,
-        width: 0, // CSS로 제어하므로 0으로 설정
-        height: 0, // CSS로 제어하므로 0으로 설정
+        width: 560, // 표준 YouTube iframe 너비 (초기 공간 확보)
+        height: 315, // 표준 YouTube iframe 높이 (16:9 비율)
         HTMLAttributes: {
-          class: 'rounded-lg border border-slate-700',
-          style: 'width: 100%; aspect-ratio: 16/9;',
+          class: 'rounded-lg border border-slate-700 max-w-full',
+          style: 'width: 100%; max-width: 100%; aspect-ratio: 16/9; min-height: 315px;',
         },
       }),
       TaskList,
@@ -282,12 +282,14 @@ export default function AboutViewer({ about, htmlContent: serverHtmlContent }: A
       
       // wrapper div 생성
       const wrapper = document.createElement('div');
-      wrapper.className = 'youtube-wrapper relative w-full';
+      wrapper.className = 'youtube-wrapper relative w-full max-w-full';
       wrapper.style.paddingBottom = '56.25%'; // 16:9 비율
       wrapper.style.height = '0';
       wrapper.style.overflow = 'hidden';
       wrapper.style.borderRadius = '0.5rem';
       wrapper.style.border = '1px solid rgb(51 65 85)';
+      wrapper.style.maxWidth = '100%';
+      wrapper.style.margin = '0 auto';
       
       // iframe 스타일 설정
       element.style.position = 'absolute';
@@ -296,6 +298,7 @@ export default function AboutViewer({ about, htmlContent: serverHtmlContent }: A
       element.style.width = '100%';
       element.style.height = '100%';
       element.style.border = 'none';
+      element.style.maxWidth = '100%';
       
       // iframe을 wrapper로 감싸기
       if (element.parentNode) {

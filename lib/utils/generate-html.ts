@@ -46,8 +46,8 @@ export function generateContentHTML(content: any): string {
       width: 560, // 표준 YouTube iframe 너비 (초기 공간 확보)
       height: 315, // 표준 YouTube iframe 높이 (16:9 비율)
       HTMLAttributes: {
-        class: 'rounded-lg border border-slate-700',
-        style: 'width: 100%; aspect-ratio: 16/9; min-height: 315px;',
+        class: 'rounded-lg border border-slate-700 max-w-full',
+        style: 'width: 100%; max-width: 100%; aspect-ratio: 16/9; min-height: 315px;',
       },
     }),
     TaskList,
