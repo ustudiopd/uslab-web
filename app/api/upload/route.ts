@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+// API Route runtime 설정 (Edge Runtime 사용 시 body size limit 제한이 있을 수 있음)
+export const runtime = 'nodejs';
+export const maxDuration = 300; // 5분 (큰 파일 업로드 시간 확보)
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -104,6 +108,15 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error('이미지 업로드 오류:', error);
+    
+    // 413 에러 (Payload Too Large) 처리
+    if (error.message?.includes('413') || error.message?.includes('too large') || error.message?.includes('Payload')) {
+      return NextResponse.json(
+        { error: '파일 크기가 너무 큽니다. Vercel의 기본 제한(4.5MB)을 초과했을 수 있습니다. 더 큰 파일을 업로드하려면 Vercel 설정을 확인하세요.' },
+        { status: 413 }
+      );
+    }
+    
     return NextResponse.json(
       { error: error.message || '이미지 업로드 중 오류가 발생했습니다.' },
       { status: 500 }

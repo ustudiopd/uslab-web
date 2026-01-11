@@ -43,68 +43,41 @@ export default function BlogEditor({
       },
       onUpload: async (file: File): Promise<string> => {
         try {
-          // Supabase 세션 토큰 가져오기
+          // Supabase 세션 확인
           const { data: { session } } = await supabase.auth.getSession();
           if (!session) {
             throw new Error('로그인이 필요합니다.');
           }
 
-          // FormData 생성
-          const formData = new FormData();
-          formData.append('file', file);
+          // 고유한 파일명 생성 (타임스탬프 + 랜덤 문자열)
+          const timestamp = Date.now();
+          const randomStr = Math.random().toString(36).substring(2, 15);
+          const fileExt = file.name.split('.').pop() || 'png';
+          const fileName = `uslab/${timestamp}-${randomStr}.${fileExt}`;
 
-          // 업로드 API 호출
-          const response = await fetch('/api/upload', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${session.access_token}`,
-            },
-            body: formData,
-          });
+          // 클라이언트에서 직접 Supabase Storage에 업로드 (Vercel body size limit 우회)
+          const { data, error } = await supabase.storage
+            .from('uslab-images')
+            .upload(fileName, file, {
+              contentType: file.type,
+              upsert: false, // 기존 파일 덮어쓰기 방지
+            });
 
-          if (!response.ok) {
-            // 에러 응답 처리 (JSON이 아닐 수 있음)
-            let errorMessage = '이미지 업로드 실패';
-            try {
-              const contentType = response.headers.get('content-type');
-              if (contentType && contentType.includes('application/json')) {
-                const error = await response.json();
-                errorMessage = error.error || errorMessage;
-              } else {
-                const text = await response.text();
-                // HTML 에러 페이지인 경우 상태 코드로 메시지 생성
-                if (response.status === 413) {
-                  errorMessage = '파일 크기가 너무 큽니다. (최대 1GB)';
-                } else if (response.status === 401) {
-                  errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
-                } else {
-                  errorMessage = `이미지 업로드 실패 (${response.status})`;
-                }
-              }
-            } catch (parseError) {
-              // JSON 파싱 실패 시 상태 코드로 메시지 생성
-              if (response.status === 413) {
-                errorMessage = '파일 크기가 너무 큽니다. (최대 1GB)';
-              } else if (response.status === 401) {
-                errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
-              } else {
-                errorMessage = `이미지 업로드 실패 (${response.status})`;
-              }
-            }
-            throw new Error(errorMessage);
+          if (error) {
+            console.error('Supabase Storage 업로드 오류:', error);
+            throw new Error(`이미지 업로드 실패: ${error.message}`);
           }
 
-          // 성공 응답 처리
-          const contentType = response.headers.get('content-type');
-          if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('서버 응답 형식이 올바르지 않습니다.');
+          // Public URL 가져오기
+          const { data: urlData } = supabase.storage
+            .from('uslab-images')
+            .getPublicUrl(fileName);
+
+          if (!urlData?.publicUrl) {
+            throw new Error('업로드된 이미지의 URL을 가져올 수 없습니다.');
           }
 
-          const data = await response.json();
-          if (!data.url) {
-            throw new Error('이미지 URL을 받지 못했습니다.');
-          }
-          return data.url;
+          return urlData.publicUrl;
         } catch (error: any) {
           console.error('이미지 업로드 오류:', error);
           alert(error.message || '이미지 업로드 중 오류가 발생했습니다.');
