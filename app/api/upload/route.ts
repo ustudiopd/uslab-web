@@ -55,11 +55,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 파일 크기 검증 (최대 50MB)
-    const maxSize = 50 * 1024 * 1024; // 50MB
+    // 파일 크기 검증 (최대 1GB)
+    const maxSize = 1024 * 1024 * 1024; // 1GB
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: '파일 크기는 50MB를 초과할 수 없습니다.' },
+        { error: '파일 크기는 1GB를 초과할 수 없습니다.' },
         { status: 400 }
       );
     }

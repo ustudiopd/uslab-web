@@ -6,9 +6,9 @@ const nextConfig = {
   experimental: {
     // 개발 모드에서 빠른 리프레시
     optimizePackageImports: ['lucide-react', '@tiptap/react', '@tiptap/starter-kit'],
-    // 서버 액션 및 API route body size limit 증가 (50MB)
+    // 서버 액션 및 API route body size limit 증가 (1GB)
     serverActions: {
-      bodySizeLimit: '50mb',
+      bodySizeLimit: '1gb',
     },
   },
   

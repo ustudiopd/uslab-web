@@ -35,8 +35,8 @@ export default function BlogEditor({
           alert('이미지 파일만 업로드할 수 있습니다.');
           return false;
         }
-        if (file.size > 50 * 1024 * 1024) {
-          alert('파일 크기는 50MB를 초과할 수 없습니다.');
+        if (file.size > 1024 * 1024 * 1024) {
+          alert('파일 크기는 1GB를 초과할 수 없습니다.');
           return false;
         }
         return true;
@@ -74,7 +74,7 @@ export default function BlogEditor({
                 const text = await response.text();
                 // HTML 에러 페이지인 경우 상태 코드로 메시지 생성
                 if (response.status === 413) {
-                  errorMessage = '파일 크기가 너무 큽니다. (최대 50MB)';
+                  errorMessage = '파일 크기가 너무 큽니다. (최대 1GB)';
                 } else if (response.status === 401) {
                   errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
                 } else {
@@ -84,7 +84,7 @@ export default function BlogEditor({
             } catch (parseError) {
               // JSON 파싱 실패 시 상태 코드로 메시지 생성
               if (response.status === 413) {
-                errorMessage = '파일 크기가 너무 큽니다. (최대 50MB)';
+                errorMessage = '파일 크기가 너무 큽니다. (최대 1GB)';
               } else if (response.status === 401) {
                 errorMessage = '인증이 필요합니다. 다시 로그인해주세요.';
               } else {
